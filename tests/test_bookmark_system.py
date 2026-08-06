@@ -74,6 +74,8 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn('aria-label="Bookmark This monogram"', visualizer)
         self.assertIn('width: 50.6px; height: 50.6px;', visualizer)
         self.assertIn('All of your bookmarks in one place.', visualizer)
+        self.assertIn('The Goods', visualizer)
+        self.assertNotIn('Saved signals', visualizer)
         self.assertIn('transform: translateY(2px);', visualizer)
         self.assertIn('background: conic-gradient(', visualizer)
         self.assertIn('class="maker-logo-dark"', visualizer)

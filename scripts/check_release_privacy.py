@@ -43,8 +43,8 @@ EXPECTED_PUBLIC_IMAGE_HASHES = {
     "images/bookmark-this-hero.jpg": "101a298f78875f239a7fefda0c7f8cc50820b4588e4d79a8a88ea95dcda832f8",
     "images/visualizer-preview.jpg": "2d1f413a642c20115032da9c53364bc0f5d3b8efda61e239519775c6f7d15530",
     "skills/bookmark-this/assets/visualizer-background.jpg": "75cbd4d7028dcd17fdcb64e643df61b750286a35c659c71a339b0d2d353f44f2",
-    "skills/bookmark-this/assets/bookmark-this-mark.svg": "cde21f8483365470fbb581f914d193ea84702031e99a02829b22c21bb399cc6a",
-    "skills/bookmark-this/assets/bookmark-this-mark.png": "8f2d0ccc781934b62f649bdfd9e2892ae5f11539ba9387b574661c4b30d2438d",
+    "skills/bookmark-this/assets/bookmark-this-mark.svg": "8a4b0c0d7257489ec5db806e73b102dc8453765b25e7d6eed853f7322b06e336",
+    "skills/bookmark-this/assets/bookmark-this-mark.png": "ce7a5fb93e1dd3a863225c7f2acbc1c853407c3b1783a258329b5c7e12cbfa91",
     "skills/bookmark-this/assets/interzekt-logo.png": "1a5f6e7931969b82f085885e58974800de01158ece20b29dd842f94207d2656a",
     "skills/bookmark-this/assets/interzekt-logo-light.png": "5753f50a8b5c49422f2016ed0fab97a060a042e560af90659f9b0221e986347a",
 }
