@@ -68,7 +68,7 @@ The visualizer is a single local HTML file. It provides:
 - locally cached Open Graph artwork for visual bookmark cards
 - playable YouTube, Vimeo, supported Instagram, and direct-video previews when the provider permits embedding
 - opt-in TradingView charts for explicit ticker symbols; market data may be live or provider-delayed
-- a visible editorial background image inside the library workspace instead of a flat page color
+- a continuous editorial background across the navigation, controls, and library workspace
 - no account, analytics, or database; the optional editing workspace uses Python's localhost-only server and Markdown remains canonical
 
 The Markdown library remains the source of truth. Opening `visualizer/index.html` directly is private and read-only. Run `python3 skills/bookmark-this/scripts/bookmark_system.py serve <your-library>` for the editable workspace; tag changes write to frontmatter, filtered bookmarks remain recoverable, and removals move to `.bookmark-system/trash/` rather than being permanently erased.

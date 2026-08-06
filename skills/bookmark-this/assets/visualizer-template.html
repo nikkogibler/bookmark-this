@@ -76,7 +76,7 @@
     .rail-rule { width: 1px; height: 44px; background: var(--rail-rule); }
     .rail-label { margin-top: auto; writing-mode: vertical-rl; transform: rotate(180deg); font: 800 .65rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--rail-copy); }
     .rail-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 5px color-mix(in oklch, var(--cyan) 18%, transparent); }
-    .workspace { min-width: 0; background: var(--paper); }
+    .workspace { min-width: 0; background-color: var(--paper); background-image: linear-gradient(var(--dashboard-wash),var(--dashboard-wash)),var(--background-art); background-size: cover; background-position: 52% center; }
     .topbar { min-height: 76px; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: var(--space-xl); padding: var(--space-lg) var(--space-2xl); border-bottom: 1px solid var(--line); }
     .identity { display: flex; align-items: baseline; gap: var(--space-md); min-width: 0; }
     .identity strong { font: 900 1.2rem/1 var(--display); letter-spacing: -.025em; text-transform: uppercase; }
@@ -116,7 +116,7 @@
     .utility-button:hover { background: var(--paper-low); transform: translateY(-2px); }
     .context-toggle[aria-pressed="true"] { background: var(--frame-soft); color: var(--paper-high); border-color: var(--frame-soft); }
     .filtered-toggle[aria-pressed="true"] { background: var(--mauve); color: var(--on-signal); border-color: var(--mauve); }
-    .dashboard { display: grid; grid-template-columns: 230px minmax(0,1fr) 320px; gap: var(--space-xl); min-height: calc(100vh - 224px); padding: var(--space-lg) var(--space-2xl) var(--space-3xl); background-color: var(--paper); background-image: linear-gradient(var(--dashboard-wash),var(--dashboard-wash)),var(--background-art); background-size: cover; background-position: 52% center; }
+    .dashboard { display: grid; grid-template-columns: 230px minmax(0,1fr) 320px; gap: var(--space-xl); min-height: calc(100vh - 224px); padding: var(--space-lg) var(--space-2xl) var(--space-3xl); background: transparent; }
     .taxonomy { align-self: start; display: grid; gap: var(--space-2xl); position: sticky; top: var(--space-xl); }
     .section-kicker { margin: 0; font: 900 .7rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--mauve); }
     .taxonomy h2, .library-head h1 { margin: 0; font-family: var(--display); font-weight: 900; letter-spacing: -.045em; }
