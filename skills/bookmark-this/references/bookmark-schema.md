@@ -17,6 +17,8 @@ tags:
 categories:
   - research
 status: bookmarked
+context_basis:
+  - Current session
 ---
 ```
 
@@ -28,6 +30,7 @@ Rules:
 - Use one or more configured category slugs.
 - Use 3–8 lowercase kebab-case tags by default.
 - Derive a concise lowercase kebab-case filename from the verified title.
+- `context_basis` is optional. When present, list only readable labels for context the user approved; never copy private text or expose a sensitive path.
 
 ## Body
 
@@ -65,6 +68,8 @@ Verification gaps, source limitations, conflicts, compatibility concerns, or mar
 ```
 
 For `quick` depth, omit `Key details` and `Caveats` only when there is nothing material to preserve. For `deep` depth, add corroborating sources and distinguish their claims. Omit the personal-relevance section when disabled.
+
+The inference should be specific enough to be useful but must not claim motives as fact. If no approved context supports a personal connection, say so or omit the section instead of generating a generic personality reading.
 
 ## Updates
 

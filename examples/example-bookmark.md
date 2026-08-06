@@ -13,6 +13,8 @@ categories:
   - research
   - tools
 status: bookmarked
+context_basis:
+  - Current session
 ---
 
 # Example Research Tool

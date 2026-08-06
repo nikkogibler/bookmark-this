@@ -7,12 +7,38 @@ The goal is to learn enough to create a useful first hierarchy without turning s
 Ask:
 
 1. Which agentic platform should this work with: Codex, Claude, Hermes, OpenClaw, another platform, or no preference?
-2. Do they know where their bookmarks live now? Ask them to point to one or more folders, paste paths, or say `I don't know` so the agent can help locate likely folders with read-only searches.
+2. Should setup round up existing bookmarks from their browsers and bookmark folders? Offer Chrome, Safari, Firefox, Edge, Brave, an exported bookmarks HTML file, named folders, `all available sources`, or `not now`. Let them say `I don't know` so the agent can locate likely sources with read-only checks.
 3. Do they want a simple local bookmark visualizer generated now, available later, or disabled?
 
-Explain the practical effect in one sentence: the platform choice shapes installation and prompt examples; source folders shape preservation or migration; the optional visualizer adds searchable cards and category/tag filters without replacing the Markdown files.
+Explain the practical effect in one sentence: the platform choice shapes installation and prompt examples; browser roundup consolidates existing saves into the Markdown source of truth; the optional visualizer adds searchable cards and a relationship graph without replacing the Markdown files.
 
-If the user does not know their bookmark locations, search only likely user-approved note or project roots. Show candidate folders and ask which ones are in scope before migration. Do not scan an entire home directory or browser profile by default.
+## Round 1A: browser and folder sources
+
+When roundup is enabled, read [browser-ingestion.md](browser-ingestion.md). Ask which browser profiles are in scope when more than one exists, and whether named Markdown or export folders should also be included. Locate standard bookmark files with read-only checks; do not inspect browser history, cookies, passwords, autofill, open tabs, or unrelated profile data.
+
+If macOS or another operating system blocks direct browser-bookmark access, explain the exact limitation and offer the browser's native bookmark-export workflow. Treat the exported file as an input, never as the source of truth.
+
+Show a compact inventory before importing: source, total entries, unique web URLs, duplicate groups, non-web entries, overlap with the destination, and inaccessible sources. Preserve browser/profile and legacy-folder provenance in imported notes. Never delete or rewrite browser bookmarks.
+
+## Round 1B: personal context, asked immediately after Round 1
+
+Ask whether the skill may use any existing context to improve its explicitly labelled `Why I may have saved it` inference. Offer concrete choices without implying that access is required:
+
+1. the current conversation or session only;
+2. approved project context such as `AGENTS.md`, `CLAUDE.md`, project notes, or other files they name;
+3. approved global context or memory such as `MEMORY.md` or another file they identify;
+4. no personal context.
+
+Explain why this matters: the skill works without personal context, but this is where it becomes substantially more useful. Approved context lets it connect a saved page to recurring goals, preferences, projects, and decisions instead of producing a generic reason to revisit it.
+
+Make the privacy boundary explicit:
+
+- access is opt-in and limited to the scopes or paths the user approves;
+- choosing no context must not block setup or bookmarking;
+- store source labels and approved paths in configuration, not copied memory contents or conversation transcripts;
+- never inspect browser history, credentials, private messages, or unrelated folders as a substitute;
+- the user may change or disable context use later;
+- personal-relevance text remains labelled as inference, not fact.
 
 ## Round 2: home and purpose
 
@@ -58,6 +84,8 @@ Confirm the timezone when capture dates could differ from the system timezone.
 - Visualizer available later but not generated unless requested
 - Standard capture depth
 - Explicit personal-relevance inference enabled
+- Current-session context only until the user approves additional sources
+- Offer read-only browser roundup during setup; default to `not now` if the user does not opt in
 - `**Inference, not confirmed:**` label
 - Strip common tracking parameters and do not retain sensitive originals
 - Wikilinks for Obsidian; relative Markdown links otherwise
@@ -67,11 +95,12 @@ Confirm the timezone when capture dates could differ from the system timezone.
 Before writing, show a compact summary:
 
 - root path;
-- preferred agentic platform and source bookmark folders;
+- preferred agentic platform, browser-ingestion choice, and approved source bookmark paths;
 - physical folders and generated navigation;
 - visualizer choice;
 - approved categories;
 - capture depth and inference policy;
+- approved personal-context mode and source labels;
 - URL/privacy policy;
 - migration scope.
 

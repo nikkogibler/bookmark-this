@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import re
@@ -78,6 +79,32 @@ def load_config(root: Path) -> dict[str, Any]:
     visualizer_path = Path(str(visualizer.get("path", "visualizer/index.html")))
     if visualizer_path.is_absolute() or ".." in visualizer_path.parts or visualizer_path.suffix.lower() != ".html":
         raise SystemError("visualizer.path must be a relative .html path inside the root")
+    context = config.get("context", {"mode": "none", "sources": [], "store_excerpts": False})
+    if not isinstance(context, dict) or context.get("mode", "none") not in {"approved", "conversation-only", "none"}:
+        raise SystemError("context.mode must be 'approved', 'conversation-only', or 'none'")
+    if not isinstance(context.get("sources", []), list):
+        raise SystemError("context.sources must be a list")
+    if context.get("store_excerpts", False) is not False:
+        raise SystemError("context.store_excerpts must remain false")
+    ingestion = config.get(
+        "ingestion",
+        {
+            "enabled": False,
+            "sources": [],
+            "deduplicate": True,
+            "preserve_legacy_folders": True,
+            "delete_sources": False,
+        },
+    )
+    if not isinstance(ingestion, dict) or not isinstance(ingestion.get("enabled", False), bool):
+        raise SystemError("ingestion must contain a boolean enabled value")
+    if not isinstance(ingestion.get("sources", []), list):
+        raise SystemError("ingestion.sources must be a list")
+    for key in ("deduplicate", "preserve_legacy_folders", "delete_sources"):
+        if not isinstance(ingestion.get(key), bool):
+            raise SystemError(f"ingestion.{key} must be a boolean")
+    if ingestion.get("delete_sources") is not False:
+        raise SystemError("ingestion.delete_sources must remain false")
     return config
 
 
@@ -343,6 +370,80 @@ def visualize(root: Path, config: dict[str, Any]) -> None:
 </body>
 </html>
 '''
+    output.write_text(document, encoding="utf-8")
+    print(f"Generated visualizer for {len(items)} bookmark(s): {output}")
+
+
+def note_section(path: Path, heading: str, limit: int = 420) -> str:
+    text = path.read_text(encoding="utf-8")
+    match = re.search(rf"^## {re.escape(heading)}\s*\n+(.*?)(?=\n## |\Z)", text, flags=re.MULTILINE | re.DOTALL)
+    if not match:
+        return ""
+    paragraph = re.split(r"\n\s*\n", match.group(1).strip(), maxsplit=1)[0]
+    paragraph = re.sub(r"\*\*Inference, not confirmed:\*\*\s*", "", paragraph, flags=re.IGNORECASE)
+    paragraph = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", paragraph)
+    paragraph = re.sub(r"[*_`]", "", paragraph)
+    return re.sub(r"\s+", " ", paragraph).strip()[:limit]
+
+
+def context_source_labels(config: dict[str, Any]) -> list[str]:
+    context = config.get("context", {})
+    if not isinstance(context, dict) or context.get("mode") == "none":
+        return []
+    labels: list[str] = []
+    for source in context.get("sources", []):
+        if isinstance(source, dict) and source.get("label"):
+            labels.append(str(source["label"]))
+        elif isinstance(source, str) and source.strip():
+            labels.append(source.strip())
+    return labels
+
+
+def visualize(root: Path, config: dict[str, Any]) -> None:
+    visualizer_config = config.get("visualizer", {"enabled": False, "path": "visualizer/index.html"})
+    if not visualizer_config.get("enabled", False):
+        raise SystemError("The visualizer is disabled in config.json")
+    output = root / visualizer_config.get("path", "visualizer/index.html")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    categories = {item["slug"]: item["label"] for item in config["categories"]}
+    items: list[dict[str, Any]] = []
+    for record in bookmark_records(root, config):
+        metadata = record["metadata"]
+        items.append(
+            {
+                "title": str(metadata.get("title") or record["path"].stem),
+                "url": str(metadata.get("url") or ""),
+                "domain": str(metadata.get("domain") or ""),
+                "captured": str(metadata.get("captured") or ""),
+                "categories": metadata.get("categories", []) if isinstance(metadata.get("categories"), list) else [],
+                "tags": metadata.get("tags", []) if isinstance(metadata.get("tags"), list) else [],
+                "summary": note_section(record["path"], "What it is", 280),
+                "why": note_section(record["path"], "Why I may have saved it"),
+                "contextBasis": metadata.get("context_basis", []) if isinstance(metadata.get("context_basis"), list) else [],
+                "note": os.path.relpath(record["path"], start=output.parent).replace(os.sep, "/"),
+            }
+        )
+    context = config.get("context", {}) if isinstance(config.get("context"), dict) else {}
+    payload = json.dumps(
+        {
+            "items": items,
+            "categories": categories,
+            "ownerLabel": config.get("owner_label", "you"),
+            "platform": config.get("agentic_platform", ""),
+            "contextMode": context.get("mode", "none"),
+            "contextSources": context_source_labels(config),
+        },
+        ensure_ascii=False,
+    ).replace("<", "\\u003c")
+    assets_dir = Path(__file__).resolve().parent.parent / "assets"
+    template_path = assets_dir / "visualizer-template.html"
+    if not template_path.is_file():
+        raise SystemError(f"Missing visualizer template: {template_path}")
+    logo_path = assets_dir / "interzekt-logo.png"
+    logo_data = ""
+    if logo_path.is_file():
+        logo_data = "data:image/png;base64," + base64.b64encode(logo_path.read_bytes()).decode("ascii")
+    document = template_path.read_text(encoding="utf-8").replace("__BOOKMARK_PAYLOAD__", payload).replace("__INTERZEKT_LOGO__", logo_data)
     output.write_text(document, encoding="utf-8")
     print(f"Generated visualizer for {len(items)} bookmark(s): {output}")
 

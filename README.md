@@ -10,17 +10,23 @@ Bookmark This is a portable agent skill that turns saved links into a structured
 
 It works with Codex, Claude, Hermes, OpenClaw, and other agents that can follow a `SKILL.md` workflow.
 
-## The Setup Takes Three Questions
+## Setup Starts With Three Questions
 
 When you ask the skill to set up your bookmark system, it starts with:
 
 1. Which agentic platform do you use?
-2. Do you know where your bookmarks live now?
+2. Should I round up bookmarks from Chrome, Safari, Firefox, Edge, Brave, exported HTML, or folders you name?
 3. Do you want the local bookmark visualizer now, later, or disabled?
 
-You can answer `I don't know` to the folder question. The agent will help locate likely folders using read-only checks, show you the candidates, and ask which ones are in scope before migrating anything.
+You can answer `all available sources`, name specific browsers or profiles, say `not now`, or say `I don't know`. The agent will locate standard bookmark stores with read-only checks, show an inventory, and ask which sources are in scope before importing anything. If an operating system blocks access, it will offer the browser's native bookmark export instead of reaching into unrelated browser data.
+
+Immediately afterward, the skill asks whether it may use any context you approve—such as the current session, project instructions, selected notes, or a `MEMORY.md` file—to improve its `Why I may have saved it` inference. You can decline and keep the system fully generic.
+
+This optional context is where Bookmark This becomes markedly more useful: it can connect a page to recurring projects, preferences, and decisions instead of guessing at a generic reason to revisit it. Access remains opt-in, source labels stay visible, and copied memories or conversation transcripts are never stored in the configuration.
 
 From there, the skill proposes a small category system based on what you actually save. You approve it, rename it, or delegate the choice. You do not have to design a taxonomy from scratch.
+
+For a large browser library, Bookmark This first imports everything into a deduplicated, searchable structure while preserving browser, profile, and old-folder provenance. It labels links it has not opened as imported but unverified, then enriches them progressively or in batches. It never claims hundreds of pages were individually checked when only browser metadata was available.
 
 ## What It Creates
 
@@ -43,7 +49,7 @@ Bookmark files stay in a stable location. Categories, tags, collections, and gen
 ## Optional Visualizer
 
 <p align="center">
-  <img src="images/visualizer-preview.png" alt="Local Bookmark This visualizer with search, categories, tags, and bookmark cards" width="800" />
+  <img src="images/visualizer-preview.jpg" alt="Bookmark This visualizer showing its interactive 3D relationship map and personal-relevance inspector" width="800" />
 </p>
 
 The visualizer is a single local HTML file. It provides:
@@ -52,6 +58,9 @@ The visualizer is a single local HTML file. It provides:
 - category filtering
 - readable bookmark cards
 - links to the original source and the local Markdown note
+- an optional `Why this survived` view grounded in user-approved context
+- visible context-source labels and a control to hide personal inference
+- an interactive 3D relationship map linking bookmarks to category hubs and shared tags
 - no server, account, analytics, database, or external JavaScript
 
 The Markdown library remains the source of truth. The visualizer can be regenerated at any time.
@@ -170,6 +179,7 @@ The skill strips sensitive tokens and common tracking parameters rather than pre
 
 - Your bookmark library stays in folders you choose.
 - Existing bookmark folders are inventoried before any proposed migration.
+- Browser roundup is opt-in, read-only, and supports Chromium browsers, Safari, Firefox exports, bookmark HTML, and approved Markdown folders.
 - Source files are not deleted automatically.
 - Personal-relevance reasoning is optional and always labelled as inference.
 - Secrets, cookies, credentials, and sensitive URL parameters must not be stored.
@@ -191,7 +201,7 @@ bookmark-this/
 │   └── example-bookmark.md
 ├── images/
 │   ├── bookmark-this-hero.jpg
-│   └── visualizer-preview.png
+│   └── visualizer-preview.jpg
 ├── tests/
 │   └── test_bookmark_system.py
 └── skills/
@@ -199,6 +209,9 @@ bookmark-this/
         ├── SKILL.md
         ├── agents/
         │   └── openai.yaml
+        ├── assets/
+        │   ├── interzekt-logo.png
+        │   └── visualizer-template.html
         ├── references/
         └── scripts/
             └── bookmark_system.py

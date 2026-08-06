@@ -3,6 +3,13 @@
   "owner_label": "you",
   "agentic_platform": "codex",
   "source_bookmark_paths": [],
+  "ingestion": {
+    "enabled": false,
+    "sources": [],
+    "deduplicate": true,
+    "preserve_legacy_folders": true,
+    "delete_sources": false
+  },
   "timezone": "Europe/Rome",
   "link_style": "markdown",
   "paths": {
@@ -29,6 +36,16 @@
     "inference_label": "Inference, not confirmed:",
     "retain_safe_original_url": false,
     "strip_tracking_parameters": true
+  },
+  "context": {
+    "mode": "conversation-only",
+    "sources": [
+      {
+        "scope": "session",
+        "label": "Current session"
+      }
+    ],
+    "store_excerpts": false
   },
   "navigation": {
     "generate_category_views": true,

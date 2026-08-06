@@ -28,6 +28,13 @@ Write valid UTF-8 JSON. Required keys are shown below.
   "owner_label": "you",
   "agentic_platform": "codex",
   "source_bookmark_paths": [],
+  "ingestion": {
+    "enabled": false,
+    "sources": [],
+    "deduplicate": true,
+    "preserve_legacy_folders": true,
+    "delete_sources": false
+  },
   "timezone": "Europe/Rome",
   "link_style": "markdown",
   "paths": {
@@ -50,6 +57,16 @@ Write valid UTF-8 JSON. Required keys are shown below.
     "retain_safe_original_url": false,
     "strip_tracking_parameters": true
   },
+  "context": {
+    "mode": "conversation-only",
+    "sources": [
+      {
+        "scope": "session",
+        "label": "Current session"
+      }
+    ],
+    "store_excerpts": false
+  },
   "navigation": {
     "generate_category_views": true,
     "generate_tag_views": true
@@ -66,8 +83,16 @@ Write valid UTF-8 JSON. Required keys are shown below.
 - `link_style`: `markdown` or `wikilink`
 - `agentic_platform`: a lowercase platform label such as `codex`, `claude`, `hermes`, `openclaw`, `other`, or `none`
 - `source_bookmark_paths`: zero or more absolute source folders approved by the user; these are inventory inputs, not automatic deletion or move targets
+- `ingestion.enabled`: whether setup includes existing browser or file bookmarks
+- `ingestion.sources`: approved source descriptors with a `browser` or `type`, a readable `label`, and a path only after it is discovered or supplied
+- `ingestion.deduplicate`: keep `true` unless the user explicitly requests a diagnostic import that retains duplicates
+- `ingestion.preserve_legacy_folders`: retain original browser/profile/folder provenance even when the new taxonomy differs
+- `ingestion.delete_sources`: must remain `false`; browser stores and exports are read-only migration inputs
 - `capture.depth`: `quick`, `standard`, or `deep`
 - `capture.personal_relevance`: `always`, `on-request`, or `never`
+- `context.mode`: `approved`, `conversation-only`, or `none`
+- `context.sources`: zero or more user-approved source descriptors; use a human-readable `label`, a scope such as `session`, `project`, `global`, or `custom`, and a path only when the user explicitly supplied or approved it
+- `context.store_excerpts`: must remain `false`; do not copy memory contents or conversation transcripts into configuration
 - category and tag slugs: lowercase letters, digits, and hyphens
 - paths: relative to the root; do not use `..`
 - `visualizer.enabled`: `true` or `false`

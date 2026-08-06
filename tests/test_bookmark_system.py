@@ -43,12 +43,29 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn("Research", index)
         self.assertIn("Example Research Tool", visualizer)
         self.assertIn('id="search"', visualizer)
+        self.assertIn("Why this survived", visualizer)
+        self.assertIn("Current session", visualizer)
+        self.assertIn("data:image/png;base64,", visualizer)
+        self.assertIn('id="graph-canvas"', visualizer)
+        self.assertIn("Relationship map", visualizer)
 
     def test_refuses_to_replace_unmarked_index(self):
         config = bookmark_system.load_config(self.root)
         (self.root / "index.md").write_text("Personal notes\n", encoding="utf-8")
         with self.assertRaises(bookmark_system.SystemError):
             bookmark_system.rebuild(self.root, config)
+
+    def test_ingestion_defaults_are_safe(self):
+        config = bookmark_system.load_config(self.root)
+        self.assertFalse(config["ingestion"]["enabled"])
+        self.assertTrue(config["ingestion"]["deduplicate"])
+        self.assertTrue(config["ingestion"]["preserve_legacy_folders"])
+        self.assertFalse(config["ingestion"]["delete_sources"])
+
+        config["ingestion"]["delete_sources"] = True
+        (self.root / ".bookmark-system" / "config.json").write_text(json.dumps(config), encoding="utf-8")
+        with self.assertRaises(bookmark_system.SystemError):
+            bookmark_system.load_config(self.root)
 
 
 if __name__ == "__main__":
