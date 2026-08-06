@@ -5,7 +5,8 @@
 ```text
 <root>/
 ├── .bookmark-system/
-│   └── config.json
+│   ├── config.json
+│   └── trash/                 # recoverable visualizer removals
 ├── index.md
 ├── bookmarks/
 ├── bookmark-assets/         # cached preview images
@@ -75,7 +76,8 @@ Write valid UTF-8 JSON. Required keys are shown below.
   },
   "visualizer": {
     "enabled": true,
-    "path": "visualizer/index.html"
+    "path": "visualizer/index.html",
+    "editing_enabled": true
   },
   "rich_media": {
     "enabled": true,
@@ -107,6 +109,7 @@ Write valid UTF-8 JSON. Required keys are shown below.
 - `paths.assets`: optional root-relative folder for locally cached Open Graph artwork
 - `visualizer.enabled`: `true` or `false`
 - `visualizer.path`: a relative `.html` path inside the root
+- `visualizer.editing_enabled`: allow the localhost-only workspace to edit tags, persistently filter bookmarks out, and move records to `.bookmark-system/trash/`; opening the generated HTML directly remains read-only
 - `rich_media.enabled`: extract preview media for new captures
 - `rich_media.cache_preview_images`: download Open Graph images into the bookmark root instead of hotlinking when possible
 - `rich_media.allow_remote_video_embeds`: load supported provider embeds automatically; when `false`, the visualizer requires a per-item click
@@ -114,6 +117,17 @@ Write valid UTF-8 JSON. Required keys are shown below.
 - `rich_media.stock_chart_provider`: `tradingview` or `none`; provider data may be live or delayed and requires internet access
 
 Unknown keys may be preserved for forward compatibility. Never put API keys, cookies, credentials, private tokens, or full conversation history in the configuration.
+
+## Editable workspace
+
+Markdown remains the canonical store. Do not create a CSV or SQLite shadow database for visualizer edits.
+
+Run `python3 scripts/bookmark_system.py serve <root>` to serve the visualizer on `127.0.0.1`. The server uses an in-memory request token, accepts mutations only from the served page, rewrites only approved frontmatter fields, and regenerates the index and visualizer after each change. It must not bind to a non-localhost interface.
+
+- Tag edits update the bookmark's `tags` list.
+- `Filter out` sets `visualizer_hidden: true`; the record remains in `bookmarks/`, the Markdown index, and the visualizer's recoverable filtered-out view.
+- `Move to trash` moves the Markdown file into `.bookmark-system/trash/` instead of permanently deleting it.
+- Direct `file://` use remains fully functional for browsing but exposes no write actions.
 
 ## Generated-file rule
 

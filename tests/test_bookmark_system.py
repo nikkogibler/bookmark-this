@@ -79,12 +79,17 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertEqual(payload["items"][0]["legacyFolders"], ["Bookmarks / Research"])
         self.assertEqual(payload["items"][0]["keywords"], ["evidence mapping", "research workflow"])
         self.assertEqual(payload["items"][0]["enrichmentStatus"], "verified")
+        self.assertEqual(payload["items"][0]["id"], "bookmarks/example.md")
+        self.assertFalse(payload["items"][0]["hidden"])
         template = (REPO_ROOT / "skills" / "bookmark-this" / "assets" / "visualizer-template.html").read_text(encoding="utf-8")
         self.assertIn("__BACKGROUND_IMAGE__", template)
         self.assertIn("let theme = 'monograph', mode = 'dark';", template)
         self.assertIn("theme = 'monograph'; if (!modes.has(mode)) mode = 'dark';", template)
         self.assertIn('"richMedia"', visualizer)
         self.assertIn("Load playable media", visualizer)
+        self.assertIn("__BOOKMARK_EDIT_TOKEN__", visualizer)
+        self.assertIn("Manage bookmark", visualizer)
+        self.assertIn("Filtered out 0", visualizer)
 
     def test_refuses_to_replace_unmarked_index(self):
         config = bookmark_system.load_config(self.root)
@@ -109,6 +114,42 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertTrue(config["rich_media"]["cache_preview_images"])
         self.assertFalse(config["rich_media"]["allow_remote_video_embeds"])
         self.assertFalse(config["rich_media"]["allow_remote_stock_charts"])
+        self.assertTrue(config["visualizer"]["editing_enabled"])
+
+    def test_visualizer_mutations_write_markdown_and_use_recoverable_trash(self):
+        config = bookmark_system.load_config(self.root)
+        bookmark_system.rebuild(self.root, config)
+        bookmark_system.visualize(self.root, config)
+        note = self.root / "bookmarks" / "example.md"
+
+        result = bookmark_system.mutate_bookmark(
+            self.root,
+            config,
+            {"action": "set-tags", "id": "bookmarks/example.md", "tags": ["Research Notes", "AI"]},
+        )
+        self.assertEqual(result["tags"], ["research-notes", "ai"])
+        self.assertEqual(bookmark_system.parse_frontmatter(note)["tags"], ["research-notes", "ai"])
+
+        bookmark_system.mutate_bookmark(self.root, config, {"action": "hide", "id": "bookmarks/example.md"})
+        self.assertTrue(bookmark_system.metadata_bool(bookmark_system.parse_frontmatter(note)["visualizer_hidden"]))
+        bookmark_system.mutate_bookmark(self.root, config, {"action": "restore", "id": "bookmarks/example.md"})
+        self.assertFalse(bookmark_system.metadata_bool(bookmark_system.parse_frontmatter(note)["visualizer_hidden"]))
+
+        result = bookmark_system.mutate_bookmark(self.root, config, {"action": "trash", "id": "bookmarks/example.md"})
+        self.assertFalse(note.exists())
+        self.assertTrue((self.root / result["trash"]).is_file())
+        self.assertNotIn("Example Research Tool", (self.root / "visualizer" / "index.html").read_text(encoding="utf-8"))
+
+    def test_visualizer_mutations_reject_paths_outside_bookmarks(self):
+        config = bookmark_system.load_config(self.root)
+        with self.assertRaises(bookmark_system.SystemError):
+            bookmark_system.mutate_bookmark(
+                self.root,
+                config,
+                {"action": "hide", "id": "../example.md"},
+            )
+        with self.assertRaises(bookmark_system.SystemError):
+            bookmark_system.serve(self.root, config, "0.0.0.0", 0)
 
     def test_extracts_open_graph_video_and_explicit_ticker(self):
         html = b'''<html><head>

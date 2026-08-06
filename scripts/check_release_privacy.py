@@ -15,6 +15,7 @@ TEXT_SUFFIXES = {
     ".html", ".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml",
 }
 ALLOWED_URL_HOSTS = {
+    "127.0.0.1",
     "code.claude.com",
     "developers.openai.com",
     "docs.openclaw.ai",
@@ -22,6 +23,7 @@ ALLOWED_URL_HOSTS = {
     "github.com",
     "hermes-agent.nousresearch.com",
     "i.ytimg.com",
+    "localhost",
     "player.vimeo.com",
     "s.tradingview.com",
     "www.instagram.com",

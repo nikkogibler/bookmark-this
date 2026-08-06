@@ -54,7 +54,8 @@
   },
   "visualizer": {
     "enabled": true,
-    "path": "visualizer/index.html"
+    "path": "visualizer/index.html",
+    "editing_enabled": true
   },
   "rich_media": {
     "enabled": true,

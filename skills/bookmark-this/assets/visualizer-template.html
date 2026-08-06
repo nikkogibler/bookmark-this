@@ -102,7 +102,7 @@
     .mode-switch { min-height: 38px; display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); }
     .mode-switch button { border: 0; background: transparent; color: var(--muted); cursor: pointer; font: 850 .65rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
     .mode-switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper-high); }
-    .toolbar { display: grid; grid-template-columns: minmax(260px,1fr) minmax(132px,auto) minmax(132px,auto) auto auto; align-items: end; gap: var(--space-md); padding: var(--space-xl) var(--space-2xl) var(--space-lg); }
+    .toolbar { display: grid; grid-template-columns: minmax(240px,1fr) minmax(128px,auto) minmax(128px,auto) auto auto auto; align-items: end; gap: var(--space-md); padding: var(--space-xl) var(--space-2xl) var(--space-lg); }
     .search-wrap { display: grid; gap: var(--space-sm); }
     .search-wrap label, .control-field label, .facet-controls label { font: 800 .7rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
     .search-wrap input { width: 100%; min-height: 48px; border: 0; border-bottom: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 0; padding: var(--space-sm) 0; font-size: 1.08rem; }
@@ -113,6 +113,7 @@
     .utility-button { min-height: 48px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper-high); color: var(--ink); padding: 0 var(--space-lg); cursor: pointer; font: 800 .74rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; transition: transform 180ms var(--ease-out), background 180ms var(--ease-out); }
     .utility-button:hover { background: var(--paper-low); transform: translateY(-2px); }
     .context-toggle[aria-pressed="true"] { background: var(--frame-soft); color: var(--paper-high); border-color: var(--frame-soft); }
+    .filtered-toggle[aria-pressed="true"] { background: var(--mauve); color: var(--on-signal); border-color: var(--mauve); }
     .dashboard { display: grid; grid-template-columns: 230px minmax(0,1fr) 320px; gap: var(--space-xl); padding: var(--space-lg) var(--space-2xl) var(--space-3xl); }
     .taxonomy { align-self: start; display: grid; gap: var(--space-2xl); position: sticky; top: var(--space-xl); }
     .section-kicker { margin: 0; font: 900 .7rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--mauve); }
@@ -205,6 +206,20 @@
     .inspector-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
     .inspector-actions a { min-height: 44px; display: grid; place-items: center; border: 1px solid var(--ink); text-decoration: none; font: 900 .7rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
     .inspector-actions a:first-child { background: var(--ink); color: var(--paper-high); }
+    .edit-panel { display: grid; gap: var(--space-md); padding-top: var(--space-lg); border-top: 2px solid var(--ink); }
+    .edit-panel header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); }
+    .edit-panel h3 { margin: 0; font: 900 .8rem/1 var(--display); letter-spacing: .1em; text-transform: uppercase; }
+    .workspace-state { color: var(--muted); font-size: .66rem; }
+    .workspace-state.live { color: var(--success); font-weight: 800; }
+    .tag-editor { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--space-sm); }
+    .tag-editor label { grid-column: 1 / -1; color: var(--muted); font: 800 .62rem/1 var(--display); letter-spacing: .1em; text-transform: uppercase; }
+    .tag-editor input { min-width: 0; min-height: 42px; border: 1px solid var(--line); background: var(--paper-high); color: var(--ink); padding: 0 var(--space-md); font: 650 .72rem/1 var(--body); }
+    .tag-editor button, .record-actions button { min-height: 42px; border: 1px solid var(--ink); background: transparent; color: var(--ink); padding: 0 var(--space-md); cursor: pointer; font: 850 .65rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
+    .tag-editor button { background: var(--ink); color: var(--paper-high); }
+    .record-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
+    .record-actions .danger-action { color: var(--mauve); border-color: var(--mauve); }
+    .edit-note { min-height: 1.2em; margin: 0; color: var(--muted); font-size: .68rem; }
+    .edit-note.error { color: var(--mauve); font-weight: 750; }
     .rich-media { width: 100%; aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden; background: var(--frame-soft); color: var(--on-signal); border: 1px solid var(--line); }
     .rich-media iframe, .rich-media video, .rich-media img { width: 100%; height: 100%; display: block; border: 0; object-fit: cover; }
     .remote-media-gate { width: 100%; height: 100%; display: grid; place-items: center; align-content: center; gap: var(--space-md); padding: var(--space-xl); text-align: center; }
@@ -287,6 +302,7 @@
         <div class="control-field"><label for="sort-by">Sort</label><select id="sort-by"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option><option value="domain">Domain A–Z</option><option value="source">Browser A–Z</option></select></div>
         <div class="control-field"><label for="group-by">Group</label><select id="group-by"><option value="none">No grouping</option><option value="year">Year</option><option value="month">Month</option><option value="category">Category</option><option value="tag">Primary tag</option><option value="source">Browser</option><option value="keyword">Primary keyword</option><option value="domain">Domain</option><option value="media">Media type</option><option value="status">Enrichment</option><option value="folder">Original folder</option><option value="context">Context source</option></select></div>
         <button class="utility-button context-toggle" id="context-toggle" type="button" aria-pressed="true">Context on</button>
+        <button class="utility-button filtered-toggle" id="filtered-toggle" type="button" aria-pressed="false">Filtered out 0</button>
         <button class="utility-button" id="clear" type="button">Reset view</button>
       </div>
       <main class="dashboard" id="library">
@@ -312,9 +328,11 @@
   <script id="bookmark-data" type="application/json">__BOOKMARK_PAYLOAD__</script>
   <script>
     const data = JSON.parse(document.getElementById('bookmark-data').textContent);
+    const EDIT_TOKEN = '__BOOKMARK_EDIT_TOKEN__';
+    const editingAvailable = location.protocol.startsWith('http') && !EDIT_TOKEN.startsWith('__BOOKMARK_');
     const FACET_KEYS = ['category','year','month','tag','source','keyword','domain','media','status','folder','context'];
-    const state = { query: '', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', theme: document.documentElement.dataset.theme || 'monograph', mode: document.documentElement.dataset.modePreference || 'dark', facetKind: 'category', facetQuery: '', sortBy: 'newest', groupBy: 'none', filters: Object.fromEntries(FACET_KEYS.map(key => [key,new Set()])) };
-    const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), filterSummary = document.getElementById('filter-summary'), facetKind = document.getElementById('facet-kind'), facetSearch = document.getElementById('facet-search'), sortBy = document.getElementById('sort-by'), groupBy = document.getElementById('group-by');
+    const state = { query: '', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', hiddenView: false, theme: document.documentElement.dataset.theme || 'monograph', mode: document.documentElement.dataset.modePreference || 'dark', facetKind: 'category', facetQuery: '', sortBy: 'newest', groupBy: 'none', filters: Object.fromEntries(FACET_KEYS.map(key => [key,new Set()])) };
+    const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), hiddenToggle = document.getElementById('filtered-toggle'), filterSummary = document.getElementById('filter-summary'), facetKind = document.getElementById('facet-kind'), facetSearch = document.getElementById('facet-search'), sortBy = document.getElementById('sort-by'), groupBy = document.getElementById('group-by');
     const collator = new Intl.Collator(undefined,{numeric:true,sensitivity:'base'});
     const signalColors = ['var(--mauve)','var(--blue)','var(--coral)','var(--violet)','var(--cyan)'];
     function node(name, className, text) { const el = document.createElement(name); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
@@ -345,7 +363,7 @@
     function anyLabel(kind) { return ({category:'All categories',year:'Any year',month:'Any month',tag:'Any tag',source:'Any browser',keyword:'Any keyword',domain:'Any domain',media:'Any media',status:'Any enrichment',folder:'Any original folder',context:'Any context'})[kind] || 'Everything'; }
     function searchMatches(item) { const q = state.query.trim().toLowerCase(); if (!q) return true; return [item.title,item.domain,item.summary,item.why,item.captured,item.enrichmentStatus,...(item.tags || []),...(item.categories || []),...(item.keywords || []),...(item.sourceProfiles || []),...(item.legacyFolders || []),...(item.contextBasis || [])].join(' ').toLowerCase().includes(q); }
     function matchesFilters(item, exceptKind = '') { return FACET_KEYS.every(kind => kind === exceptKind || state.filters[kind].size === 0 || valuesFor(item,kind).some(value => state.filters[kind].has(value))); }
-    function filteredItems() { return data.items.filter(item => searchMatches(item) && matchesFilters(item)); }
+    function filteredItems() { return data.items.filter(item => Boolean(item.hidden) === state.hiddenView && searchMatches(item) && matchesFilters(item)); }
     function sortedItems(items) {
       const copy = [...items];
       copy.sort((a,b) => {
@@ -359,7 +377,7 @@
     }
     function toggleFacet(kind, value) { const set = state.filters[kind]; set.has(value) ? set.delete(value) : set.add(value); render(); }
     function renderFilters() {
-      filters.replaceChildren(); const kind = state.facetKind, active = state.filters[kind], base = data.items.filter(item => searchMatches(item) && matchesFilters(item,kind)), counts = new Map();
+      filters.replaceChildren(); const kind = state.facetKind, active = state.filters[kind], base = data.items.filter(item => Boolean(item.hidden) === state.hiddenView && searchMatches(item) && matchesFilters(item,kind)), counts = new Map();
       base.forEach(item => valuesFor(item,kind).forEach(value => counts.set(value,(counts.get(value) || 0) + 1)));
       active.forEach(value => { if (!counts.has(value)) counts.set(value,0); });
       const q = state.facetQuery.trim().toLowerCase(); let entries = [...counts.entries()].filter(([value]) => !q || labelFor(kind,value).toLowerCase().includes(q));
@@ -409,11 +427,32 @@
       else { const gate = node('div','remote-media-gate'); gate.append(node('strong','',source.kind === 'stock' ? `Load ${item.ticker} chart` : 'Load playable media'),node('span','',source.kind === 'stock' ? 'Connects to TradingView. Market data may be live or provider-delayed.' : 'Connects to the video provider and may share your IP address and browser data.')); const button = node('button','',source.kind === 'stock' ? 'Load chart' : 'Load video'); button.type = 'button'; button.onclick = () => mountRemoteMedia(frame,item,source); gate.append(button); frame.append(gate); }
       return frame;
     }
+    async function mutateBookmark(item, action, extra, note) {
+      if (!editingAvailable) return;
+      note.className = 'edit-note'; note.textContent = 'Saving to Markdown…';
+      try {
+        const response = await fetch('/api/bookmarks',{method:'POST',headers:{'Content-Type':'application/json','X-Bookmark-Token':EDIT_TOKEN},body:JSON.stringify({action,id:item.id,...extra})});
+        const result = await response.json(); if (!response.ok || !result.ok) throw new Error(result.error || 'The change could not be saved.');
+        if (action === 'set-tags') item.tags = result.tags;
+        if (action === 'hide' || action === 'restore') item.hidden = result.hidden;
+        if (action === 'trash') data.items.splice(data.items.indexOf(item),1);
+        note.textContent = action === 'trash' ? 'Moved to recoverable trash.' : 'Saved to Markdown.';
+        if (action !== 'set-tags') state.selected = data.items.find(candidate => Boolean(candidate.hidden) === state.hiddenView)?.note || '';
+        render();
+      } catch (error) { note.className = 'edit-note error'; note.textContent = error.message || 'The change could not be saved.'; }
+    }
+    function renderEditor(item) {
+      const panel = node('section','edit-panel'), head = node('header'), status = node('span','workspace-state' + (editingAvailable ? ' live' : ''),editingAvailable ? 'Local workspace live' : 'Read-only preview'); head.append(node('h3','','Manage bookmark'),status); panel.append(head);
+      if (!editingAvailable) { panel.append(node('p','edit-note','Open this visualizer with the local workspace command to edit tags, filter records out, or move them to trash.')); return panel; }
+      const note = node('p','edit-note','Changes write back to the Markdown source of truth.');
+      const editor = node('div','tag-editor'), label = node('label','','Tags · comma separated'), input = node('input'); input.type = 'text'; input.value = (item.tags || []).join(', '); input.autocomplete = 'off'; input.setAttribute('aria-label','Bookmark tags'); const save = node('button','','Save tags'); save.type = 'button'; save.onclick = () => mutateBookmark(item,'set-tags',{tags:input.value.split(',').map(value => value.trim()).filter(Boolean)},note); editor.append(label,input,save); panel.append(editor);
+      const actions = node('div','record-actions'), visibility = node('button','',item.hidden ? 'Restore to library' : 'Filter out'); visibility.type = 'button'; visibility.onclick = () => mutateBookmark(item,item.hidden ? 'restore' : 'hide',{},note); const trash = node('button','danger-action','Move to trash'); trash.type = 'button'; let armed = false, timer = 0; trash.onclick = () => { if (!armed) { armed = true; trash.textContent = 'Confirm move'; note.textContent = 'Click again to move this Markdown file into recoverable trash.'; clearTimeout(timer); timer = setTimeout(() => { armed = false; trash.textContent = 'Move to trash'; note.textContent = 'Changes write back to the Markdown source of truth.'; },5000); return; } clearTimeout(timer); mutateBookmark(item,'trash',{},note); }; actions.append(visibility,trash); panel.append(actions,note); return panel;
+    }
     function renderInspector(item) {
       inspector.replaceChildren(); if (!item) { inspector.append(node('p','summary','Select a bookmark to inspect its details.')); return; }
       const signal = node('div','inspector-signal'), lights = node('div','signal-lights'); lights.append(node('i'),node('i'),node('i')); signal.append(node('span','',state.contextVisible ? 'Personal inference' : 'Bookmark detail'),lights); inspector.append(signal); const media = renderRichMedia(item); if (media) { inspector.append(media); if (item.mediaType === 'stock') inspector.append(node('p','media-note','Market data may be live or delayed according to the chart provider and exchange.')); } inspector.append(node('h2','',item.title),node('p','inspector-domain',item.domain + ' · ' + item.captured));
       const why = node('section','why-panel'); why.append(node('h3','',state.contextVisible ? 'Why this survived' : 'Context is hidden')); why.append(node('p','',state.contextVisible ? (item.why || 'No personal-relevance inference was recorded for this bookmark.') : 'Turn context on to reveal the explicitly labelled personal-relevance inference.'));
-      if (state.contextVisible && item.contextBasis.length) { const basis = node('div','basis'); item.contextBasis.forEach(label => basis.append(node('span','',label))); why.append(basis); } inspector.append(why); if (item.summary) inspector.append(node('p','summary',item.summary));
+      if (state.contextVisible && item.contextBasis.length) { const basis = node('div','basis'); item.contextBasis.forEach(label => basis.append(node('span','',label))); why.append(basis); } inspector.append(why); if (item.summary) inspector.append(node('p','summary',item.summary)); inspector.append(renderEditor(item));
       const details = [
         ['Captured',item.captured],['Categories',(item.categories || []).map(value => labelFor('category',value)).join(', ')],['Tags',(item.tags || []).join(', ')],['Keywords',(item.keywords || []).join(', ')],['Browser',(item.sourceProfiles || []).join(', ')],['Original folder',(item.legacyFolders || []).join(', ')],['Media',labelFor('media',item.mediaType)],['Enrichment',labelFor('status',item.enrichmentStatus)]
       ].filter(([,value]) => value);
@@ -430,9 +469,10 @@
       if (state.groupBy === 'none') { items.forEach((item,index) => grid.append(renderCard(item,index,index === 0))); return; }
       let ordinal = 0; groupEntries(items).forEach(([value,members]) => { const section = node('section','bookmark-group'), head = node('header','group-head'), groupGrid = node('div','group-grid'); head.append(node('h2','',labelFor(state.groupBy,value)),node('span','',`${members.length} bookmark${members.length === 1 ? '' : 's'}`)); members.forEach(item => { groupGrid.append(renderCard(item,ordinal,false)); ordinal += 1; }); section.append(head,groupGrid); grid.append(section); });
     }
-    function render() { const items = sortedItems(filteredItems()); renderCards(items); count.textContent = `${items.length} of ${data.items.length} saved signal${data.items.length === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; empty.hidden = items.length !== 0; renderFilters(); renderFilterSummary(); renderContextLedger(); const selected = items.find(item => item.note === state.selected) || items[0]; if (selected) state.selected = selected.note; renderInspector(selected); }
+    function render() { const items = sortedItems(filteredItems()), hiddenTotal = data.items.filter(item => item.hidden).length, visibleTotal = data.items.length - hiddenTotal; renderCards(items); count.textContent = state.hiddenView ? `${items.length} of ${hiddenTotal} filtered-out signal${hiddenTotal === 1 ? '' : 's'}` : `${items.length} of ${visibleTotal} saved signal${visibleTotal === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; hiddenToggle.textContent = state.hiddenView ? 'Back to saved' : `Filtered out ${hiddenTotal}`; hiddenToggle.setAttribute('aria-pressed',String(state.hiddenView)); document.getElementById('view-kicker').textContent = state.hiddenView ? 'Still recoverable' : 'What survived'; document.getElementById('view-title').textContent = state.hiddenView ? 'Filtered out' : 'Saved signals'; empty.hidden = items.length !== 0; empty.querySelector('h2').textContent = state.hiddenView ? 'Nothing is filtered out.' : 'Nothing matches yet.'; empty.querySelector('p').textContent = state.hiddenView ? 'Return to saved bookmarks or filter something out from its detail panel.' : 'Remove a filter, try another phrase, or reset the view.'; renderFilters(); renderFilterSummary(); renderContextLedger(); const selected = items.find(item => item.note === state.selected) || items[0]; state.selected = selected?.note || ''; renderInspector(selected); }
     document.getElementById('search').addEventListener('input', event => { state.query = event.target.value; render(); });
     document.getElementById('clear').onclick = () => { state.query = ''; state.facetQuery = ''; state.sortBy = 'newest'; state.groupBy = 'none'; FACET_KEYS.forEach(key => state.filters[key].clear()); document.getElementById('search').value = ''; facetSearch.value = ''; sortBy.value = 'newest'; groupBy.value = 'none'; render(); };
+    hiddenToggle.onclick = () => { state.hiddenView = !state.hiddenView; state.selected = data.items.find(item => Boolean(item.hidden) === state.hiddenView)?.note || ''; render(); };
     toggle.onclick = () => { if (data.contextMode === 'none') return; state.contextVisible = !state.contextVisible; render(); };
     facetKind.onchange = () => { state.facetKind = facetKind.value; state.facetQuery = ''; facetSearch.value = ''; renderFilters(); };
     facetSearch.addEventListener('input', event => { state.facetQuery = event.target.value; renderFilters(); });

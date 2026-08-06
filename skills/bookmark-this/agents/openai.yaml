@@ -1,4 +1,4 @@
 interface:
   display_name: "Bookmark This"
-  short_description: "Build and import your Markdown bookmark library"
-  default_prompt: "Use $bookmark-this to set up my bookmark system and offer to round up my existing browser bookmarks."
+  short_description: "Build, import, and manage Markdown bookmarks"
+  default_prompt: "Use $bookmark-this to set up or manage my editable Markdown bookmark library."

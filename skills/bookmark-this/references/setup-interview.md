@@ -8,9 +8,9 @@ Ask:
 
 1. Which agentic platform should this work with: Codex, Claude, Hermes, OpenClaw, another platform, or no preference?
 2. Should setup round up existing bookmarks from their browsers and bookmark folders? Offer Chrome, Safari, Firefox, Edge, Brave, an exported bookmarks HTML file, named folders, `all available sources`, or `not now`. Let them say `I don't know` so the agent can locate likely sources with read-only checks.
-3. Do they want a simple local bookmark visualizer generated now, available later, or disabled?
+3. Do they want a local bookmark visualizer generated now, available later, or disabled? If enabled, should it be browse-only or also allow localhost-only tag editing, persistent filtering, and recoverable removal?
 
-Explain the practical effect in one sentence: the platform choice shapes installation and prompt examples; browser roundup consolidates existing saves into the Markdown source of truth; the optional visualizer adds searchable, filterable cards without replacing the Markdown files.
+Explain the practical effect in one sentence: the platform choice shapes installation and prompt examples; browser roundup consolidates existing saves into the Markdown source of truth; the optional visualizer adds searchable, filterable cards and can run as a localhost-only editing workspace without replacing the Markdown files.
 
 ## Round 1A: browser and folder sources
 
@@ -94,6 +94,7 @@ Confirm the timezone when capture dates could differ from the system timezone.
 - Manual `collections/`
 - Record the current agentic platform without coupling the data to it
 - Visualizer available later but not generated unless requested
+- Local visualizer editing enabled when the user asks for the visualizer; direct HTML use remains read-only
 - Cache Open Graph preview images when the visualizer is enabled
 - Ask before loading remote video players or market charts
 - Standard capture depth

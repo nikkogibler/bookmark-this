@@ -16,7 +16,7 @@ When you ask the skill to set up your bookmark system, it starts with:
 
 1. Which agentic platform do you use?
 2. Should I round up bookmarks from Chrome, Safari, Firefox, Edge, Brave, exported HTML, or folders you name?
-3. Do you want the local bookmark visualizer now, later, or disabled?
+3. Do you want the local bookmark visualizer now, later, or disabled—and should it be browse-only or editable?
 
 You can answer `all available sources`, name specific browsers or profiles, say `not now`, or say `I don't know`. The agent will locate standard bookmark stores with read-only checks, show an inventory, and ask which sources are in scope before importing anything. If an operating system blocks access, it will offer the browser's native bookmark export instead of reaching into unrelated browser data.
 
@@ -58,6 +58,7 @@ The visualizer is a single local HTML file. It provides:
 - faceted filtering by category, year, month, tag, source browser, keyword, domain, media type, enrichment status, original folder, and approved context source
 - sorting by date, title, domain, or source browser
 - optional grouping by date, category, primary tag, browser, keyword, domain, media type, enrichment status, original folder, or approved context source
+- localhost-only tag editing, persistent `Filter out` controls, restoration, and recoverable removal when editable mode is enabled
 - readable bookmark cards
 - links to the original source and the local Markdown note
 - an optional `Why this survived` view grounded in user-approved context
@@ -68,9 +69,9 @@ The visualizer is a single local HTML file. It provides:
 - playable YouTube, Vimeo, supported Instagram, and direct-video previews when the provider permits embedding
 - opt-in TradingView charts for explicit ticker symbols; market data may be live or provider-delayed
 - a generated editorial background image instead of a flat page color
-- no server, account, analytics, or database; remote players and charts are never required for the Markdown library
+- no account, analytics, or database; the optional editing workspace uses Python's localhost-only server and Markdown remains canonical
 
-The Markdown library remains the source of truth. The visualizer can be regenerated at any time.
+The Markdown library remains the source of truth. Opening `visualizer/index.html` directly is private and read-only. Run `python3 skills/bookmark-this/scripts/bookmark_system.py serve <your-library>` for the editable workspace; tag changes write to frontmatter, filtered bookmarks remain recoverable, and removals move to `.bookmark-system/trash/` rather than being permanently erased.
 
 Remote video players and market charts contact third-party providers and require internet access. Setup asks whether to load them automatically, ask before each load, or disable them. Publisher restrictions can prevent playback, especially on news and social platforms; the cached preview image and original link remain available as the fallback.
 
@@ -201,6 +202,7 @@ The skill strips sensitive tokens and common tracking parameters rather than pre
 - Personal-relevance reasoning is optional and always labelled as inference.
 - Secrets, cookies, credentials, and sensitive URL parameters must not be stored.
 - The visualizer is local and dependency-free.
+- Editable mode binds only to localhost and uses an in-memory request token; direct HTML viewing remains read-only.
 - Bookmarking does not mutate task managers, CRMs, or other external systems.
 
 ## Repository Layout
