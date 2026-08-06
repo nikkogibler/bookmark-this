@@ -132,9 +132,11 @@
     .bookmark-layout.grouped { grid-template-columns: 1fr; gap: var(--space-2xl); }
     .bookmark-layout.table-mode { grid-template-columns: 1fr; }
     .dashboard.table-view { grid-template-columns: 210px minmax(0,1fr); }
-    .dashboard.table-view .inspector { grid-column: 2; position: static; grid-template-columns: minmax(0,1fr) minmax(280px,.72fr); }
-    .dashboard.table-view .inspector .why-panel, .dashboard.table-view .inspector .inspector-actions { grid-column: 2; }
-    .dashboard.table-view .inspector .inspector-signal, .dashboard.table-view .inspector h2, .dashboard.table-view .inspector .inspector-domain { grid-column: 1; }
+    .dashboard.table-view .inspector { display: none; }
+    .dashboard.table-view .inspector.is-open { width: min(560px,calc(100vw - 48px)); max-height: calc(100vh - 48px); display: grid; grid-template-columns: 1fr; align-content: start; position: fixed; z-index: 810; top: 24px; right: 24px; overflow-y: auto; }
+    .inspector-backdrop { position: fixed; z-index: 800; inset: 0; background: oklch(5% .014 75 / .74); }
+    :root[data-mode="light"] .inspector-backdrop { background: oklch(18% .025 250 / .45); }
+    body.inspector-modal-open { overflow: hidden; }
     .bookmark-group { display: grid; gap: var(--space-md); }
     .bookmark-group[open] { padding-bottom: var(--space-lg); }
     .group-head { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: baseline; gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--line); cursor: pointer; list-style: none; }
@@ -205,6 +207,9 @@
     .inspector { align-self: start; position: sticky; top: var(--space-xl); display: grid; gap: var(--space-xl); background: var(--paper-low); border: 1px solid var(--line); border-radius: 4px; padding: var(--space-xl); box-shadow: var(--shadow-module); }
     .inspector-signal { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
     .inspector-signal span { font: 900 .68rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--mauve); }
+    .inspector-signal-controls { display: flex; align-items: center; gap: var(--space-md); }
+    .inspector-close { display: none; min-height: 32px; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 0 var(--space-md); cursor: pointer; font: 850 .65rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; }
+    .dashboard.table-view .inspector.is-open .inspector-close { display: inline-flex; align-items: center; }
     .signal-lights { display: flex; gap: 5px; }
     .signal-lights i { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
     .signal-lights i:nth-child(2) { background: var(--cyan); }
@@ -317,7 +322,7 @@
       </div>
       <main class="dashboard" id="library">
         <aside class="taxonomy">
-          <div class="taxonomy-title"><p class="section-kicker">Index</p><h2>Ways in</h2></div>
+          <div class="taxonomy-title"><p class="section-kicker">Index</p><h2>Find Your Stuff</h2></div>
           <div class="facet-controls"><label for="facet-kind">Navigate by</label><select id="facet-kind"><option value="category">Categories</option><option value="year">Year</option><option value="month">Month</option><option value="tag">Tags</option><option value="source">Browser</option><option value="keyword">Keywords</option><option value="domain">Domain</option><option value="media">Media type</option><option value="status">Enrichment</option><option value="folder">Original folder</option><option value="context">Context source</option></select><label for="facet-search">Find within index</label><input id="facet-search" type="search" autocomplete="off" placeholder="Filter this list"></div>
           <nav class="category-list" id="filters" aria-label="Bookmark facets"></nav>
           <section class="context-ledger" id="context-ledger" aria-label="Approved context">
@@ -331,6 +336,7 @@
           <section class="bookmark-layout" id="grid" aria-live="polite"></section>
           <div class="empty" id="empty" hidden><h2>Nothing matches yet.</h2><p>Remove a filter, try another phrase, or reset the view.</p></div>
         </section>
+        <div class="inspector-backdrop" id="inspector-backdrop" hidden></div>
         <aside class="inspector" id="inspector" aria-live="polite"></aside>
       </main>
     </section>
@@ -343,8 +349,9 @@
     const FACET_KEYS = ['category','year','month','tag','source','keyword','domain','media','status','folder','context'];
     const VIEW_MODES = new Set(['cards','table']);
     let savedViewMode = 'cards'; try { const storedView = localStorage.getItem('bookmark-this-view'); if (VIEW_MODES.has(storedView)) savedViewMode = storedView; } catch (_) {}
-    const state = { query: '', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', hiddenView: false, mode: document.documentElement.dataset.mode || 'dark', viewMode: savedViewMode, facetKind: 'category', facetQuery: '', sortBy: 'newest', groupBy: 'none', filters: Object.fromEntries(FACET_KEYS.map(key => [key,new Set()])) };
-    const grid = document.getElementById('grid'), dashboard = document.getElementById('library'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), hiddenToggle = document.getElementById('filtered-toggle'), filterSummary = document.getElementById('filter-summary'), facetKind = document.getElementById('facet-kind'), facetSearch = document.getElementById('facet-search'), sortBy = document.getElementById('sort-by'), groupBy = document.getElementById('group-by'), viewSwitch = document.getElementById('view-switch');
+    const state = { query: '', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', hiddenView: false, mode: document.documentElement.dataset.mode || 'dark', viewMode: savedViewMode, inspectorOpen: false, facetKind: 'category', facetQuery: '', sortBy: 'newest', groupBy: 'none', filters: Object.fromEntries(FACET_KEYS.map(key => [key,new Set()])) };
+    const grid = document.getElementById('grid'), dashboard = document.getElementById('library'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), inspectorBackdrop = document.getElementById('inspector-backdrop'), toggle = document.getElementById('context-toggle'), hiddenToggle = document.getElementById('filtered-toggle'), filterSummary = document.getElementById('filter-summary'), facetKind = document.getElementById('facet-kind'), facetSearch = document.getElementById('facet-search'), sortBy = document.getElementById('sort-by'), groupBy = document.getElementById('group-by'), viewSwitch = document.getElementById('view-switch');
+    let lastInspectorTrigger = null;
     const collator = new Intl.Collator(undefined,{numeric:true,sensitivity:'base'});
     const signalColors = ['var(--mauve)','var(--blue)','var(--coral)','var(--violet)','var(--cyan)'];
     function node(name, className, text) { const el = document.createElement(name); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
@@ -416,8 +423,14 @@
       const tags = node('div','tag-row'); item.tags.slice(0,4).forEach(tag => { const tagButton = node('button','tag',tag); tagButton.type = 'button'; tagButton.onclick = () => { state.facetKind = 'tag'; facetKind.value = 'tag'; state.filters.tag.add(tag); render(); }; tags.append(tagButton); }); body.append(tags);
       const footer = node('footer','card-footer'); footer.append(link('Open source',item.url),link('Read note',item.note)); const detail = node('button','detail-trigger',state.contextVisible ? 'Inspect why' : 'Inspect bookmark'); detail.type = 'button'; detail.onclick = () => { state.selected = item.note; renderInspector(item); }; footer.append(detail); card.append(art,body,footer); return card;
     }
-    function inspectItem(item) {
-      state.selected = item.note; renderInspector(item);
+    function setInspectorOpen(open, restoreFocus = false) {
+      state.inspectorOpen = Boolean(open && state.viewMode === 'table');
+      inspector.classList.toggle('is-open',state.inspectorOpen); inspectorBackdrop.hidden = !state.inspectorOpen; document.body.classList.toggle('inspector-modal-open',state.inspectorOpen);
+      if (state.inspectorOpen) { inspector.setAttribute('role','dialog'); inspector.setAttribute('aria-modal','true'); inspector.setAttribute('aria-labelledby','inspector-title'); requestAnimationFrame(() => inspector.querySelector('.inspector-close')?.focus()); }
+      else { inspector.removeAttribute('role'); inspector.removeAttribute('aria-modal'); inspector.removeAttribute('aria-labelledby'); if (restoreFocus) lastInspectorTrigger?.focus(); }
+    }
+    function inspectItem(item, trigger = null) {
+      state.selected = item.note; lastInspectorTrigger = trigger; renderInspector(item); setInspectorOpen(true);
       grid.querySelectorAll('.bookmark-table tbody tr').forEach(row => row.setAttribute('aria-selected',String(row.dataset.note === item.note)));
     }
     function tableCell(text, className = '') { return node('td',className,text || '—'); }
@@ -427,11 +440,11 @@
       ['Bookmark','Domain','Categories','Tags','Browser','Captured','Media','Status','Actions'].forEach(label => headRow.append(node('th','',label))); head.append(headRow);
       items.forEach(item => {
         const row = node('tr'); row.tabIndex = 0; row.dataset.note = item.note; row.setAttribute('aria-selected',String(item.note === state.selected)); row.setAttribute('aria-label',`Inspect ${item.title}`);
-        row.onclick = () => inspectItem(item); row.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); inspectItem(item); } };
+        row.onclick = event => inspectItem(item,event.currentTarget); row.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); inspectItem(item,event.currentTarget); } };
         const bookmark = node('td'), identity = node('div','table-bookmark'); identity.append(node('strong','',item.title),node('span','',item.summary || item.url)); bookmark.append(identity);
         const categories = (item.categories || []).map(value => labelFor('category',value)).join(', '), tags = (item.tags || []).join(', '), browsers = (item.sourceProfiles || []).join(', '), media = labelFor('media',item.mediaType || 'none'), status = labelFor('status',item.enrichmentStatus || 'unspecified');
         const statusCell = node('td'), statusLabel = node('span','table-status',status); statusCell.append(statusLabel);
-        const actions = node('td','table-actions'), source = link('Source',item.url), detail = node('button','','Inspect'); detail.type = 'button'; source.onclick = event => event.stopPropagation(); detail.onclick = event => { event.stopPropagation(); inspectItem(item); }; actions.append(source,detail);
+        const actions = node('td','table-actions'), source = link('Source',item.url), detail = node('button','','Inspect'); detail.type = 'button'; source.onclick = event => event.stopPropagation(); detail.onclick = event => { event.stopPropagation(); inspectItem(item,detail); }; actions.append(source,detail);
         row.append(bookmark,tableCell(item.domain),tableCell(categories,'table-list'),tableCell(tags,'table-list'),tableCell(browsers),tableCell(item.captured),tableCell(media),statusCell,actions); body.append(row);
       });
       table.append(columns,head,body); shell.append(table); return shell;
@@ -479,7 +492,7 @@
     }
     function renderInspector(item) {
       inspector.replaceChildren(); if (!item) { inspector.append(node('p','summary','Select a bookmark to inspect its details.')); return; }
-      const signal = node('div','inspector-signal'), lights = node('div','signal-lights'); lights.append(node('i'),node('i'),node('i')); signal.append(node('span','',state.contextVisible ? 'Personal inference' : 'Bookmark detail'),lights); inspector.append(signal); const media = renderRichMedia(item); if (media) { inspector.append(media); if (item.mediaType === 'stock') inspector.append(node('p','media-note','Market data may be live or delayed according to the chart provider and exchange.')); } inspector.append(node('h2','',item.title),node('p','inspector-domain',item.domain + ' · ' + item.captured));
+      const signal = node('div','inspector-signal'), controls = node('div','inspector-signal-controls'), lights = node('div','signal-lights'), close = node('button','inspector-close','Close'); close.type = 'button'; close.setAttribute('aria-label','Close bookmark details'); close.onclick = () => setInspectorOpen(false,true); lights.append(node('i'),node('i'),node('i')); controls.append(lights,close); signal.append(node('span','',state.contextVisible ? 'Personal inference' : 'Bookmark detail'),controls); inspector.append(signal); const media = renderRichMedia(item); if (media) { inspector.append(media); if (item.mediaType === 'stock') inspector.append(node('p','media-note','Market data may be live or delayed according to the chart provider and exchange.')); } const title = node('h2','',item.title); title.id = 'inspector-title'; inspector.append(title,node('p','inspector-domain',item.domain + ' · ' + item.captured));
       const why = node('section','why-panel'); why.append(node('h3','',state.contextVisible ? 'Why this survived' : 'Context is hidden')); why.append(node('p','',state.contextVisible ? (item.why || 'No personal-relevance inference was recorded for this bookmark.') : 'Turn context on to reveal the explicitly labelled personal-relevance inference.'));
       if (state.contextVisible && item.contextBasis.length) { const basis = node('div','basis'); item.contextBasis.forEach(label => basis.append(node('span','',label))); why.append(basis); } inspector.append(why); if (item.summary) inspector.append(node('p','summary',item.summary)); inspector.append(renderEditor(item));
       const details = [
@@ -499,7 +512,7 @@
       if (state.groupBy === 'none') { if (state.viewMode === 'table') grid.append(renderTable(items)); else items.forEach((item,index) => grid.append(renderCard(item,index,index === 0))); return; }
       let ordinal = 0; groupEntries(items).forEach(([value,members]) => { const section = node('details','bookmark-group'), head = node('summary','group-head'), groupGrid = node('div','group-grid' + (state.viewMode === 'table' ? ' table-group' : '')); head.append(node('h2','',labelFor(state.groupBy,value)),node('span','',`${members.length} bookmark${members.length === 1 ? '' : 's'}`)); if (state.viewMode === 'table') groupGrid.append(renderTable(members)); else members.forEach(item => { groupGrid.append(renderCard(item,ordinal,false)); ordinal += 1; }); section.append(head,groupGrid); grid.append(section); });
     }
-    function render() { const items = sortedItems(filteredItems()), hiddenTotal = data.items.filter(item => item.hidden).length, visibleTotal = data.items.length - hiddenTotal; const selected = items.find(item => item.note === state.selected) || items[0]; state.selected = selected?.note || ''; renderItems(items); count.textContent = state.hiddenView ? `${items.length} of ${hiddenTotal} filtered-out signal${hiddenTotal === 1 ? '' : 's'}` : `${items.length} of ${visibleTotal} saved signal${visibleTotal === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; hiddenToggle.textContent = state.hiddenView ? 'Back to saved' : `Filtered out ${hiddenTotal}`; hiddenToggle.setAttribute('aria-pressed',String(state.hiddenView)); document.getElementById('view-kicker').textContent = state.hiddenView ? 'Still recoverable' : 'What survived'; document.getElementById('view-title').textContent = state.hiddenView ? 'Filtered out' : 'The Goods'; empty.hidden = items.length !== 0; empty.querySelector('h2').textContent = state.hiddenView ? 'Nothing is filtered out.' : 'Nothing matches yet.'; empty.querySelector('p').textContent = state.hiddenView ? 'Return to saved bookmarks or filter something out from its detail panel.' : 'Remove a filter, try another phrase, or reset the view.'; renderFilters(); renderFilterSummary(); renderContextLedger(); renderInspector(selected); }
+    function render() { const items = sortedItems(filteredItems()), hiddenTotal = data.items.filter(item => item.hidden).length, visibleTotal = data.items.length - hiddenTotal; const selected = items.find(item => item.note === state.selected) || items[0]; state.selected = selected?.note || ''; if (!selected) state.inspectorOpen = false; renderItems(items); count.textContent = state.hiddenView ? `${items.length} of ${hiddenTotal} filtered-out signal${hiddenTotal === 1 ? '' : 's'}` : `${items.length} of ${visibleTotal} saved signal${visibleTotal === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; hiddenToggle.textContent = state.hiddenView ? 'Back to saved' : `Filtered out ${hiddenTotal}`; hiddenToggle.setAttribute('aria-pressed',String(state.hiddenView)); document.getElementById('view-kicker').textContent = state.hiddenView ? 'Still recoverable' : 'What survived'; document.getElementById('view-title').textContent = state.hiddenView ? 'Filtered out' : 'The Goods'; empty.hidden = items.length !== 0; empty.querySelector('h2').textContent = state.hiddenView ? 'Nothing is filtered out.' : 'Nothing matches yet.'; empty.querySelector('p').textContent = state.hiddenView ? 'Return to saved bookmarks or filter something out from its detail panel.' : 'Remove a filter, try another phrase, or reset the view.'; renderFilters(); renderFilterSummary(); renderContextLedger(); renderInspector(selected); setInspectorOpen(state.inspectorOpen); }
     document.getElementById('search').addEventListener('input', event => { state.query = event.target.value; render(); });
     document.getElementById('clear').onclick = () => { state.query = ''; state.facetQuery = ''; state.sortBy = 'newest'; state.groupBy = 'none'; FACET_KEYS.forEach(key => state.filters[key].clear()); document.getElementById('search').value = ''; facetSearch.value = ''; sortBy.value = 'newest'; groupBy.value = 'none'; render(); };
     hiddenToggle.onclick = () => { state.hiddenView = !state.hiddenView; state.selected = data.items.find(item => Boolean(item.hidden) === state.hiddenView)?.note || ''; render(); };
@@ -508,7 +521,9 @@
     facetSearch.addEventListener('input', event => { state.facetQuery = event.target.value; renderFilters(); });
     sortBy.onchange = () => { state.sortBy = sortBy.value; render(); };
     groupBy.onchange = () => { state.groupBy = groupBy.value; render(); };
-    viewSwitch.onclick = event => { const button = event.target.closest('[data-view-mode]'); if (!button || !VIEW_MODES.has(button.dataset.viewMode)) return; state.viewMode = button.dataset.viewMode; try { localStorage.setItem('bookmark-this-view',state.viewMode); } catch (_) {} render(); };
+    viewSwitch.onclick = event => { const button = event.target.closest('[data-view-mode]'); if (!button || !VIEW_MODES.has(button.dataset.viewMode)) return; state.viewMode = button.dataset.viewMode; state.inspectorOpen = false; try { localStorage.setItem('bookmark-this-view',state.viewMode); } catch (_) {} render(); };
+    inspectorBackdrop.onclick = () => setInspectorOpen(false,true);
+    document.addEventListener('keydown',event => { if (event.key === 'Escape' && state.inspectorOpen) setInspectorOpen(false,true); });
     document.getElementById('mode-toggle').onclick = () => applyMode(state.mode === 'dark' ? 'light' : 'dark');
     if (data.contextMode === 'none') { toggle.disabled = true; toggle.textContent = 'No context'; toggle.setAttribute('aria-pressed','false'); }
     renderModeToggle(); render();
