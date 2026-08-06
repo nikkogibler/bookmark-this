@@ -48,6 +48,12 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn("data:image/png;base64,", visualizer)
         self.assertIn('id="graph-canvas"', visualizer)
         self.assertIn("Relationship map", visualizer)
+        self.assertIn('data-theme-choice="archive"', visualizer)
+        self.assertIn('data-theme-choice="grove"', visualizer)
+        self.assertIn('data-theme-choice="signal"', visualizer)
+        self.assertIn('data-theme-choice="monograph"', visualizer)
+        self.assertIn('data-mode-choice="dark"', visualizer)
+        self.assertIn("bookmark-this-theme", visualizer)
 
     def test_refuses_to_replace_unmarked_index(self):
         config = bookmark_system.load_config(self.root)

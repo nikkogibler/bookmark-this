@@ -61,6 +61,8 @@ The visualizer is a single local HTML file. It provides:
 - an optional `Why this survived` view grounded in user-approved context
 - visible context-source labels and a control to hide personal inference
 - an interactive 3D relationship map linking bookmarks to category hubs and shared tags
+- four visual themes—Archive, Grove, Signal, and Monograph—each with Auto, Light, and Dark modes
+- locally remembered appearance preferences with no account or tracking
 - no server, account, analytics, database, or external JavaScript
 
 The Markdown library remains the source of truth. The visualizer can be regenerated at any time.

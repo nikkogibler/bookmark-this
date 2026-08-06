@@ -3,8 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <title>Bookmark This — personal evidence desk</title>
+  <script>
+    (() => {
+      const themes = new Set(['archive','grove','signal','monograph']);
+      const modes = new Set(['auto','light','dark']);
+      let theme = 'archive', mode = 'auto';
+      try { theme = localStorage.getItem('bookmark-this-theme') || theme; mode = localStorage.getItem('bookmark-this-mode') || mode; } catch (_) {}
+      if (!themes.has(theme)) theme = 'archive'; if (!modes.has(mode)) mode = 'auto';
+      const resolved = mode === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : mode === 'auto' ? 'light' : mode;
+      document.documentElement.dataset.theme = theme; document.documentElement.dataset.mode = resolved; document.documentElement.dataset.modePreference = mode;
+    })();
+  </script>
   <style>
     :root {
       color-scheme: light;
@@ -13,12 +24,37 @@
       --ink: oklch(28% .025 33); --muted: oklch(49% .024 36); --line: oklch(81% .028 73);
       --mauve: oklch(57% .065 28); --coral: oklch(72% .13 44); --sand: oklch(82% .082 75);
       --blue: oklch(59% .19 257); --cyan: oklch(72% .13 205); --violet: oklch(57% .21 292); --success: oklch(55% .12 155);
+      --on-signal: oklch(97% .012 78); --shell-border: oklch(39% .03 285); --rail-border: oklch(72% .05 285); --rail-rule: oklch(54% .03 285); --rail-copy: oklch(78% .03 285); --placeholder: oklch(57% .025 36);
+      --graph-center: oklch(35% .04 285); --graph-grid: oklch(74% .03 285 / .06); --graph-copy: oklch(86% .02 285); --graph-border: oklch(48% .03 285); --graph-edge: oklch(86% .03 285 / .24); --graph-tag-edge: oklch(72% .13 205 / .32); --graph-label-bg: oklch(24% .027 285 / .88); --graph-label: oklch(94% .018 78); --node-stroke: oklch(96% .02 78);
+      --graph-hub-1: oklch(72% .13 44); --graph-hub-2: oklch(59% .19 257); --graph-hub-3: oklch(72% .13 205); --graph-hub-4: oklch(57% .21 292); --graph-hub-5: oklch(67% .09 28);
+      --graph-leaf-1: oklch(88% .07 67); --graph-leaf-2: oklch(82% .10 252); --graph-leaf-3: oklch(84% .08 201); --graph-leaf-4: oklch(80% .10 292); --graph-leaf-5: oklch(84% .06 30);
       --space-xs: 4px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px; --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px;
       --display: "Avenir Next Condensed", "Franklin Gothic Condensed", sans-serif;
       --body: "Avenir Next", "Century Gothic", sans-serif;
       --ease-out: cubic-bezier(.16,1,.3,1);
       --shadow-shell: 0 32px 80px oklch(9% .025 285 / .38);
       --shadow-module: 0 10px 24px oklch(25% .025 35 / .13);
+    }
+    :root[data-theme="archive"][data-mode="dark"] {
+      color-scheme: dark; --frame: oklch(11% .025 285); --frame-soft: oklch(17% .028 285); --paper: oklch(20% .018 55); --paper-high: oklch(25% .017 55); --paper-low: oklch(16% .02 55); --ink: oklch(91% .018 78); --muted: oklch(70% .025 72); --line: oklch(36% .025 62); --mauve: oklch(70% .09 30); --coral: oklch(76% .14 44); --sand: oklch(50% .07 75); --blue: oklch(72% .16 255); --cyan: oklch(78% .12 205); --violet: oklch(72% .16 294); --success: oklch(70% .12 155); --on-signal: oklch(96% .012 78); --shell-border: oklch(31% .035 285); --rail-border: oklch(55% .05 285); --rail-rule: oklch(39% .035 285); --rail-copy: oklch(72% .03 285); --placeholder: oklch(58% .025 72); --graph-center: oklch(26% .045 285); --graph-grid: oklch(76% .03 285 / .07); --graph-copy: oklch(82% .025 285); --graph-border: oklch(40% .03 285); --graph-edge: oklch(86% .03 285 / .25); --graph-label-bg: oklch(12% .025 285 / .9); --graph-label: oklch(94% .018 78); --shadow-shell: 0 32px 90px oklch(5% .02 285 / .62); --shadow-module: 0 12px 28px oklch(7% .015 285 / .32);
+    }
+    :root[data-theme="grove"] {
+      --frame: oklch(24% .035 145); --frame-soft: oklch(31% .04 145); --paper: oklch(95% .018 105); --paper-high: oklch(98% .01 105); --paper-low: oklch(89% .03 108); --ink: oklch(25% .035 145); --muted: oklch(48% .035 135); --line: oklch(80% .035 110); --mauve: oklch(55% .10 148); --coral: oklch(70% .14 48); --sand: oklch(83% .09 95); --blue: oklch(55% .13 215); --cyan: oklch(70% .12 175); --violet: oklch(55% .12 330); --success: oklch(52% .14 150); --on-signal: oklch(97% .012 105); --shell-border: oklch(39% .045 145); --rail-border: oklch(69% .07 145); --rail-rule: oklch(51% .05 145); --rail-copy: oklch(79% .04 120); --placeholder: oklch(57% .03 135); --graph-center: oklch(38% .055 145); --graph-grid: oklch(78% .04 145 / .07); --graph-copy: oklch(88% .025 110); --graph-border: oklch(49% .05 145); --graph-edge: oklch(88% .04 130 / .25); --graph-tag-edge: oklch(73% .12 175 / .34); --graph-label-bg: oklch(20% .035 145 / .9); --graph-label: oklch(95% .018 105); --graph-hub-1: oklch(70% .14 48); --graph-hub-2: oklch(58% .13 150); --graph-hub-3: oklch(70% .12 175); --graph-hub-4: oklch(60% .12 330); --graph-hub-5: oklch(72% .10 95); --graph-leaf-1: oklch(87% .08 75); --graph-leaf-2: oklch(83% .10 145); --graph-leaf-3: oklch(85% .08 175); --graph-leaf-4: oklch(83% .08 330); --graph-leaf-5: oklch(88% .07 100);
+    }
+    :root[data-theme="grove"][data-mode="dark"] {
+      color-scheme: dark; --frame: oklch(10% .025 150); --frame-soft: oklch(17% .035 150); --paper: oklch(20% .025 135); --paper-high: oklch(25% .025 135); --paper-low: oklch(16% .026 135); --ink: oklch(91% .025 105); --muted: oklch(69% .035 110); --line: oklch(36% .035 135); --mauve: oklch(72% .12 148); --coral: oklch(76% .14 48); --sand: oklch(49% .08 95); --blue: oklch(72% .12 215); --cyan: oklch(76% .12 175); --violet: oklch(72% .12 330); --success: oklch(70% .13 150); --on-signal: oklch(96% .014 105); --shell-border: oklch(31% .04 150); --rail-border: oklch(53% .06 150); --rail-rule: oklch(38% .05 150); --rail-copy: oklch(72% .035 120); --placeholder: oklch(58% .03 110); --graph-center: oklch(26% .05 150); --graph-grid: oklch(78% .04 150 / .07); --graph-copy: oklch(84% .025 110); --graph-border: oklch(40% .045 150); --graph-edge: oklch(87% .04 130 / .25); --graph-label-bg: oklch(11% .025 150 / .91); --graph-label: oklch(94% .018 105); --shadow-shell: 0 32px 90px oklch(4% .02 150 / .64); --shadow-module: 0 12px 28px oklch(6% .02 150 / .34);
+    }
+    :root[data-theme="signal"] {
+      --frame: oklch(19% .055 255); --frame-soft: oklch(27% .065 255); --paper: oklch(96% .012 245); --paper-high: oklch(98% .008 245); --paper-low: oklch(90% .025 245); --ink: oklch(23% .05 258); --muted: oklch(47% .045 255); --line: oklch(80% .04 245); --mauve: oklch(55% .20 255); --coral: oklch(70% .18 35); --sand: oklch(84% .12 88); --blue: oklch(53% .22 255); --cyan: oklch(71% .14 205); --violet: oklch(58% .22 305); --success: oklch(56% .14 155); --on-signal: oklch(98% .008 245); --shell-border: oklch(38% .07 255); --rail-border: oklch(66% .09 255); --rail-rule: oklch(48% .07 255); --rail-copy: oklch(80% .04 245); --placeholder: oklch(57% .04 255); --graph-center: oklch(35% .09 255); --graph-grid: oklch(78% .05 250 / .07); --graph-copy: oklch(88% .025 245); --graph-border: oklch(47% .07 255); --graph-edge: oklch(88% .05 250 / .25); --graph-tag-edge: oklch(71% .14 205 / .36); --graph-label-bg: oklch(17% .055 255 / .91); --graph-label: oklch(96% .012 245); --graph-hub-1: oklch(70% .18 35); --graph-hub-2: oklch(61% .22 255); --graph-hub-3: oklch(74% .14 205); --graph-hub-4: oklch(63% .21 305); --graph-hub-5: oklch(82% .14 88); --graph-leaf-1: oklch(87% .10 35); --graph-leaf-2: oklch(83% .12 250); --graph-leaf-3: oklch(85% .09 205); --graph-leaf-4: oklch(82% .11 305); --graph-leaf-5: oklch(90% .09 88);
+    }
+    :root[data-theme="signal"][data-mode="dark"] {
+      color-scheme: dark; --frame: oklch(9% .035 258); --frame-soft: oklch(15% .055 258); --paper: oklch(18% .04 258); --paper-high: oklch(23% .045 258); --paper-low: oklch(14% .04 258); --ink: oklch(92% .02 245); --muted: oklch(70% .035 245); --line: oklch(35% .055 255); --mauve: oklch(70% .18 255); --coral: oklch(76% .17 35); --sand: oklch(50% .11 88); --blue: oklch(72% .17 250); --cyan: oklch(78% .13 205); --violet: oklch(72% .17 305); --success: oklch(71% .13 155); --on-signal: oklch(97% .01 245); --shell-border: oklch(29% .065 258); --rail-border: oklch(50% .08 255); --rail-rule: oklch(35% .065 255); --rail-copy: oklch(73% .035 245); --placeholder: oklch(59% .035 245); --graph-center: oklch(24% .085 258); --graph-grid: oklch(78% .05 250 / .07); --graph-copy: oklch(84% .025 245); --graph-border: oklch(38% .065 255); --graph-edge: oklch(88% .05 250 / .26); --graph-label-bg: oklch(9% .035 258 / .92); --graph-label: oklch(95% .015 245); --shadow-shell: 0 32px 94px oklch(3% .025 258 / .7); --shadow-module: 0 12px 30px oklch(4% .025 258 / .38);
+    }
+    :root[data-theme="monograph"] {
+      --frame: oklch(18% .012 75); --frame-soft: oklch(25% .012 75); --paper: oklch(96% .009 85); --paper-high: oklch(98% .006 85); --paper-low: oklch(89% .014 85); --ink: oklch(20% .012 75); --muted: oklch(46% .015 75); --line: oklch(79% .016 82); --mauve: oklch(53% .18 30); --coral: oklch(73% .17 65); --sand: oklch(84% .10 90); --blue: oklch(47% .16 255); --cyan: oklch(68% .10 190); --violet: oklch(51% .15 320); --success: oklch(52% .12 150); --on-signal: oklch(98% .006 85); --shell-border: oklch(36% .016 75); --rail-border: oklch(62% .02 75); --rail-rule: oklch(45% .018 75); --rail-copy: oklch(78% .015 80); --placeholder: oklch(56% .015 75); --graph-center: oklch(33% .018 75); --graph-grid: oklch(76% .02 80 / .065); --graph-copy: oklch(87% .012 85); --graph-border: oklch(46% .02 75); --graph-edge: oklch(88% .02 80 / .24); --graph-tag-edge: oklch(73% .17 65 / .35); --graph-label-bg: oklch(14% .012 75 / .91); --graph-label: oklch(96% .009 85); --graph-hub-1: oklch(72% .17 65); --graph-hub-2: oklch(55% .17 255); --graph-hub-3: oklch(68% .10 190); --graph-hub-4: oklch(57% .16 320); --graph-hub-5: oklch(62% .18 30); --graph-leaf-1: oklch(88% .09 65); --graph-leaf-2: oklch(82% .10 255); --graph-leaf-3: oklch(84% .07 190); --graph-leaf-4: oklch(81% .09 320); --graph-leaf-5: oklch(84% .10 30);
+    }
+    :root[data-theme="monograph"][data-mode="dark"] {
+      color-scheme: dark; --frame: oklch(8% .012 75); --frame-soft: oklch(14% .014 75); --paper: oklch(18% .012 75); --paper-high: oklch(23% .013 75); --paper-low: oklch(13% .012 75); --ink: oklch(92% .012 85); --muted: oklch(69% .016 82); --line: oklch(34% .017 75); --mauve: oklch(68% .17 30); --coral: oklch(78% .16 65); --sand: oklch(49% .09 90); --blue: oklch(70% .14 255); --cyan: oklch(76% .10 190); --violet: oklch(70% .14 320); --success: oklch(69% .12 150); --on-signal: oklch(97% .008 85); --shell-border: oklch(28% .018 75); --rail-border: oklch(48% .02 75); --rail-rule: oklch(34% .018 75); --rail-copy: oklch(72% .015 82); --placeholder: oklch(58% .015 82); --graph-center: oklch(23% .02 75); --graph-grid: oklch(76% .02 80 / .065); --graph-copy: oklch(84% .012 85); --graph-border: oklch(37% .02 75); --graph-edge: oklch(88% .02 80 / .25); --graph-label-bg: oklch(7% .012 75 / .93); --graph-label: oklch(95% .01 85); --shadow-shell: 0 32px 94px oklch(2% .01 75 / .72); --shadow-module: 0 12px 30px oklch(3% .01 75 / .4);
     }
     * { box-sizing: border-box; }
     html { min-width: 320px; background: var(--frame); }
@@ -30,24 +66,45 @@
     [hidden] { display: none !important; }
     .skip-link { position: fixed; top: var(--space-md); left: var(--space-md); z-index: 600; transform: translateY(-180%); background: var(--paper-high); padding: var(--space-md) var(--space-lg); }
     .skip-link:focus { transform: translateY(0); }
-    .app-shell { width: min(1540px, calc(100% - 48px)); min-height: calc(100vh - 48px); margin: 24px auto; display: grid; grid-template-columns: 76px minmax(0,1fr); overflow: hidden; background: var(--paper); border: 1px solid oklch(39% .03 285); border-radius: 18px; box-shadow: var(--shadow-shell); }
+    .app-shell { width: min(1540px, calc(100% - 48px)); min-height: calc(100vh - 48px); margin: 24px auto; display: grid; grid-template-columns: 76px minmax(0,1fr); overflow: hidden; background: var(--paper); border: 1px solid var(--shell-border); border-radius: 18px; box-shadow: var(--shadow-shell); }
     .rail { display: flex; flex-direction: column; align-items: center; gap: var(--space-xl); padding: var(--space-xl) var(--space-md); background: var(--frame-soft); color: var(--paper-high); }
-    .brand-mark { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid oklch(72% .05 285); font: 900 1.45rem/1 var(--display); letter-spacing: -.06em; }
-    .rail-rule { width: 1px; height: 44px; background: oklch(54% .03 285); }
-    .rail-label { margin-top: auto; writing-mode: vertical-rl; transform: rotate(180deg); font: 800 .65rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: oklch(78% .03 285); }
-    .rail-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 5px oklch(72% .13 205 / .14); }
+    .brand-mark { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--rail-border); font: 900 1.45rem/1 var(--display); letter-spacing: -.06em; }
+    .rail-rule { width: 1px; height: 44px; background: var(--rail-rule); }
+    .rail-label { margin-top: auto; writing-mode: vertical-rl; transform: rotate(180deg); font: 800 .65rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--rail-copy); }
+    .rail-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 5px color-mix(in oklch, var(--cyan) 18%, transparent); }
     .workspace { min-width: 0; background: var(--paper); }
     .topbar { min-height: 76px; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: var(--space-xl); padding: var(--space-lg) var(--space-2xl); border-bottom: 1px solid var(--line); }
     .identity { display: flex; align-items: baseline; gap: var(--space-md); min-width: 0; }
     .identity strong { font: 900 1.2rem/1 var(--display); letter-spacing: -.025em; text-transform: uppercase; }
     .identity span { color: var(--muted); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    .header-actions { display: flex; align-items: center; gap: var(--space-lg); }
     .maker { display: flex; align-items: center; gap: var(--space-md); color: var(--muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
     .maker img { width: 90px; height: 42px; object-fit: contain; }
+    .theme-picker { position: relative; }
+    .theme-picker summary { min-height: 42px; display: flex; align-items: center; gap: var(--space-sm); border: 1px solid var(--line); background: var(--paper-high); color: var(--ink); padding: 0 var(--space-md); cursor: pointer; list-style: none; font: 850 .68rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; }
+    .theme-picker summary::-webkit-details-marker { display: none; }
+    .theme-picker summary::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: conic-gradient(var(--mauve) 0 33%, var(--coral) 33% 66%, var(--cyan) 66%); }
+    .theme-picker summary::after { content: "+"; margin-left: var(--space-xs); color: var(--muted); font-size: .9rem; }
+    .theme-picker[open] summary::after { content: "−"; }
+    .theme-menu { width: 286px; position: absolute; z-index: 500; top: calc(100% + var(--space-sm)); right: 0; display: grid; gap: var(--space-lg); background: var(--paper-high); border: 1px solid var(--line); padding: var(--space-lg); box-shadow: var(--shadow-module); }
+    .theme-menu-label { margin: 0; color: var(--muted); font: 850 .65rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; }
+    .palette-list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
+    .palette-choice { min-height: 58px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--space-sm); border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: var(--space-sm); cursor: pointer; text-align: left; font: 800 .7rem/1 var(--display); letter-spacing: .035em; }
+    .palette-choice[aria-pressed="true"] { border-color: var(--ink); outline: 1px solid var(--ink); outline-offset: -3px; }
+    .palette-swatch { width: 26px; height: 26px; display: grid; grid-template-columns: repeat(3,1fr); overflow: hidden; border-radius: 50%; }
+    .palette-swatch i { display: block; }
+    .palette-swatch.archive i:nth-child(1) { background: oklch(57% .065 28); } .palette-swatch.archive i:nth-child(2) { background: oklch(72% .13 44); } .palette-swatch.archive i:nth-child(3) { background: oklch(59% .19 257); }
+    .palette-swatch.grove i:nth-child(1) { background: oklch(55% .10 148); } .palette-swatch.grove i:nth-child(2) { background: oklch(70% .14 48); } .palette-swatch.grove i:nth-child(3) { background: oklch(70% .12 175); }
+    .palette-swatch.signal i:nth-child(1) { background: oklch(53% .22 255); } .palette-swatch.signal i:nth-child(2) { background: oklch(70% .18 35); } .palette-swatch.signal i:nth-child(3) { background: oklch(71% .14 205); }
+    .palette-swatch.monograph i:nth-child(1) { background: oklch(20% .012 75); } .palette-swatch.monograph i:nth-child(2) { background: oklch(73% .17 65); } .palette-swatch.monograph i:nth-child(3) { background: oklch(84% .10 90); }
+    .mode-switch { min-height: 38px; display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); }
+    .mode-switch button { border: 0; background: transparent; color: var(--muted); cursor: pointer; font: 850 .65rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
+    .mode-switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper-high); }
     .toolbar { display: grid; grid-template-columns: minmax(260px,1fr) auto auto auto; align-items: end; gap: var(--space-md); padding: var(--space-xl) var(--space-2xl) var(--space-lg); }
     .search-wrap { display: grid; gap: var(--space-sm); }
     .search-wrap label { font: 800 .7rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
     .search-wrap input { width: 100%; min-height: 48px; border: 0; border-bottom: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 0; padding: var(--space-sm) 0; font-size: 1.08rem; }
-    .search-wrap input::placeholder { color: oklch(57% .025 36); opacity: 1; }
+    .search-wrap input::placeholder { color: var(--placeholder); opacity: 1; }
     .utility-button { min-height: 48px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper-high); color: var(--ink); padding: 0 var(--space-lg); cursor: pointer; font: 800 .74rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; transition: transform 180ms var(--ease-out), background 180ms var(--ease-out); }
     .utility-button:hover { background: var(--paper-low); transform: translateY(-2px); }
     .context-toggle[aria-pressed="true"] { background: var(--frame-soft); color: var(--paper-high); border-color: var(--frame-soft); }
@@ -81,16 +138,16 @@
     .library-head h1 { margin-top: var(--space-sm); font-size: clamp(2.4rem,5vw,4.4rem); line-height: .84; }
     .result-count { color: var(--muted); font-size: .8rem; white-space: nowrap; }
     .bookmark-layout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); }
-    .graph-panel { min-height: 690px; display: grid; grid-template-rows: minmax(560px,1fr) auto; overflow: hidden; background: var(--frame-soft); color: var(--paper-high); border: 1px solid oklch(39% .03 285); border-radius: 4px; box-shadow: var(--shadow-module); }
+    .graph-panel { min-height: 690px; display: grid; grid-template-rows: minmax(560px,1fr) auto; overflow: hidden; background: var(--frame-soft); color: var(--on-signal); border: 1px solid var(--shell-border); border-radius: 4px; box-shadow: var(--shadow-module); }
     .graph-stage { min-height: 560px; position: relative; isolation: isolate; overflow: hidden; cursor: grab; touch-action: none; }
     .graph-stage:active { cursor: grabbing; }
-    .graph-stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 45%, oklch(35% .04 285), var(--frame-soft) 62%); }
-    .graph-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(oklch(74% .03 285 / .06) 1px, transparent 1px), linear-gradient(90deg, oklch(74% .03 285 / .06) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(circle at 50% 50%, black, transparent 72%); }
+    .graph-stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 45%, var(--graph-center), var(--frame-soft) 62%); }
+    .graph-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(var(--graph-grid) 1px, transparent 1px), linear-gradient(90deg, var(--graph-grid) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(circle at 50% 50%, black, transparent 72%); }
     #graph-canvas { width: 100%; height: 100%; display: block; }
     .graph-instructions { position: absolute; top: var(--space-xl); left: var(--space-xl); z-index: 2; max-width: 28ch; display: grid; gap: var(--space-sm); pointer-events: none; }
     .graph-instructions strong { font: 900 .74rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--cyan); }
-    .graph-instructions span { color: oklch(82% .02 285); font-size: .78rem; }
-    .graph-key { display: flex; flex-wrap: wrap; gap: var(--space-md); align-items: center; padding: var(--space-lg) var(--space-xl); border-top: 1px solid oklch(48% .03 285); color: oklch(86% .02 285); font-size: .72rem; }
+    .graph-instructions span { color: var(--graph-copy); font-size: .78rem; }
+    .graph-key { display: flex; flex-wrap: wrap; gap: var(--space-md); align-items: center; padding: var(--space-lg) var(--space-xl); border-top: 1px solid var(--graph-border); color: var(--graph-copy); font-size: .72rem; }
     .graph-key span { display: inline-flex; align-items: center; gap: var(--space-sm); }
     .graph-key i { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); }
     .graph-key span:nth-child(2) i { width: 14px; height: 14px; background: var(--coral); }
@@ -98,9 +155,9 @@
     .graph-node-list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .bookmark-card { --signal: var(--mauve); min-width: 0; display: grid; grid-template-rows: auto 1fr auto; background: var(--paper-high); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-module); animation: reveal 500ms var(--ease-out) both; animation-delay: calc(var(--i,0) * 55ms); }
     .bookmark-card.featured { grid-column: 1 / -1; grid-template-columns: minmax(220px,.86fr) 1.14fr; grid-template-rows: auto; min-height: 320px; }
-    .signal-art { min-height: 132px; position: relative; overflow: hidden; background: var(--signal); color: var(--paper-high); padding: var(--space-xl); isolation: isolate; }
+    .signal-art { min-height: 132px; position: relative; overflow: hidden; background: var(--signal); color: var(--on-signal); padding: var(--space-xl); isolation: isolate; }
     .featured .signal-art { min-height: 100%; }
-    .signal-art::before, .signal-art::after { content: ""; position: absolute; border: 1px solid oklch(96% .02 75 / .72); border-radius: 50%; z-index: -1; }
+    .signal-art::before, .signal-art::after { content: ""; position: absolute; border: 1px solid color-mix(in oklch, var(--on-signal) 72%, transparent); border-radius: 50%; z-index: -1; }
     .signal-art::before { width: 230px; height: 230px; right: -76px; top: -92px; }
     .signal-art::after { width: 122px; height: 122px; right: 42px; top: 28px; }
     .signal-art .ordinal { display: block; font: 900 3.2rem/.85 var(--display); letter-spacing: -.08em; }
@@ -160,6 +217,7 @@
     @media (max-width: 640px) {
       .app-shell { width: 100%; min-height: 100vh; margin: 0; border: 0; border-radius: 0; }
       .topbar { grid-template-columns: 1fr; gap: var(--space-sm); padding-top: var(--space-md); padding-bottom: var(--space-md); }
+      .header-actions { width: 100%; justify-content: space-between; } .maker span { display: none; } .theme-menu { left: 0; right: auto; }
       .maker { justify-self: start; } .toolbar { grid-template-columns: 1fr 1fr; }
       .search-wrap { grid-column: 1 / -1; } .bookmark-layout { grid-template-columns: 1fr; }
       .view-switch { grid-column: 1 / -1; }
@@ -181,7 +239,23 @@
     <section class="workspace">
       <header class="topbar">
         <div class="identity"><strong>Bookmark This</strong><span>Personal evidence desk</span></div>
-        <div class="maker"><span>Designed by</span><img src="__INTERZEKT_LOGO__" alt="Interzekt"></div>
+        <div class="header-actions">
+          <details class="theme-picker" id="theme-picker">
+            <summary><span id="theme-summary">Archive · Auto</span></summary>
+            <div class="theme-menu" aria-label="Appearance">
+              <p class="theme-menu-label">Palette</p>
+              <div class="palette-list" id="palette-list">
+                <button class="palette-choice" type="button" data-theme-choice="archive"><span class="palette-swatch archive" aria-hidden="true"><i></i><i></i><i></i></span><span>Archive</span></button>
+                <button class="palette-choice" type="button" data-theme-choice="grove"><span class="palette-swatch grove" aria-hidden="true"><i></i><i></i><i></i></span><span>Grove</span></button>
+                <button class="palette-choice" type="button" data-theme-choice="signal"><span class="palette-swatch signal" aria-hidden="true"><i></i><i></i><i></i></span><span>Signal</span></button>
+                <button class="palette-choice" type="button" data-theme-choice="monograph"><span class="palette-swatch monograph" aria-hidden="true"><i></i><i></i><i></i></span><span>Monograph</span></button>
+              </div>
+              <p class="theme-menu-label">Mode</p>
+              <div class="mode-switch" id="mode-switch" role="group" aria-label="Color mode"><button type="button" data-mode-choice="auto">Auto</button><button type="button" data-mode-choice="light">Light</button><button type="button" data-mode-choice="dark">Dark</button></div>
+            </div>
+          </details>
+          <div class="maker"><span>Designed by</span><img src="__INTERZEKT_LOGO__" alt="Interzekt"></div>
+        </div>
       </header>
       <div class="toolbar">
         <div class="search-wrap"><label for="search">Search the library</label><input id="search" type="search" autocomplete="off" placeholder="Ideas, tools, domains, or decisions"></div>
@@ -218,12 +292,24 @@
   <script id="bookmark-data" type="application/json">__BOOKMARK_PAYLOAD__</script>
   <script>
     const data = JSON.parse(document.getElementById('bookmark-data').textContent);
-    const state = { query: '', category: 'all', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', view: 'desk' };
+    const state = { query: '', category: 'all', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', view: 'desk', theme: document.documentElement.dataset.theme || 'archive', mode: document.documentElement.dataset.modePreference || 'auto' };
     const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), graphPanel = document.getElementById('graph-panel'), graphStage = document.getElementById('graph-stage'), graphCanvas = document.getElementById('graph-canvas'), graphContext = graphCanvas.getContext('2d');
     const graphState = { rotationX: -.24, rotationY: .46, zoom: 1, dragging: false, moved: false, pointerX: 0, pointerY: 0, nodes: [], edges: [], projected: [], frame: 0 };
     const signalColors = ['var(--mauve)','var(--blue)','var(--coral)','var(--violet)','var(--cyan)'];
     function node(name, className, text) { const el = document.createElement(name); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
     function link(label, href) { const el = node('a','',label); el.href = href; if (/^https?:/.test(href)) { el.target = '_blank'; el.rel = 'noreferrer'; } return el; }
+    function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+    function resolvedMode(mode) { return mode === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : mode; }
+    function renderAppearanceControls() {
+      const label = state.theme.charAt(0).toUpperCase() + state.theme.slice(1); document.getElementById('theme-summary').textContent = `${label} · ${state.mode.charAt(0).toUpperCase() + state.mode.slice(1)}`;
+      document.querySelectorAll('[data-theme-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === state.theme)));
+      document.querySelectorAll('[data-mode-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.modeChoice === state.mode)));
+    }
+    function applyAppearance(theme, mode, persist = true) {
+      state.theme = theme; state.mode = mode; document.documentElement.dataset.theme = theme; document.documentElement.dataset.mode = resolvedMode(mode); document.documentElement.dataset.modePreference = mode;
+      if (persist) { try { localStorage.setItem('bookmark-this-theme', theme); localStorage.setItem('bookmark-this-mode', mode); } catch (_) {} }
+      renderAppearanceControls(); if (state.view === 'graph') requestAnimationFrame(() => buildGraph(filteredItems()));
+    }
     function filteredItems() { const q = state.query.trim().toLowerCase(); return data.items.filter(item => (state.category === 'all' || item.categories.includes(state.category)) && (!q || [item.title,item.domain,item.summary,item.why,...item.tags,...item.categories,...item.contextBasis].join(' ').toLowerCase().includes(q))); }
     function renderFilters() {
       filters.replaceChildren(); const choices = [['all','Everything'], ...Object.entries(data.categories)];
@@ -248,14 +334,15 @@
       if (state.contextVisible && item.contextBasis.length) { const basis = node('div','basis'); item.contextBasis.forEach(label => basis.append(node('span','',label))); why.append(basis); } inspector.append(why); if (item.summary) inspector.append(node('p','summary',item.summary)); const actions = node('div','inspector-actions'); actions.append(link('Open source',item.url),link('Read note',item.note)); inspector.append(actions);
     }
     function hashString(value) { let hash = 2166136261; for (let i = 0; i < value.length; i += 1) { hash ^= value.charCodeAt(i); hash = Math.imul(hash, 16777619); } return hash >>> 0; }
-    function graphColor(index, type) { const hubs = ['oklch(72% .13 44)','oklch(59% .19 257)','oklch(72% .13 205)','oklch(57% .21 292)','oklch(67% .09 28)']; const leaves = ['oklch(88% .07 67)','oklch(82% .10 252)','oklch(84% .08 201)','oklch(80% .10 292)','oklch(84% .06 30)']; return (type === 'category' ? hubs : leaves)[index % hubs.length]; }
+    function graphColor(index, type) { const prefix = type === 'category' ? '--graph-hub-' : '--graph-leaf-'; return cssVar(prefix + ((index % 5) + 1)); }
     function buildGraph(items) {
       const activeCategories = [...new Set(items.flatMap(item => item.categories))].filter(slug => data.categories[slug]);
       const nodes = [], edges = [], hubs = new Map();
       activeCategories.forEach((slug,index) => { const angle = (index / Math.max(activeCategories.length,1)) * Math.PI * 2 - Math.PI / 2; const node = { id: `category:${slug}`, type: 'category', slug, label: data.categories[slug], x: Math.cos(angle) * 210, y: Math.sin(angle) * 140, z: Math.sin(angle * 1.7) * 130, color: graphColor(index,'category'), radius: 17 }; hubs.set(slug,node); nodes.push(node); });
       items.forEach((item,index) => { const primary = item.categories.find(slug => hubs.has(slug)) || activeCategories[0]; const hub = hubs.get(primary) || {x:0,y:0,z:0}; const seed = hashString(item.note); const angle = ((seed % 360) / 180) * Math.PI; const spread = 54 + (seed % 70); const node = { id: `bookmark:${item.note}`, type: 'bookmark', item, label: item.title, x: hub.x + Math.cos(angle) * spread, y: hub.y + Math.sin(angle) * spread * .72, z: hub.z + (((seed >> 8) % 150) - 75), color: graphColor(activeCategories.indexOf(primary),'bookmark'), radius: 8 }; nodes.push(node); if (hubs.has(primary)) edges.push({a:node,b:hubs.get(primary),type:'category'}); item.categories.filter(slug => slug !== primary && hubs.has(slug)).forEach(slug => edges.push({a:node,b:hubs.get(slug),type:'category'})); });
-      const bookmarks = nodes.filter(node => node.type === 'bookmark');
-      for (let i = 0; i < bookmarks.length; i += 1) for (let j = i + 1; j < bookmarks.length; j += 1) { const shared = bookmarks[i].item.tags.filter(tag => bookmarks[j].item.tags.includes(tag)); if (shared.length) edges.push({a:bookmarks[i],b:bookmarks[j],type:'tag',label:shared[0]}); }
+      const bookmarks = nodes.filter(node => node.type === 'bookmark'), tagBuckets = new Map(), maxTagEdges = Math.max(300,Math.min(2400,bookmarks.length * 3)); let tagEdgeCount = 0;
+      bookmarks.forEach(bookmark => bookmark.item.tags.slice(0,6).forEach(tag => { if (!tagBuckets.has(tag)) tagBuckets.set(tag,[]); tagBuckets.get(tag).push(bookmark); }));
+      for (const [tag,members] of tagBuckets) { if (members.length < 2) continue; members.sort((a,b) => a.id.localeCompare(b.id)); for (let index = 1; index < members.length && tagEdgeCount < maxTagEdges; index += 1) { edges.push({a:members[index - 1],b:members[index],type:'tag',label:tag}); tagEdgeCount += 1; } if (tagEdgeCount >= maxTagEdges) break; }
       graphState.nodes = nodes; graphState.edges = edges; renderGraphNodeList(bookmarks); drawGraph();
     }
     function rotatePoint(node) {
@@ -270,9 +357,9 @@
       const pixelWidth = Math.round(width * dpr), pixelHeight = Math.round(height * dpr); if (graphCanvas.width !== pixelWidth || graphCanvas.height !== pixelHeight) { graphCanvas.width = pixelWidth; graphCanvas.height = pixelHeight; }
       graphContext.setTransform(dpr,0,0,dpr,0,0); graphContext.clearRect(0,0,width,height); graphState.projected = graphState.nodes.map(node => projectNode(node,width,height)); const projectedById = new Map(graphState.projected.map(node => [node.id,node]));
       graphContext.lineCap = 'round';
-      graphState.edges.forEach(edge => { const a = projectedById.get(edge.a.id), b = projectedById.get(edge.b.id); if (!a || !b) return; graphContext.beginPath(); graphContext.moveTo(a.screenX,a.screenY); graphContext.lineTo(b.screenX,b.screenY); graphContext.setLineDash(edge.type === 'tag' ? [3,7] : []); graphContext.lineWidth = edge.type === 'tag' ? .8 : 1.25; graphContext.strokeStyle = edge.type === 'tag' ? 'oklch(72% .13 205 / .32)' : 'oklch(86% .03 285 / .24)'; graphContext.stroke(); });
+      graphState.edges.forEach(edge => { const a = projectedById.get(edge.a.id), b = projectedById.get(edge.b.id); if (!a || !b) return; graphContext.beginPath(); graphContext.moveTo(a.screenX,a.screenY); graphContext.lineTo(b.screenX,b.screenY); graphContext.setLineDash(edge.type === 'tag' ? [3,7] : []); graphContext.lineWidth = edge.type === 'tag' ? .8 : 1.25; graphContext.strokeStyle = cssVar(edge.type === 'tag' ? '--graph-tag-edge' : '--graph-edge'); graphContext.stroke(); });
       graphContext.setLineDash([]);
-      [...graphState.projected].sort((a,b) => b.depth - a.depth).forEach(node => { const radius = Math.max(4,node.radius * node.scale); graphContext.beginPath(); graphContext.arc(node.screenX,node.screenY,radius,0,Math.PI * 2); graphContext.fillStyle = node.color; graphContext.fill(); graphContext.lineWidth = node.id === `bookmark:${state.selected}` ? 3 : 1; graphContext.strokeStyle = node.id === `bookmark:${state.selected}` ? 'oklch(96% .02 78)' : 'oklch(96% .02 78 / .48)'; graphContext.stroke(); if (node.type === 'category' || node.id === `bookmark:${state.selected}`) { graphContext.font = node.type === 'category' ? '900 13px "Avenir Next Condensed", sans-serif' : '700 12px "Avenir Next", sans-serif'; graphContext.textAlign = 'center'; graphContext.textBaseline = 'middle'; const labelY = node.type === 'category' ? node.screenY + radius + 18 : node.screenY - radius - 14, labelWidth = graphContext.measureText(node.label).width; graphContext.fillStyle = 'oklch(24% .027 285 / .86)'; graphContext.fillRect(node.screenX - labelWidth / 2 - 5,labelY - 10,labelWidth + 10,20); graphContext.fillStyle = 'oklch(94% .018 78)'; graphContext.fillText(node.label,node.screenX,labelY); } });
+      [...graphState.projected].sort((a,b) => b.depth - a.depth).forEach(node => { const radius = Math.max(4,node.radius * node.scale); graphContext.beginPath(); graphContext.arc(node.screenX,node.screenY,radius,0,Math.PI * 2); graphContext.fillStyle = node.color; graphContext.fill(); graphContext.lineWidth = node.id === `bookmark:${state.selected}` ? 3 : 1; graphContext.globalAlpha = node.id === `bookmark:${state.selected}` ? 1 : .48; graphContext.strokeStyle = cssVar('--node-stroke'); graphContext.stroke(); graphContext.globalAlpha = 1; if (node.type === 'category' || node.id === `bookmark:${state.selected}`) { graphContext.font = node.type === 'category' ? '900 13px "Avenir Next Condensed", sans-serif' : '700 12px "Avenir Next", sans-serif'; graphContext.textAlign = 'center'; graphContext.textBaseline = 'middle'; const labelY = node.type === 'category' ? node.screenY + radius + 18 : node.screenY - radius - 14, labelWidth = graphContext.measureText(node.label).width; graphContext.fillStyle = cssVar('--graph-label-bg'); graphContext.fillRect(node.screenX - labelWidth / 2 - 5,labelY - 10,labelWidth + 10,20); graphContext.fillStyle = cssVar('--graph-label'); graphContext.fillText(node.label,node.screenX,labelY); } });
     }
     function renderGraphNodeList(bookmarkNodes) { const list = document.getElementById('graph-node-list'); list.replaceChildren(); bookmarkNodes.forEach(graphNode => { const button = node('button','',graphNode.item.title); button.type = 'button'; button.onclick = () => selectGraphItem(graphNode.item); list.append(button); }); }
     function selectGraphItem(item) { state.selected = item.note; renderInspector(item); drawGraph(); }
@@ -284,6 +371,11 @@
     toggle.onclick = () => { if (data.contextMode === 'none') return; state.contextVisible = !state.contextVisible; render(); };
     document.getElementById('desk-view').onclick = () => setView('desk');
     document.getElementById('graph-view').onclick = () => setView('graph');
+    document.querySelectorAll('[data-theme-choice]').forEach(button => button.onclick = () => applyAppearance(button.dataset.themeChoice, state.mode));
+    document.querySelectorAll('[data-mode-choice]').forEach(button => button.onclick = () => { applyAppearance(state.theme, button.dataset.modeChoice); document.getElementById('theme-picker').removeAttribute('open'); });
+    const systemScheme = matchMedia('(prefers-color-scheme: dark)'); systemScheme.addEventListener?.('change', () => { if (state.mode === 'auto') applyAppearance(state.theme, state.mode, false); });
+    document.addEventListener('pointerdown', event => { const picker = document.getElementById('theme-picker'); if (picker.open && !picker.contains(event.target)) picker.removeAttribute('open'); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') document.getElementById('theme-picker').removeAttribute('open'); });
     graphCanvas.addEventListener('pointerdown', event => { graphState.dragging = true; graphState.moved = false; graphState.pointerX = event.clientX; graphState.pointerY = event.clientY; graphCanvas.setPointerCapture(event.pointerId); });
     graphCanvas.addEventListener('pointermove', event => { if (!graphState.dragging) return; const dx = event.clientX - graphState.pointerX, dy = event.clientY - graphState.pointerY; if (Math.abs(dx) + Math.abs(dy) > 2) graphState.moved = true; graphState.rotationY += dx * .008; graphState.rotationX = Math.max(-1.15,Math.min(1.15,graphState.rotationX + dy * .008)); graphState.pointerX = event.clientX; graphState.pointerY = event.clientY; drawGraph(); });
     graphCanvas.addEventListener('pointerup', event => { graphState.dragging = false; if (!graphState.moved) { const rect = graphCanvas.getBoundingClientRect(), target = pickGraphNode(event.clientX - rect.left,event.clientY - rect.top); if (target?.type === 'bookmark') selectGraphItem(target.item); if (target?.type === 'category') { state.category = target.slug; render(); } } });
@@ -291,7 +383,7 @@
     graphCanvas.addEventListener('keydown', event => { const step = .09; if (event.key === 'ArrowLeft') graphState.rotationY -= step; else if (event.key === 'ArrowRight') graphState.rotationY += step; else if (event.key === 'ArrowUp') graphState.rotationX -= step; else if (event.key === 'ArrowDown') graphState.rotationX += step; else if (event.key === '+' || event.key === '=') graphState.zoom = Math.min(1.9,graphState.zoom * 1.08); else if (event.key === '-') graphState.zoom = Math.max(.62,graphState.zoom * .92); else return; event.preventDefault(); drawGraph(); });
     new ResizeObserver(() => drawGraph()).observe(graphStage);
     if (data.contextMode === 'none') { toggle.disabled = true; toggle.textContent = 'No context'; toggle.setAttribute('aria-pressed','false'); }
-    render();
+    renderAppearanceControls(); render();
   </script>
 </body>
 </html>
