@@ -436,6 +436,39 @@ def visualizer_media_url(root: Path, output: Path, value: Any) -> str:
     return os.path.relpath(target, start=output.parent).replace(os.sep, "/")
 
 
+VISUALIZER_KEYWORD_STOPWORDS = {
+    "about", "after", "again", "also", "from", "have", "into", "more", "page",
+    "that", "their", "this", "using", "what", "when", "where", "which", "with",
+    "your", "www", "com", "https", "bookmark", "bookmarks",
+}
+
+
+def metadata_list(metadata: dict[str, Any], *names: str) -> list[str]:
+    values: list[str] = []
+    for name in names:
+        value = metadata.get(name)
+        if isinstance(value, list):
+            values.extend(str(item).strip() for item in value if str(item).strip())
+        elif isinstance(value, str) and value.strip():
+            values.append(value.strip())
+    return list(dict.fromkeys(values))
+
+
+def visualizer_keywords(metadata: dict[str, Any], title: str, domain: str) -> list[str]:
+    explicit = metadata_list(metadata, "keywords")
+    if explicit:
+        return explicit[:12]
+    domain_parts = set(re.findall(r"[a-z0-9]+", domain.lower()))
+    candidates = re.findall(r"[A-Za-z][A-Za-z0-9-]{3,}", title.lower())
+    inferred = [
+        word.strip("-")
+        for word in candidates
+        if word.strip("-") not in VISUALIZER_KEYWORD_STOPWORDS
+        and word.strip("-") not in domain_parts
+    ]
+    return list(dict.fromkeys(inferred))[:8]
+
+
 def visualize(root: Path, config: dict[str, Any]) -> None:
     visualizer_config = config.get("visualizer", {"enabled": False, "path": "visualizer/index.html"})
     if not visualizer_config.get("enabled", False):
@@ -446,6 +479,8 @@ def visualize(root: Path, config: dict[str, Any]) -> None:
     items: list[dict[str, Any]] = []
     for record in bookmark_records(root, config):
         metadata = record["metadata"]
+        title = str(metadata.get("title") or record["path"].stem)
+        domain = str(metadata.get("domain") or "")
         preview_image = visualizer_media_url(
             root,
             output,
@@ -453,12 +488,16 @@ def visualize(root: Path, config: dict[str, Any]) -> None:
         )
         items.append(
             {
-                "title": str(metadata.get("title") or record["path"].stem),
+                "title": title,
                 "url": str(metadata.get("url") or ""),
-                "domain": str(metadata.get("domain") or ""),
+                "domain": domain,
                 "captured": str(metadata.get("captured") or ""),
                 "categories": metadata.get("categories", []) if isinstance(metadata.get("categories"), list) else [],
                 "tags": metadata.get("tags", []) if isinstance(metadata.get("tags"), list) else [],
+                "keywords": visualizer_keywords(metadata, title, domain),
+                "sourceProfiles": metadata_list(metadata, "source_profiles", "source_profile", "source_browser"),
+                "legacyFolders": metadata_list(metadata, "legacy_folders", "legacy_folder"),
+                "enrichmentStatus": str(metadata.get("enrichment_status") or "unspecified"),
                 "summary": note_section(record["path"], "What it is", 280),
                 "why": note_section(record["path"], "Why I may have saved it"),
                 "contextBasis": metadata.get("context_basis", []) if isinstance(metadata.get("context_basis"), list) else [],

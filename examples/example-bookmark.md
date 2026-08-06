@@ -15,6 +15,14 @@ categories:
 status: bookmarked
 context_basis:
   - Current session
+keywords:
+  - evidence mapping
+  - research workflow
+source_profiles:
+  - Example Browser
+legacy_folders:
+  - Bookmarks / Research
+enrichment_status: verified
 ---
 
 # Example Research Tool

@@ -19,6 +19,13 @@ categories:
 status: bookmarked
 context_basis:
   - Current session
+keywords:
+  - example topic
+source_profiles:
+  - Example Browser
+legacy_folders:
+  - Bookmarks / Research
+enrichment_status: verified
 preview_image: bookmark-assets/example-page-og.jpg
 preview_image_url: https://example.com/og.jpg
 preview_image_alt: Example page preview
@@ -35,6 +42,9 @@ Rules:
 - Use 3–8 lowercase kebab-case tags by default.
 - Derive a concise lowercase kebab-case filename from the verified title.
 - `context_basis` is optional. When present, list only readable labels for context the user approved; never copy private text or expose a sensitive path.
+- `keywords` is optional. Use short, factual concepts that improve retrieval without duplicating every tag.
+- `source_profiles` and `legacy_folders` preserve browser-import provenance. Use readable labels, never browser profile paths.
+- `enrichment_status` distinguishes imported, verified, and enriched records without changing the durable `status: bookmarked` contract.
 - `preview_image` is the root-relative path to a safely cached Open Graph or equivalent preview image. Prefer it over remote hotlinking.
 - `preview_image_url` preserves the public source URL for refreshes and provenance. It must not contain credentials or sensitive tokens.
 - `preview_image_alt` comes from verified page metadata when available; otherwise write a concise factual description or leave it empty.

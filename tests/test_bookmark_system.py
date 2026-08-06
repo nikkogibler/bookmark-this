@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -54,6 +55,10 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn("Research", index)
         self.assertIn("Example Research Tool", visualizer)
         self.assertIn('id="search"', visualizer)
+        self.assertIn('id="facet-kind"', visualizer)
+        self.assertIn('id="facet-search"', visualizer)
+        self.assertIn('id="sort-by"', visualizer)
+        self.assertIn('id="group-by"', visualizer)
         self.assertIn("Why this survived", visualizer)
         self.assertIn("Current session", visualizer)
         self.assertIn("data:image/png;base64,", visualizer)
@@ -67,6 +72,13 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn('data-theme-choice="monograph"', visualizer)
         self.assertIn('data-mode-choice="dark"', visualizer)
         self.assertIn("bookmark-this-theme", visualizer)
+        payload_match = re.search(r'<script id="bookmark-data" type="application/json">(.*?)</script>', visualizer, re.DOTALL)
+        self.assertIsNotNone(payload_match)
+        payload = json.loads(payload_match.group(1))
+        self.assertEqual(payload["items"][0]["sourceProfiles"], ["Example Browser"])
+        self.assertEqual(payload["items"][0]["legacyFolders"], ["Bookmarks / Research"])
+        self.assertEqual(payload["items"][0]["keywords"], ["evidence mapping", "research workflow"])
+        self.assertEqual(payload["items"][0]["enrichmentStatus"], "verified")
         template = (REPO_ROOT / "skills" / "bookmark-this" / "assets" / "visualizer-template.html").read_text(encoding="utf-8")
         self.assertIn("__BACKGROUND_IMAGE__", template)
         self.assertIn("let theme = 'monograph', mode = 'dark';", template)
@@ -121,6 +133,20 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertEqual(
             extract_page_metadata.provider_embed("https://www.instagram.com/reel/ABC_123/"),
             "https://www.instagram.com/reel/ABC_123/embed/",
+        )
+
+    def test_visualizer_keywords_prefer_explicit_values_and_derive_a_fallback(self):
+        self.assertEqual(
+            bookmark_system.visualizer_keywords(
+                {"keywords": ["Evidence Mapping", "research workflow"]},
+                "Ignored title",
+                "example.com",
+            ),
+            ["Evidence Mapping", "research workflow"],
+        )
+        self.assertEqual(
+            bookmark_system.visualizer_keywords({}, "A Better Research Workflow", "example.com"),
+            ["better", "research", "workflow"],
         )
 
     def test_media_backfill_preserves_note_body(self):
