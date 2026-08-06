@@ -10,7 +10,7 @@ Ask:
 2. Should setup round up existing bookmarks from their browsers and bookmark folders? Offer Chrome, Safari, Firefox, Edge, Brave, an exported bookmarks HTML file, named folders, `all available sources`, or `not now`. Let them say `I don't know` so the agent can locate likely sources with read-only checks.
 3. Do they want a simple local bookmark visualizer generated now, available later, or disabled?
 
-Explain the practical effect in one sentence: the platform choice shapes installation and prompt examples; browser roundup consolidates existing saves into the Markdown source of truth; the optional visualizer adds searchable cards and a relationship graph without replacing the Markdown files.
+Explain the practical effect in one sentence: the platform choice shapes installation and prompt examples; browser roundup consolidates existing saves into the Markdown source of truth; the optional visualizer adds searchable, filterable cards without replacing the Markdown files.
 
 ## Round 1A: browser and folder sources
 

@@ -31,3 +31,4 @@ Explain:
 - any migration or compatibility implications
 
 Do not include private bookmark libraries, credentials, browser exports, or personal paths in fixtures or screenshots.
+Run `python scripts/check_release_privacy.py` before publishing. The same check runs in CI and rejects private paths, email addresses, and URL hosts that are not explicitly approved for the public skill.

@@ -17,6 +17,8 @@ jobs:
           python-version: "3.11"
       - name: Run tests
         run: python -m unittest discover -s tests -v
+      - name: Check release privacy
+        run: python scripts/check_release_privacy.py
       - name: Check skill frontmatter
         run: |
           python - <<'PY'

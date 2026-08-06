@@ -110,9 +110,6 @@
     .utility-button { min-height: 48px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper-high); color: var(--ink); padding: 0 var(--space-lg); cursor: pointer; font: 800 .74rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; transition: transform 180ms var(--ease-out), background 180ms var(--ease-out); }
     .utility-button:hover { background: var(--paper-low); transform: translateY(-2px); }
     .context-toggle[aria-pressed="true"] { background: var(--frame-soft); color: var(--paper-high); border-color: var(--frame-soft); }
-    .view-switch { min-height: 48px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 2px; background: var(--paper-high); }
-    .view-switch button { min-width: 72px; border: 0; background: transparent; color: var(--muted); cursor: pointer; font: 900 .7rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
-    .view-switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper-high); }
     .dashboard { display: grid; grid-template-columns: 230px minmax(0,1fr) 320px; gap: var(--space-xl); padding: var(--space-lg) var(--space-2xl) var(--space-3xl); }
     .taxonomy { align-self: start; display: grid; gap: var(--space-2xl); position: sticky; top: var(--space-xl); }
     .section-kicker { margin: 0; font: 900 .7rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--mauve); }
@@ -140,21 +137,6 @@
     .library-head h1 { margin-top: var(--space-sm); font-size: clamp(2.4rem,5vw,4.4rem); line-height: .84; }
     .result-count { color: var(--muted); font-size: .8rem; white-space: nowrap; }
     .bookmark-layout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); }
-    .graph-panel { min-height: 690px; display: grid; grid-template-rows: minmax(560px,1fr) auto; overflow: hidden; background: var(--frame-soft); color: var(--on-signal); border: 1px solid var(--shell-border); border-radius: 4px; box-shadow: var(--shadow-module); }
-    .graph-stage { min-height: 560px; position: relative; isolation: isolate; overflow: hidden; cursor: grab; touch-action: none; }
-    .graph-stage:active { cursor: grabbing; }
-    .graph-stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 45%, var(--graph-center), var(--frame-soft) 62%); }
-    .graph-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(var(--graph-grid) 1px, transparent 1px), linear-gradient(90deg, var(--graph-grid) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(circle at 50% 50%, black, transparent 72%); }
-    #graph-canvas { width: 100%; height: 100%; display: block; }
-    .graph-instructions { position: absolute; top: var(--space-xl); left: var(--space-xl); z-index: 2; max-width: 28ch; display: grid; gap: var(--space-sm); pointer-events: none; }
-    .graph-instructions strong { font: 900 .74rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--cyan); }
-    .graph-instructions span { color: var(--graph-copy); font-size: .78rem; }
-    .graph-key { display: flex; flex-wrap: wrap; gap: var(--space-md); align-items: center; padding: var(--space-lg) var(--space-xl); border-top: 1px solid var(--graph-border); color: var(--graph-copy); font-size: .72rem; }
-    .graph-key span { display: inline-flex; align-items: center; gap: var(--space-sm); }
-    .graph-key i { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); }
-    .graph-key span:nth-child(2) i { width: 14px; height: 14px; background: var(--coral); }
-    .graph-key span:nth-child(3) i { background: var(--violet); }
-    .graph-node-list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .bookmark-card { --signal: var(--mauve); min-width: 0; display: grid; grid-template-rows: auto 1fr auto; background: var(--paper-high); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-module); animation: reveal 500ms var(--ease-out) both; animation-delay: calc(var(--i,0) * 55ms); }
     .bookmark-card.featured { grid-column: 1 / -1; grid-template-columns: minmax(220px,.86fr) 1.14fr; grid-template-rows: auto; min-height: 320px; }
     .signal-art { min-height: 132px; position: relative; overflow: hidden; background: var(--signal); color: var(--on-signal); padding: var(--space-xl); isolation: isolate; }
@@ -205,8 +187,8 @@
     .rich-media iframe, .rich-media video, .rich-media img { width: 100%; height: 100%; display: block; border: 0; object-fit: cover; }
     .remote-media-gate { width: 100%; height: 100%; display: grid; place-items: center; align-content: center; gap: var(--space-md); padding: var(--space-xl); text-align: center; }
     .remote-media-gate strong { font: 900 1rem/1 var(--display); letter-spacing: .04em; text-transform: uppercase; }
-    .remote-media-gate span { max-width: 34ch; color: var(--graph-copy); font-size: .75rem; }
-    .remote-media-gate button { min-height: 40px; border: 1px solid var(--graph-copy); background: transparent; color: var(--on-signal); padding: 0 var(--space-lg); cursor: pointer; font: 900 .68rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
+    .remote-media-gate span { max-width: 34ch; color: var(--rail-copy); font-size: .75rem; }
+    .remote-media-gate button { min-height: 40px; border: 1px solid var(--rail-copy); background: transparent; color: var(--on-signal); padding: 0 var(--space-lg); cursor: pointer; font: 900 .68rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
     .media-note { margin: calc(var(--space-md) * -1) 0 0; color: var(--muted); font-size: .68rem; }
     .empty { grid-column: 1 / -1; display: grid; gap: var(--space-md); place-items: start; padding: var(--space-3xl) 0; border-top: 2px solid var(--ink); }
     .empty h2 { margin: 0; font: 900 2rem/1 var(--display); }
@@ -236,14 +218,11 @@
       .header-actions { width: 100%; justify-content: space-between; } .maker span { display: none; } .theme-menu { left: 0; right: auto; }
       .maker { justify-self: start; } .toolbar { grid-template-columns: 1fr 1fr; }
       .search-wrap { grid-column: 1 / -1; } .bookmark-layout { grid-template-columns: 1fr; }
-      .view-switch { grid-column: 1 / -1; }
       .bookmark-card.featured { grid-column: 1; grid-template-columns: 1fr; }
       .featured .signal-art { min-height: 180px; }
       .library-head { align-items: start; flex-direction: column; }
       .inspector { grid-template-columns: 1fr; }
       .inspector .why-panel, .inspector .inspector-actions, .inspector .inspector-signal, .inspector h2, .inspector .inspector-domain { grid-column: 1; }
-      .graph-panel { min-height: 560px; grid-template-rows: minmax(470px,1fr) auto; }
-      .graph-stage { min-height: 470px; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
@@ -275,7 +254,6 @@
       </header>
       <div class="toolbar">
         <div class="search-wrap"><label for="search">Search the library</label><input id="search" type="search" autocomplete="off" placeholder="Ideas, tools, domains, or decisions"></div>
-        <div class="view-switch" role="group" aria-label="Visualizer view"><button id="desk-view" type="button" aria-pressed="true">Desk</button><button id="graph-view" type="button" aria-pressed="false">Graph</button></div>
         <button class="utility-button context-toggle" id="context-toggle" type="button" aria-pressed="true">Context on</button>
         <button class="utility-button" id="clear" type="button">Reset view</button>
       </div>
@@ -291,14 +269,6 @@
         <section class="library">
           <header class="library-head"><div><p class="section-kicker" id="view-kicker">What survived</p><h1 id="view-title">Saved signals</h1></div><div class="result-count" id="count"></div></header>
           <section class="bookmark-layout" id="grid" aria-live="polite"></section>
-          <section class="graph-panel" id="graph-panel" hidden>
-            <div class="graph-stage" id="graph-stage">
-              <canvas id="graph-canvas" tabindex="0" aria-label="Interactive 3D relationship map of bookmarks and categories"></canvas>
-              <div class="graph-instructions"><strong>Relationship map</strong><span>Drag to rotate · scroll to zoom · select a node to inspect it</span></div>
-              <div class="graph-node-list" id="graph-node-list" aria-label="Bookmarks in the relationship map"></div>
-            </div>
-            <div class="graph-key"><span><i></i>Bookmark</span><span><i></i>Category hub</span><span><i></i>Shared tag connection</span></div>
-          </section>
           <div class="empty" id="empty" hidden><h2>Nothing matches yet.</h2><p>Try another phrase or reset the current category.</p></div>
         </section>
         <aside class="inspector" id="inspector" aria-live="polite"></aside>
@@ -308,13 +278,11 @@
   <script id="bookmark-data" type="application/json">__BOOKMARK_PAYLOAD__</script>
   <script>
     const data = JSON.parse(document.getElementById('bookmark-data').textContent);
-    const state = { query: '', category: 'all', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', view: 'desk', theme: document.documentElement.dataset.theme || 'archive', mode: document.documentElement.dataset.modePreference || 'auto' };
-    const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), graphPanel = document.getElementById('graph-panel'), graphStage = document.getElementById('graph-stage'), graphCanvas = document.getElementById('graph-canvas'), graphContext = graphCanvas.getContext('2d');
-    const graphState = { rotationX: -.24, rotationY: .46, zoom: 1, dragging: false, moved: false, pointerX: 0, pointerY: 0, nodes: [], edges: [], projected: [], frame: 0 };
+    const state = { query: '', category: 'all', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', theme: document.documentElement.dataset.theme || 'archive', mode: document.documentElement.dataset.modePreference || 'auto' };
+    const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle');
     const signalColors = ['var(--mauve)','var(--blue)','var(--coral)','var(--violet)','var(--cyan)'];
     function node(name, className, text) { const el = document.createElement(name); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
     function link(label, href) { const el = node('a','',label); el.href = href; if (/^https?:/.test(href)) { el.target = '_blank'; el.rel = 'noreferrer'; } return el; }
-    function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
     function resolvedMode(mode) { return mode === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : mode; }
     function renderAppearanceControls() {
       const label = state.theme.charAt(0).toUpperCase() + state.theme.slice(1); document.getElementById('theme-summary').textContent = `${label} · ${state.mode.charAt(0).toUpperCase() + state.mode.slice(1)}`;
@@ -324,7 +292,7 @@
     function applyAppearance(theme, mode, persist = true) {
       state.theme = theme; state.mode = mode; document.documentElement.dataset.theme = theme; document.documentElement.dataset.mode = resolvedMode(mode); document.documentElement.dataset.modePreference = mode;
       if (persist) { try { localStorage.setItem('bookmark-this-theme', theme); localStorage.setItem('bookmark-this-mode', mode); } catch (_) {} }
-      renderAppearanceControls(); const selected = data.items.find(item => item.note === state.selected); if (selected) renderInspector(selected); if (state.view === 'graph') requestAnimationFrame(() => buildGraph(filteredItems()));
+      renderAppearanceControls(); const selected = data.items.find(item => item.note === state.selected); if (selected) renderInspector(selected);
     }
     function filteredItems() { const q = state.query.trim().toLowerCase(); return data.items.filter(item => (state.category === 'all' || item.categories.includes(state.category)) && (!q || [item.title,item.domain,item.summary,item.why,...item.tags,...item.categories,...item.contextBasis].join(' ').toLowerCase().includes(q))); }
     function renderFilters() {
@@ -372,55 +340,15 @@
       const why = node('section','why-panel'); why.append(node('h3','',state.contextVisible ? 'Why this survived' : 'Context is hidden')); why.append(node('p','',state.contextVisible ? (item.why || 'No personal-relevance inference was recorded for this bookmark.') : 'Turn context on to reveal the explicitly labelled personal-relevance inference.'));
       if (state.contextVisible && item.contextBasis.length) { const basis = node('div','basis'); item.contextBasis.forEach(label => basis.append(node('span','',label))); why.append(basis); } inspector.append(why); if (item.summary) inspector.append(node('p','summary',item.summary)); const actions = node('div','inspector-actions'); actions.append(link('Open source',item.url),link('Read note',item.note)); inspector.append(actions);
     }
-    function hashString(value) { let hash = 2166136261; for (let i = 0; i < value.length; i += 1) { hash ^= value.charCodeAt(i); hash = Math.imul(hash, 16777619); } return hash >>> 0; }
-    function graphColor(index, type) { const prefix = type === 'category' ? '--graph-hub-' : '--graph-leaf-'; return cssVar(prefix + ((index % 5) + 1)); }
-    function buildGraph(items) {
-      const activeCategories = [...new Set(items.flatMap(item => item.categories))].filter(slug => data.categories[slug]);
-      const nodes = [], edges = [], hubs = new Map();
-      activeCategories.forEach((slug,index) => { const angle = (index / Math.max(activeCategories.length,1)) * Math.PI * 2 - Math.PI / 2; const node = { id: `category:${slug}`, type: 'category', slug, label: data.categories[slug], x: Math.cos(angle) * 210, y: Math.sin(angle) * 140, z: Math.sin(angle * 1.7) * 130, color: graphColor(index,'category'), radius: 17 }; hubs.set(slug,node); nodes.push(node); });
-      items.forEach((item,index) => { const primary = item.categories.find(slug => hubs.has(slug)) || activeCategories[0]; const hub = hubs.get(primary) || {x:0,y:0,z:0}; const seed = hashString(item.note); const angle = ((seed % 360) / 180) * Math.PI; const spread = 54 + (seed % 70); const node = { id: `bookmark:${item.note}`, type: 'bookmark', item, label: item.title, x: hub.x + Math.cos(angle) * spread, y: hub.y + Math.sin(angle) * spread * .72, z: hub.z + (((seed >> 8) % 150) - 75), color: graphColor(activeCategories.indexOf(primary),'bookmark'), radius: 8 }; nodes.push(node); if (hubs.has(primary)) edges.push({a:node,b:hubs.get(primary),type:'category'}); item.categories.filter(slug => slug !== primary && hubs.has(slug)).forEach(slug => edges.push({a:node,b:hubs.get(slug),type:'category'})); });
-      const bookmarks = nodes.filter(node => node.type === 'bookmark'), tagBuckets = new Map(), maxTagEdges = Math.max(300,Math.min(2400,bookmarks.length * 3)); let tagEdgeCount = 0;
-      bookmarks.forEach(bookmark => bookmark.item.tags.slice(0,6).forEach(tag => { if (!tagBuckets.has(tag)) tagBuckets.set(tag,[]); tagBuckets.get(tag).push(bookmark); }));
-      for (const [tag,members] of tagBuckets) { if (members.length < 2) continue; members.sort((a,b) => a.id.localeCompare(b.id)); for (let index = 1; index < members.length && tagEdgeCount < maxTagEdges; index += 1) { edges.push({a:members[index - 1],b:members[index],type:'tag',label:tag}); tagEdgeCount += 1; } if (tagEdgeCount >= maxTagEdges) break; }
-      graphState.nodes = nodes; graphState.edges = edges; renderGraphNodeList(bookmarks); drawGraph();
-    }
-    function rotatePoint(node) {
-      const cy = Math.cos(graphState.rotationY), sy = Math.sin(graphState.rotationY), cx = Math.cos(graphState.rotationX), sx = Math.sin(graphState.rotationX);
-      const x1 = node.x * cy - node.z * sy, z1 = node.x * sy + node.z * cy, y1 = node.y * cx - z1 * sx, z2 = node.y * sx + z1 * cx;
-      return {x:x1,y:y1,z:z2};
-    }
-    function projectNode(node, width, height) { const rotated = rotatePoint(node), perspective = 620 / (620 + rotated.z), scale = perspective * graphState.zoom; return {...node, screenX: width / 2 + rotated.x * scale, screenY: height / 2 + rotated.y * scale, depth:rotated.z, scale}; }
-    function drawGraph() {
-      if (graphPanel.hidden) return;
-      const rect = graphStage.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1,2), width = Math.max(1,rect.width), height = Math.max(1,rect.height);
-      const pixelWidth = Math.round(width * dpr), pixelHeight = Math.round(height * dpr); if (graphCanvas.width !== pixelWidth || graphCanvas.height !== pixelHeight) { graphCanvas.width = pixelWidth; graphCanvas.height = pixelHeight; }
-      graphContext.setTransform(dpr,0,0,dpr,0,0); graphContext.clearRect(0,0,width,height); graphState.projected = graphState.nodes.map(node => projectNode(node,width,height)); const projectedById = new Map(graphState.projected.map(node => [node.id,node]));
-      graphContext.lineCap = 'round';
-      graphState.edges.forEach(edge => { const a = projectedById.get(edge.a.id), b = projectedById.get(edge.b.id); if (!a || !b) return; graphContext.beginPath(); graphContext.moveTo(a.screenX,a.screenY); graphContext.lineTo(b.screenX,b.screenY); graphContext.setLineDash(edge.type === 'tag' ? [3,7] : []); graphContext.lineWidth = edge.type === 'tag' ? .8 : 1.25; graphContext.strokeStyle = cssVar(edge.type === 'tag' ? '--graph-tag-edge' : '--graph-edge'); graphContext.stroke(); });
-      graphContext.setLineDash([]);
-      [...graphState.projected].sort((a,b) => b.depth - a.depth).forEach(node => { const radius = Math.max(4,node.radius * node.scale); graphContext.beginPath(); graphContext.arc(node.screenX,node.screenY,radius,0,Math.PI * 2); graphContext.fillStyle = node.color; graphContext.fill(); graphContext.lineWidth = node.id === `bookmark:${state.selected}` ? 3 : 1; graphContext.globalAlpha = node.id === `bookmark:${state.selected}` ? 1 : .48; graphContext.strokeStyle = cssVar('--node-stroke'); graphContext.stroke(); graphContext.globalAlpha = 1; if (node.type === 'category' || node.id === `bookmark:${state.selected}`) { graphContext.font = node.type === 'category' ? '900 13px "Avenir Next Condensed", sans-serif' : '700 12px "Avenir Next", sans-serif'; graphContext.textAlign = 'center'; graphContext.textBaseline = 'middle'; const labelY = node.type === 'category' ? node.screenY + radius + 18 : node.screenY - radius - 14, labelWidth = graphContext.measureText(node.label).width; graphContext.fillStyle = cssVar('--graph-label-bg'); graphContext.fillRect(node.screenX - labelWidth / 2 - 5,labelY - 10,labelWidth + 10,20); graphContext.fillStyle = cssVar('--graph-label'); graphContext.fillText(node.label,node.screenX,labelY); } });
-    }
-    function renderGraphNodeList(bookmarkNodes) { const list = document.getElementById('graph-node-list'); list.replaceChildren(); bookmarkNodes.forEach(graphNode => { const button = node('button','',graphNode.item.title); button.type = 'button'; button.onclick = () => selectGraphItem(graphNode.item); list.append(button); }); }
-    function selectGraphItem(item) { state.selected = item.note; renderInspector(item); drawGraph(); }
-    function pickGraphNode(x,y) { return [...graphState.projected].reverse().find(node => Math.hypot(node.screenX - x,node.screenY - y) <= Math.max(18,node.radius * node.scale + 7)); }
-    function setView(view) { state.view = view; const graphActive = view === 'graph'; grid.hidden = graphActive; graphPanel.hidden = !graphActive; document.getElementById('desk-view').setAttribute('aria-pressed',String(!graphActive)); document.getElementById('graph-view').setAttribute('aria-pressed',String(graphActive)); document.getElementById('view-kicker').textContent = graphActive ? 'How it connects' : 'What survived'; document.getElementById('view-title').textContent = graphActive ? 'Relationship map' : 'Saved signals'; if (graphActive) requestAnimationFrame(() => buildGraph(filteredItems())); }
-    function render() { const items = filteredItems(); grid.replaceChildren(); items.forEach((item,index) => grid.append(renderCard(item,index))); count.textContent = `${items.length} of ${data.items.length} saved signal${data.items.length === 1 ? '' : 's'}`; empty.hidden = items.length !== 0; renderFilters(); renderContextLedger(); const selected = items.find(item => item.note === state.selected) || items[0]; if (selected) state.selected = selected.note; renderInspector(selected); if (state.view === 'graph') requestAnimationFrame(() => buildGraph(items)); }
+    function render() { const items = filteredItems(); grid.replaceChildren(); items.forEach((item,index) => grid.append(renderCard(item,index))); count.textContent = `${items.length} of ${data.items.length} saved signal${data.items.length === 1 ? '' : 's'}`; empty.hidden = items.length !== 0; renderFilters(); renderContextLedger(); const selected = items.find(item => item.note === state.selected) || items[0]; if (selected) state.selected = selected.note; renderInspector(selected); }
     document.getElementById('search').addEventListener('input', event => { state.query = event.target.value; render(); });
     document.getElementById('clear').onclick = () => { state.query = ''; state.category = 'all'; document.getElementById('search').value = ''; render(); };
     toggle.onclick = () => { if (data.contextMode === 'none') return; state.contextVisible = !state.contextVisible; render(); };
-    document.getElementById('desk-view').onclick = () => setView('desk');
-    document.getElementById('graph-view').onclick = () => setView('graph');
     document.querySelectorAll('[data-theme-choice]').forEach(button => button.onclick = () => applyAppearance(button.dataset.themeChoice, state.mode));
     document.querySelectorAll('[data-mode-choice]').forEach(button => button.onclick = () => { applyAppearance(state.theme, button.dataset.modeChoice); document.getElementById('theme-picker').removeAttribute('open'); });
     const systemScheme = matchMedia('(prefers-color-scheme: dark)'); systemScheme.addEventListener?.('change', () => { if (state.mode === 'auto') applyAppearance(state.theme, state.mode, false); });
     document.addEventListener('pointerdown', event => { const picker = document.getElementById('theme-picker'); if (picker.open && !picker.contains(event.target)) picker.removeAttribute('open'); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape') document.getElementById('theme-picker').removeAttribute('open'); });
-    graphCanvas.addEventListener('pointerdown', event => { graphState.dragging = true; graphState.moved = false; graphState.pointerX = event.clientX; graphState.pointerY = event.clientY; graphCanvas.setPointerCapture(event.pointerId); });
-    graphCanvas.addEventListener('pointermove', event => { if (!graphState.dragging) return; const dx = event.clientX - graphState.pointerX, dy = event.clientY - graphState.pointerY; if (Math.abs(dx) + Math.abs(dy) > 2) graphState.moved = true; graphState.rotationY += dx * .008; graphState.rotationX = Math.max(-1.15,Math.min(1.15,graphState.rotationX + dy * .008)); graphState.pointerX = event.clientX; graphState.pointerY = event.clientY; drawGraph(); });
-    graphCanvas.addEventListener('pointerup', event => { graphState.dragging = false; if (!graphState.moved) { const rect = graphCanvas.getBoundingClientRect(), target = pickGraphNode(event.clientX - rect.left,event.clientY - rect.top); if (target?.type === 'bookmark') selectGraphItem(target.item); if (target?.type === 'category') { state.category = target.slug; render(); } } });
-    graphCanvas.addEventListener('wheel', event => { event.preventDefault(); graphState.zoom = Math.max(.62,Math.min(1.9,graphState.zoom * (event.deltaY > 0 ? .92 : 1.08))); drawGraph(); }, {passive:false});
-    graphCanvas.addEventListener('keydown', event => { const step = .09; if (event.key === 'ArrowLeft') graphState.rotationY -= step; else if (event.key === 'ArrowRight') graphState.rotationY += step; else if (event.key === 'ArrowUp') graphState.rotationX -= step; else if (event.key === 'ArrowDown') graphState.rotationX += step; else if (event.key === '+' || event.key === '=') graphState.zoom = Math.min(1.9,graphState.zoom * 1.08); else if (event.key === '-') graphState.zoom = Math.max(.62,graphState.zoom * .92); else return; event.preventDefault(); drawGraph(); });
-    new ResizeObserver(() => drawGraph()).observe(graphStage);
     if (data.contextMode === 'none') { toggle.disabled = true; toggle.textContent = 'No context'; toggle.setAttribute('aria-pressed','false'); }
     renderAppearanceControls(); render();
   </script>

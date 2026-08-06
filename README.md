@@ -49,7 +49,7 @@ Bookmark files stay in a stable location. Categories, tags, collections, and gen
 ## Optional Visualizer
 
 <p align="center">
-  <img src="images/visualizer-preview.jpg" alt="Bookmark This visualizer showing its interactive 3D relationship map and personal-relevance inspector" width="800" />
+  <img src="images/visualizer-preview.jpg" alt="Bookmark This visualizer showing searchable bookmark cards and its personal-relevance inspector" width="800" />
 </p>
 
 The visualizer is a single local HTML file. It provides:
@@ -60,7 +60,6 @@ The visualizer is a single local HTML file. It provides:
 - links to the original source and the local Markdown note
 - an optional `Why this survived` view grounded in user-approved context
 - visible context-source labels and a control to hide personal inference
-- an interactive 3D relationship map linking bookmarks to category hubs and shared tags
 - four visual themes—Archive, Grove, Signal, and Monograph—each with Auto, Light, and Dark modes
 - locally remembered appearance preferences with no account or tracking
 - locally cached Open Graph artwork for visual bookmark cards
