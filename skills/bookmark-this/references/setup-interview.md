@@ -40,6 +40,18 @@ Make the privacy boundary explicit:
 - the user may change or disable context use later;
 - personal-relevance text remains labelled as inference, not fact.
 
+## Round 1C: previews and live media
+
+When the visualizer is enabled, ask whether it should:
+
+1. extract and locally cache Open Graph preview images for saved pages;
+2. offer playable video for supported providers and direct video files;
+3. offer online market charts when a bookmark represents an explicit ticker symbol.
+
+Explain that locally cached preview images remain private and work offline. Remote video players and market charts contact third-party providers, can share the user's IP address and browser data, require internet access, and may be blocked by the publisher. Offer `ask before loading` as the privacy-first default, `always allow`, or `disable`.
+
+Never promise universal playback. YouTube, Vimeo, supported Instagram posts, and direct video URLs can be embedded when the provider permits it. News sites and other publishers may block embedding; preserve their Open Graph image and source link as the fallback. Market data may be live or provider-delayed depending on the exchange and chart provider.
+
 ## Round 2: home and purpose
 
 Ask:
@@ -82,6 +94,8 @@ Confirm the timezone when capture dates could differ from the system timezone.
 - Manual `collections/`
 - Record the current agentic platform without coupling the data to it
 - Visualizer available later but not generated unless requested
+- Cache Open Graph preview images when the visualizer is enabled
+- Ask before loading remote video players or market charts
 - Standard capture depth
 - Explicit personal-relevance inference enabled
 - Current-session context only until the user approves additional sources

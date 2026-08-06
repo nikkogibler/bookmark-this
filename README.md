@@ -63,9 +63,15 @@ The visualizer is a single local HTML file. It provides:
 - an interactive 3D relationship map linking bookmarks to category hubs and shared tags
 - four visual themes—Archive, Grove, Signal, and Monograph—each with Auto, Light, and Dark modes
 - locally remembered appearance preferences with no account or tracking
-- no server, account, analytics, database, or external JavaScript
+- locally cached Open Graph artwork for visual bookmark cards
+- playable YouTube, Vimeo, supported Instagram, and direct-video previews when the provider permits embedding
+- opt-in TradingView charts for explicit ticker symbols; market data may be live or provider-delayed
+- a generated editorial background image instead of a flat page color
+- no server, account, analytics, or database; remote players and charts are never required for the Markdown library
 
 The Markdown library remains the source of truth. The visualizer can be regenerated at any time.
+
+Remote video players and market charts contact third-party providers and require internet access. Setup asks whether to load them automatically, ask before each load, or disable them. Publisher restrictions can prevent playback, especially on news and social platforms; the cached preview image and original link remain available as the fallback.
 
 ## Install
 
@@ -163,6 +169,12 @@ Check its health:
 Validate my bookmark system and fix anything incomplete.
 ```
 
+Backfill preview media for an existing library:
+
+```text
+Add Open Graph artwork and supported rich-media previews to my existing bookmarks. Test a small batch first and report failures before continuing.
+```
+
 ## What Each Bookmark Contains
 
 Every bookmark records:
@@ -183,6 +195,8 @@ The skill strips sensitive tokens and common tracking parameters rather than pre
 - Existing bookmark folders are inventoried before any proposed migration.
 - Browser roundup is opt-in, read-only, and supports Chromium browsers, Safari, Firefox exports, bookmark HTML, and approved Markdown folders.
 - Source files are not deleted automatically.
+- Open Graph preview images are cached locally when possible; unsafe or credential-bearing media URLs are rejected.
+- Remote video and stock widgets are permissioned separately because they can share network and browser information with their providers.
 - Personal-relevance reasoning is optional and always labelled as inference.
 - Secrets, cookies, credentials, and sensitive URL parameters must not be stored.
 - The visualizer is local and dependency-free.
@@ -213,10 +227,13 @@ bookmark-this/
         │   └── openai.yaml
         ├── assets/
         │   ├── interzekt-logo.png
+        │   ├── visualizer-background.jpg
         │   └── visualizer-template.html
         ├── references/
         └── scripts/
-            └── bookmark_system.py
+            ├── backfill_media.py
+            ├── bookmark_system.py
+            └── extract_page_metadata.py
 ```
 
 ## Requirements
@@ -225,7 +242,7 @@ bookmark-this/
 - Python 3 for deterministic index generation, validation, and visualization
 - Web access when you want the agent to verify a page before saving it
 
-The maintenance script uses Python's standard library only.
+The maintenance and media-extraction scripts use Python's standard library only.
 
 ## Contributing
 

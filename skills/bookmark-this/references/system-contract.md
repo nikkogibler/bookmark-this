@@ -8,6 +8,7 @@
 │   └── config.json
 ├── index.md
 ├── bookmarks/
+├── bookmark-assets/         # cached preview images
 ├── collections/
 ├── visualizer/              # optional
 │   └── index.html
@@ -41,6 +42,7 @@ Write valid UTF-8 JSON. Required keys are shown below.
     "bookmarks": "bookmarks",
     "views": "views",
     "collections": "collections",
+    "assets": "bookmark-assets",
     "index": "index.md"
   },
   "categories": [
@@ -74,6 +76,13 @@ Write valid UTF-8 JSON. Required keys are shown below.
   "visualizer": {
     "enabled": true,
     "path": "visualizer/index.html"
+  },
+  "rich_media": {
+    "enabled": true,
+    "cache_preview_images": true,
+    "allow_remote_video_embeds": false,
+    "allow_remote_stock_charts": false,
+    "stock_chart_provider": "tradingview"
   }
 }
 ```
@@ -95,8 +104,14 @@ Write valid UTF-8 JSON. Required keys are shown below.
 - `context.store_excerpts`: must remain `false`; do not copy memory contents or conversation transcripts into configuration
 - category and tag slugs: lowercase letters, digits, and hyphens
 - paths: relative to the root; do not use `..`
+- `paths.assets`: optional root-relative folder for locally cached Open Graph artwork
 - `visualizer.enabled`: `true` or `false`
 - `visualizer.path`: a relative `.html` path inside the root
+- `rich_media.enabled`: extract preview media for new captures
+- `rich_media.cache_preview_images`: download Open Graph images into the bookmark root instead of hotlinking when possible
+- `rich_media.allow_remote_video_embeds`: load supported provider embeds automatically; when `false`, the visualizer requires a per-item click
+- `rich_media.allow_remote_stock_charts`: load the configured online chart provider automatically; when `false`, the visualizer requires a per-item click
+- `rich_media.stock_chart_provider`: `tradingview` or `none`; provider data may be live or delayed and requires internet access
 
 Unknown keys may be preserved for forward compatibility. Never put API keys, cookies, credentials, private tokens, or full conversation history in the configuration.
 

@@ -28,6 +28,7 @@
       --graph-center: oklch(35% .04 285); --graph-grid: oklch(74% .03 285 / .06); --graph-copy: oklch(86% .02 285); --graph-border: oklch(48% .03 285); --graph-edge: oklch(86% .03 285 / .24); --graph-tag-edge: oklch(72% .13 205 / .32); --graph-label-bg: oklch(24% .027 285 / .88); --graph-label: oklch(94% .018 78); --node-stroke: oklch(96% .02 78);
       --graph-hub-1: oklch(72% .13 44); --graph-hub-2: oklch(59% .19 257); --graph-hub-3: oklch(72% .13 205); --graph-hub-4: oklch(57% .21 292); --graph-hub-5: oklch(67% .09 28);
       --graph-leaf-1: oklch(88% .07 67); --graph-leaf-2: oklch(82% .10 252); --graph-leaf-3: oklch(84% .08 201); --graph-leaf-4: oklch(80% .10 292); --graph-leaf-5: oklch(84% .06 30);
+      --backdrop-tint: oklch(10% .02 260 / .28);
       --space-xs: 4px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px; --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px;
       --display: "Avenir Next Condensed", "Franklin Gothic Condensed", sans-serif;
       --body: "Avenir Next", "Century Gothic", sans-serif;
@@ -56,9 +57,10 @@
     :root[data-theme="monograph"][data-mode="dark"] {
       color-scheme: dark; --frame: oklch(8% .012 75); --frame-soft: oklch(14% .014 75); --paper: oklch(18% .012 75); --paper-high: oklch(23% .013 75); --paper-low: oklch(13% .012 75); --ink: oklch(92% .012 85); --muted: oklch(69% .016 82); --line: oklch(34% .017 75); --mauve: oklch(68% .17 30); --coral: oklch(78% .16 65); --sand: oklch(49% .09 90); --blue: oklch(70% .14 255); --cyan: oklch(76% .10 190); --violet: oklch(70% .14 320); --success: oklch(69% .12 150); --on-signal: oklch(97% .008 85); --shell-border: oklch(28% .018 75); --rail-border: oklch(48% .02 75); --rail-rule: oklch(34% .018 75); --rail-copy: oklch(72% .015 82); --placeholder: oklch(58% .015 82); --graph-center: oklch(23% .02 75); --graph-grid: oklch(76% .02 80 / .065); --graph-copy: oklch(84% .012 85); --graph-border: oklch(37% .02 75); --graph-edge: oklch(88% .02 80 / .25); --graph-label-bg: oklch(7% .012 75 / .93); --graph-label: oklch(95% .01 85); --shadow-shell: 0 32px 94px oklch(2% .01 75 / .72); --shadow-module: 0 12px 30px oklch(3% .01 75 / .4);
     }
+    :root[data-mode="dark"] { --backdrop-tint: oklch(6% .018 260 / .48); }
     * { box-sizing: border-box; }
-    html { min-width: 320px; background: var(--frame); }
-    body { margin: 0; min-height: 100vh; background: var(--frame); color: var(--ink); font: 500 1rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+    html { min-width: 320px; background-color: var(--frame); background-image: linear-gradient(var(--backdrop-tint),var(--backdrop-tint)),url("__BACKGROUND_IMAGE__"); background-size: cover; background-position: center; background-attachment: fixed; }
+    body { margin: 0; min-height: 100vh; background: transparent; color: var(--ink); font: 500 1rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
     button, input { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
     button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
@@ -157,9 +159,16 @@
     .bookmark-card.featured { grid-column: 1 / -1; grid-template-columns: minmax(220px,.86fr) 1.14fr; grid-template-rows: auto; min-height: 320px; }
     .signal-art { min-height: 132px; position: relative; overflow: hidden; background: var(--signal); color: var(--on-signal); padding: var(--space-xl); isolation: isolate; }
     .featured .signal-art { min-height: 100%; }
-    .signal-art::before, .signal-art::after { content: ""; position: absolute; border: 1px solid color-mix(in oklch, var(--on-signal) 72%, transparent); border-radius: 50%; z-index: -1; }
-    .signal-art::before { width: 230px; height: 230px; right: -76px; top: -92px; }
-    .signal-art::after { width: 122px; height: 122px; right: 42px; top: 28px; }
+    .signal-art:not(.has-media)::before, .signal-art:not(.has-media)::after { content: ""; position: absolute; border: 1px solid color-mix(in oklch, var(--on-signal) 72%, transparent); border-radius: 50%; z-index: -1; }
+    .signal-art:not(.has-media)::before { width: 230px; height: 230px; right: -76px; top: -92px; }
+    .signal-art:not(.has-media)::after { width: 122px; height: 122px; right: 42px; top: 28px; }
+    .signal-art.has-media { background: var(--frame-soft); padding: 0; }
+    .signal-art.has-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,transparent 28%,oklch(10% .02 260 / .78)); }
+    .preview-image { width: 100%; height: 100%; min-height: 132px; display: block; object-fit: cover; }
+    .featured .preview-image { min-height: 320px; }
+    .signal-art.has-media .ordinal, .signal-art.has-media .category { z-index: 2; position: absolute; }
+    .signal-art.has-media .ordinal { top: var(--space-xl); left: var(--space-xl); text-shadow: 0 2px 12px oklch(8% .02 260 / .7); }
+    .media-badge { position: absolute; z-index: 3; top: var(--space-xl); right: var(--space-xl); display: inline-flex; align-items: center; gap: 6px; background: oklch(11% .02 260 / .84); color: oklch(96% .012 80); padding: 7px 9px; font: 900 .65rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; }
     .signal-art .ordinal { display: block; font: 900 3.2rem/.85 var(--display); letter-spacing: -.08em; }
     .signal-art .category { position: absolute; left: var(--space-xl); bottom: var(--space-xl); font: 900 .72rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; }
     .card-body { min-width: 0; display: grid; align-content: start; gap: var(--space-md); padding: var(--space-xl); }
@@ -192,6 +201,13 @@
     .inspector-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
     .inspector-actions a { min-height: 44px; display: grid; place-items: center; border: 1px solid var(--ink); text-decoration: none; font: 900 .7rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
     .inspector-actions a:first-child { background: var(--ink); color: var(--paper-high); }
+    .rich-media { width: 100%; aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden; background: var(--frame-soft); color: var(--on-signal); border: 1px solid var(--line); }
+    .rich-media iframe, .rich-media video, .rich-media img { width: 100%; height: 100%; display: block; border: 0; object-fit: cover; }
+    .remote-media-gate { width: 100%; height: 100%; display: grid; place-items: center; align-content: center; gap: var(--space-md); padding: var(--space-xl); text-align: center; }
+    .remote-media-gate strong { font: 900 1rem/1 var(--display); letter-spacing: .04em; text-transform: uppercase; }
+    .remote-media-gate span { max-width: 34ch; color: var(--graph-copy); font-size: .75rem; }
+    .remote-media-gate button { min-height: 40px; border: 1px solid var(--graph-copy); background: transparent; color: var(--on-signal); padding: 0 var(--space-lg); cursor: pointer; font: 900 .68rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
+    .media-note { margin: calc(var(--space-md) * -1) 0 0; color: var(--muted); font-size: .68rem; }
     .empty { grid-column: 1 / -1; display: grid; gap: var(--space-md); place-items: start; padding: var(--space-3xl) 0; border-top: 2px solid var(--ink); }
     .empty h2 { margin: 0; font: 900 2rem/1 var(--display); }
     .empty p { margin: 0; color: var(--muted); }
@@ -308,7 +324,7 @@
     function applyAppearance(theme, mode, persist = true) {
       state.theme = theme; state.mode = mode; document.documentElement.dataset.theme = theme; document.documentElement.dataset.mode = resolvedMode(mode); document.documentElement.dataset.modePreference = mode;
       if (persist) { try { localStorage.setItem('bookmark-this-theme', theme); localStorage.setItem('bookmark-this-mode', mode); } catch (_) {} }
-      renderAppearanceControls(); if (state.view === 'graph') requestAnimationFrame(() => buildGraph(filteredItems()));
+      renderAppearanceControls(); const selected = data.items.find(item => item.note === state.selected); if (selected) renderInspector(selected); if (state.view === 'graph') requestAnimationFrame(() => buildGraph(filteredItems()));
     }
     function filteredItems() { const q = state.query.trim().toLowerCase(); return data.items.filter(item => (state.category === 'all' || item.categories.includes(state.category)) && (!q || [item.title,item.domain,item.summary,item.why,...item.tags,...item.categories,...item.contextBasis].join(' ').toLowerCase().includes(q))); }
     function renderFilters() {
@@ -321,15 +337,38 @@
     }
     function renderCard(item, index) {
       const card = node('article','bookmark-card' + (index === 0 ? ' featured' : '')); card.style.setProperty('--i', String(Math.min(index,8))); card.style.setProperty('--signal', signalColors[index % signalColors.length]);
-      const art = node('div','signal-art'); art.append(node('span','ordinal',String(index + 1).padStart(2,'0')),node('span','category',data.categories[item.categories[0]] || item.categories[0] || 'Unsorted'));
+      const art = node('div','signal-art' + (item.previewImage ? ' has-media' : ''));
+      if (item.previewImage) { const image = node('img','preview-image'); image.src = item.previewImage; image.alt = item.previewImageAlt || ''; image.loading = index < 3 ? 'eager' : 'lazy'; image.decoding = 'async'; image.referrerPolicy = 'no-referrer'; image.onerror = () => { image.remove(); art.classList.remove('has-media'); }; art.append(image); }
+      art.append(node('span','ordinal',String(index + 1).padStart(2,'0')),node('span','category',data.categories[item.categories[0]] || item.categories[0] || 'Unsorted'));
+      if (item.mediaType === 'video' || item.mediaType === 'stock') art.append(node('span','media-badge',item.mediaType === 'stock' ? 'Live chart' : 'Play video'));
       const body = node('div','card-body'), meta = node('div','card-meta'); meta.append(node('span','',item.domain),node('span','',item.captured)); body.append(meta,node('h3','',item.title)); if (item.summary) body.append(node('p','summary',item.summary));
       if (state.contextVisible && item.why) { const why = node('div','why-preview'); why.append(node('strong','','Why this survived'),node('p','',item.why)); body.append(why); }
       const tags = node('div','tag-row'); item.tags.slice(0,4).forEach(tag => tags.append(node('span','tag',tag))); body.append(tags);
       const footer = node('footer','card-footer'); footer.append(link('Open source',item.url),link('Read note',item.note)); const detail = node('button','detail-trigger',state.contextVisible ? 'Inspect why' : 'Inspect bookmark'); detail.type = 'button'; detail.onclick = () => { state.selected = item.note; renderInspector(item); }; footer.append(detail); card.append(art,body,footer); return card;
     }
+    function allowedEmbedUrl(raw) { try { const url = new URL(raw); const host = url.hostname.toLowerCase(); const allowed = ['youtube.com','www.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com','player.vimeo.com','instagram.com','www.instagram.com','s.tradingview.com']; return url.protocol === 'https:' && allowed.includes(host) ? url.href : ''; } catch (_) { return ''; } }
+    function tradingViewUrl(ticker) { const symbol = ticker.trim().toUpperCase(); if (!/^[A-Z0-9._:-]{1,24}$/.test(symbol)) return ''; const params = new URLSearchParams({ symbol, interval:'D', theme:document.documentElement.dataset.mode === 'dark' ? 'dark' : 'light', style:'1', locale:'en', hide_top_toolbar:'0', saveimage:'0' }); return `https://s.tradingview.com/widgetembed/?${params}`; }
+    function mountRemoteMedia(frame, item, source) {
+      frame.replaceChildren();
+      if (source.kind === 'video') { const video = node('video'); video.controls = true; video.preload = 'metadata'; video.src = source.url; if (item.previewImage) video.poster = item.previewImage; frame.append(video); return; }
+      const iframe = node('iframe'); iframe.src = source.url; iframe.title = source.kind === 'stock' ? `${item.ticker} market chart` : `${item.title} video`; iframe.loading = 'lazy'; iframe.referrerPolicy = 'strict-origin-when-cross-origin'; iframe.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen'; iframe.setAttribute('allowfullscreen',''); iframe.setAttribute('sandbox','allow-scripts allow-same-origin allow-presentation allow-popups'); frame.append(iframe);
+    }
+    function renderRichMedia(item) {
+      if (!data.richMedia?.enabled) return null;
+      let source = null, alwaysAllow = false;
+      if (item.mediaType === 'stock' && item.ticker && data.richMedia.stockChartProvider === 'tradingview') { const url = tradingViewUrl(item.ticker); if (url) { source = {kind:'stock',url}; alwaysAllow = data.richMedia.allowRemoteStockCharts; } }
+      else if (item.videoUrl && /^https:\/\//i.test(item.videoUrl)) { source = {kind:'video',url:item.videoUrl}; alwaysAllow = data.richMedia.allowRemoteVideoEmbeds; }
+      else if (item.embedUrl) { const url = allowedEmbedUrl(item.embedUrl); if (url) { source = {kind:'embed',url}; alwaysAllow = data.richMedia.allowRemoteVideoEmbeds; } }
+      if (!source && !item.previewImage) return null;
+      const frame = node('section','rich-media'); frame.setAttribute('aria-label', item.mediaType === 'stock' ? 'Market chart' : item.mediaType === 'video' ? 'Video preview' : 'Link preview');
+      if (!source) { const image = node('img'); image.src = item.previewImage; image.alt = item.previewImageAlt || ''; image.loading = 'lazy'; image.referrerPolicy = 'no-referrer'; frame.append(image); return frame; }
+      if (alwaysAllow) mountRemoteMedia(frame,item,source);
+      else { const gate = node('div','remote-media-gate'); gate.append(node('strong','',source.kind === 'stock' ? `Load ${item.ticker} chart` : 'Load playable media'),node('span','',source.kind === 'stock' ? 'Connects to TradingView. Market data may be live or provider-delayed.' : 'Connects to the video provider and may share your IP address and browser data.')); const button = node('button','',source.kind === 'stock' ? 'Load chart' : 'Load video'); button.type = 'button'; button.onclick = () => mountRemoteMedia(frame,item,source); gate.append(button); frame.append(gate); }
+      return frame;
+    }
     function renderInspector(item) {
       inspector.replaceChildren(); if (!item) { inspector.append(node('p','summary','Select a bookmark to inspect its details.')); return; }
-      const signal = node('div','inspector-signal'), lights = node('div','signal-lights'); lights.append(node('i'),node('i'),node('i')); signal.append(node('span','',state.contextVisible ? 'Personal inference' : 'Bookmark detail'),lights); inspector.append(signal,node('h2','',item.title),node('p','inspector-domain',item.domain + ' · ' + item.captured));
+      const signal = node('div','inspector-signal'), lights = node('div','signal-lights'); lights.append(node('i'),node('i'),node('i')); signal.append(node('span','',state.contextVisible ? 'Personal inference' : 'Bookmark detail'),lights); inspector.append(signal); const media = renderRichMedia(item); if (media) { inspector.append(media); if (item.mediaType === 'stock') inspector.append(node('p','media-note','Market data may be live or delayed according to the chart provider and exchange.')); } inspector.append(node('h2','',item.title),node('p','inspector-domain',item.domain + ' · ' + item.captured));
       const why = node('section','why-panel'); why.append(node('h3','',state.contextVisible ? 'Why this survived' : 'Context is hidden')); why.append(node('p','',state.contextVisible ? (item.why || 'No personal-relevance inference was recorded for this bookmark.') : 'Turn context on to reveal the explicitly labelled personal-relevance inference.'));
       if (state.contextVisible && item.contextBasis.length) { const basis = node('div','basis'); item.contextBasis.forEach(label => basis.append(node('span','',label))); why.append(basis); } inspector.append(why); if (item.summary) inspector.append(node('p','summary',item.summary)); const actions = node('div','inspector-actions'); actions.append(link('Open source',item.url),link('Read note',item.note)); inspector.append(actions);
     }

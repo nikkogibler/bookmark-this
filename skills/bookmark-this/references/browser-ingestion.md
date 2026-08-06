@@ -24,7 +24,8 @@ Do not treat browser history, cookies, credentials, autofill, reading lists, or 
 7. Report totals, duplicate groups, destination overlap, non-web entries, inaccessible inputs, and the proposed category mapping.
 8. Import only the accepted scope. Merge provenance when the same URL appears in several sources. Never overwrite user-authored prose.
 9. Mark pages that were not opened and verified as `imported-unverified` in an additional metadata field while keeping the schema-compatible bookmark status.
-10. Rebuild navigation and the visualizer, validate the result, and report failures or items still awaiting enrichment.
+10. When rich previews are enabled, run a small `backfill_media.py` batch, review failure rate and image-storage impact, then enrich the accepted full scope. Do not treat media extraction as full factual verification.
+11. Rebuild navigation and the visualizer, validate the result, and report failures or items still awaiting enrichment.
 
 ## Import quality
 

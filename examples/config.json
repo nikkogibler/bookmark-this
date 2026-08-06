@@ -16,6 +16,7 @@
     "bookmarks": "bookmarks",
     "views": "views",
     "collections": "collections",
+    "assets": "bookmark-assets",
     "index": "index.md"
   },
   "categories": [
@@ -54,5 +55,12 @@
   "visualizer": {
     "enabled": true,
     "path": "visualizer/index.html"
+  },
+  "rich_media": {
+    "enabled": true,
+    "cache_preview_images": true,
+    "allow_remote_video_embeds": false,
+    "allow_remote_stock_charts": false,
+    "stock_chart_provider": "tradingview"
   }
 }

@@ -3,6 +3,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -11,6 +12,16 @@ SPEC = importlib.util.spec_from_file_location("bookmark_system", SCRIPT)
 bookmark_system = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(bookmark_system)
+MEDIA_SCRIPT = REPO_ROOT / "skills" / "bookmark-this" / "scripts" / "extract_page_metadata.py"
+MEDIA_SPEC = importlib.util.spec_from_file_location("extract_page_metadata", MEDIA_SCRIPT)
+extract_page_metadata = importlib.util.module_from_spec(MEDIA_SPEC)
+assert MEDIA_SPEC.loader is not None
+MEDIA_SPEC.loader.exec_module(extract_page_metadata)
+BACKFILL_SCRIPT = REPO_ROOT / "skills" / "bookmark-this" / "scripts" / "backfill_media.py"
+BACKFILL_SPEC = importlib.util.spec_from_file_location("backfill_media", BACKFILL_SCRIPT)
+backfill_media = importlib.util.module_from_spec(BACKFILL_SPEC)
+assert BACKFILL_SPEC.loader is not None
+BACKFILL_SPEC.loader.exec_module(backfill_media)
 
 
 class BookmarkSystemTest(unittest.TestCase):
@@ -46,6 +57,7 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn("Why this survived", visualizer)
         self.assertIn("Current session", visualizer)
         self.assertIn("data:image/png;base64,", visualizer)
+        self.assertIn("data:image/jpeg;base64,", visualizer)
         self.assertIn('id="graph-canvas"', visualizer)
         self.assertIn("Relationship map", visualizer)
         self.assertIn('data-theme-choice="archive"', visualizer)
@@ -54,6 +66,9 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn('data-theme-choice="monograph"', visualizer)
         self.assertIn('data-mode-choice="dark"', visualizer)
         self.assertIn("bookmark-this-theme", visualizer)
+        self.assertIn("__BACKGROUND_IMAGE__", (REPO_ROOT / "skills" / "bookmark-this" / "assets" / "visualizer-template.html").read_text(encoding="utf-8"))
+        self.assertIn('"richMedia"', visualizer)
+        self.assertIn("Load playable media", visualizer)
 
     def test_refuses_to_replace_unmarked_index(self):
         config = bookmark_system.load_config(self.root)
@@ -72,6 +87,58 @@ class BookmarkSystemTest(unittest.TestCase):
         (self.root / ".bookmark-system" / "config.json").write_text(json.dumps(config), encoding="utf-8")
         with self.assertRaises(bookmark_system.SystemError):
             bookmark_system.load_config(self.root)
+
+    def test_rich_media_defaults_are_private(self):
+        config = bookmark_system.load_config(self.root)
+        self.assertTrue(config["rich_media"]["cache_preview_images"])
+        self.assertFalse(config["rich_media"]["allow_remote_video_embeds"])
+        self.assertFalse(config["rich_media"]["allow_remote_stock_charts"])
+
+    def test_extracts_open_graph_video_and_explicit_ticker(self):
+        html = b'''<html><head>
+        <title>Fallback title</title>
+        <meta property="og:title" content="Example market video">
+        <meta property="og:image" content="/share.jpg">
+        <meta property="og:image:alt" content="A market chart">
+        <link rel="canonical" href="https://example.com/watch">
+        </head></html>'''
+        with patch.object(extract_page_metadata, "fetch", return_value=(html, "text/html", "https://example.com/watch")):
+            result = extract_page_metadata.extract("https://example.com/watch", "NASDAQ:AAPL", None)
+        self.assertEqual(result["title"], "Example market video")
+        self.assertEqual(result["preview_image_url"], "https://example.com/share.jpg")
+        self.assertEqual(result["media_type"], "stock")
+        self.assertEqual(result["ticker"], "NASDAQ:AAPL")
+
+    def test_provider_embed_allowlist_targets(self):
+        self.assertEqual(
+            extract_page_metadata.provider_embed("https://youtu.be/dQw4w9WgXcQ"),
+            "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+        )
+        self.assertEqual(
+            extract_page_metadata.provider_embed("https://www.instagram.com/reel/ABC_123/"),
+            "https://www.instagram.com/reel/ABC_123/embed/",
+        )
+
+    def test_media_backfill_preserves_note_body(self):
+        note = self.root / "bookmarks" / "example.md"
+        original = note.read_text(encoding="utf-8")
+        with patch.object(
+            backfill_media.media,
+            "extract",
+            return_value={
+                "media_type": "video",
+                "preview_image_url": "https://example.com/preview.jpg",
+                "embed_url": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+            },
+        ):
+            result = backfill_media.inspect_note(note, self.root, None, False)
+        written = backfill_media.write_result(result)
+        updated = note.read_text(encoding="utf-8")
+        self.assertEqual(written["status"], "updated")
+        self.assertIn('media_type: "video"', updated)
+        self.assertIn("## What it is\n\nA minimal example showing the bookmark structure.", updated)
+        self.assertIn("## Sources\n\n- [Original page](https://example.com/research)", updated)
+        self.assertNotEqual(original, updated)
 
 
 if __name__ == "__main__":
