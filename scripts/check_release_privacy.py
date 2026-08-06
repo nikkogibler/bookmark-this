@@ -43,6 +43,7 @@ EXPECTED_PUBLIC_IMAGE_HASHES = {
     "images/visualizer-preview.jpg": "2d1f413a642c20115032da9c53364bc0f5d3b8efda61e239519775c6f7d15530",
     "skills/bookmark-this/assets/visualizer-background.jpg": "75cbd4d7028dcd17fdcb64e643df61b750286a35c659c71a339b0d2d353f44f2",
     "skills/bookmark-this/assets/interzekt-logo.png": "daae7f4d900f87a6b8e2cf3fd7ed32515ee51c9b206fb8421a026a753707ae68",
+    "skills/bookmark-this/assets/interzekt-logo-light.png": "8605b6abe0a6bde4cda9224b14e0299d224b486268e3b5d1fe28a4c1f92a6024",
 }
 URL_RE = re.compile(r"https?://[^\s\"'<>\])]+")
 EMAIL_RE = re.compile(r"(?<![\w.+-])[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}(?![\w.-])")

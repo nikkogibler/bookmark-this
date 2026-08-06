@@ -230,6 +230,7 @@ bookmark-this/
         │   └── openai.yaml
         ├── assets/
         │   ├── interzekt-logo.png
+        │   ├── interzekt-logo-light.png
         │   ├── visualizer-background.jpg
         │   └── visualizer-template.html
         ├── references/

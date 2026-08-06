@@ -73,7 +73,9 @@
     .header-actions { display: flex; align-items: center; gap: var(--space-lg); }
     .maker { display: flex; align-items: center; gap: var(--space-md); color: var(--muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
     .maker img { width: 99.45px; height: 46.75px; object-fit: cover; object-position: center; }
-    :root[data-mode="light"] .maker img { background: oklch(22% .025 260); border-radius: 2px; }
+    .maker-logo-light { display: none; }
+    :root[data-mode="light"] .maker-logo-dark { display: none; }
+    :root[data-mode="light"] .maker-logo-light { display: block; }
     .mode-toggle { min-height: 42px; display: flex; align-items: center; gap: var(--space-sm); border: 1px solid var(--line); border-radius: 999px; background: var(--paper-high); color: var(--muted); padding: 4px 10px; cursor: pointer; font: 850 .68rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
     .mode-toggle .mode-label { transition: color 180ms var(--ease-out); }
     .mode-toggle[aria-checked="false"] .mode-label-light, .mode-toggle[aria-checked="true"] .mode-label-dark { color: var(--ink); }
@@ -265,7 +267,7 @@
         <div class="identity"><strong>Bookmark This</strong><span>All of your bookmarks in one place.</span></div>
         <div class="header-actions">
           <button class="mode-toggle" id="mode-toggle" type="button" role="switch" aria-checked="true" aria-label="Switch to light mode"><span class="mode-label mode-label-light">Light</span><span class="mode-track" aria-hidden="true"><i></i></span><span class="mode-label mode-label-dark">Dark</span></button>
-          <div class="maker"><span>Designed by</span><img src="__INTERZEKT_LOGO__" alt="Interzekt"></div>
+          <div class="maker"><span>Designed by</span><img class="maker-logo-dark" src="__INTERZEKT_LOGO_DARK__" alt="Interzekt"><img class="maker-logo-light" src="__INTERZEKT_LOGO_LIGHT__" alt="Interzekt"></div>
         </div>
       </header>
       <div class="toolbar">
