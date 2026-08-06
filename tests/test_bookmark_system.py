@@ -71,6 +71,8 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn('id="mode-toggle"', visualizer)
         self.assertIn('role="switch"', visualizer)
         self.assertIn('aria-label="Switch to light mode"', visualizer)
+        self.assertIn('aria-label="Bookmark This monogram"', visualizer)
+        self.assertIn('width: 50.6px; height: 50.6px;', visualizer)
         self.assertNotIn('data-theme-choice=', visualizer)
         self.assertNotIn('theme-picker', visualizer)
         self.assertNotIn('bookmark-this-theme', visualizer)
