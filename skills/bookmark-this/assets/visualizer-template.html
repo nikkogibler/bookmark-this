@@ -56,12 +56,7 @@
     .app-shell { width: min(1540px, calc(100% - 48px)); min-height: calc(100vh - 48px); margin: 24px auto; display: grid; grid-template-columns: 76px minmax(0,1fr); overflow: hidden; background: var(--paper); border: 1px solid var(--shell-border); border-radius: 18px; box-shadow: var(--shadow-shell); }
     .rail { display: flex; flex-direction: column; align-items: center; gap: var(--space-xl); padding: var(--space-xl) var(--space-md); background: var(--frame-soft); color: var(--ink); }
     :root[data-mode="dark"] .rail { color: var(--paper-high); }
-    .brand-mark { width: 50.6px; height: 50.6px; position: relative; flex: 0 0 auto; overflow: hidden; isolation: isolate; background: oklch(16% .025 260); color: oklch(97% .006 250); box-shadow: 0 0 0 1px var(--rail-border); }
-    .brand-mark::before { content: ""; position: absolute; inset: 0 0 0 54%; z-index: -1; background: var(--coral); clip-path: polygon(42% 0,100% 0,100% 100%,0 100%); }
-    .brand-mark::after { content: ""; width: 9px; height: 9px; position: absolute; right: 5px; bottom: 5px; background: var(--cyan); transform: rotate(45deg); }
-    .brand-glyph { position: absolute; font-family: var(--display); font-weight: 950; line-height: .8; text-transform: uppercase; }
-    .brand-glyph-b { left: 6px; bottom: 6px; font-size: 2rem; letter-spacing: -.1em; }
-    .brand-glyph-t { top: 6px; right: 5px; font-size: 1.55rem; color: var(--on-signal); text-shadow: 1px 1px 0 oklch(26% .04 25 / .34); }
+    .brand-mark { width: 50.6px; height: 50.6px; display: block; flex: 0 0 auto; object-fit: contain; box-shadow: 0 0 0 1px var(--rail-border); }
     .rail-rule { width: 1px; height: 44px; background: var(--rail-rule); }
     .rail-label { margin-top: auto; writing-mode: vertical-rl; transform: rotate(180deg); font: 800 .65rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--rail-copy); }
     .rail-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 5px color-mix(in oklch, var(--cyan) 18%, transparent); }
@@ -72,10 +67,10 @@
     .identity span { color: var(--muted); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
     .header-actions { display: flex; align-items: center; gap: var(--space-lg); }
     .maker { display: flex; align-items: center; gap: var(--space-md); color: var(--muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
-    .maker img { width: 99.45px; height: 46.75px; object-fit: cover; object-position: center; }
+    .maker img { width: 99.45px; height: 46.75px; object-fit: contain; object-position: center; }
     .maker-logo-light { display: none; }
     :root[data-mode="light"] .maker-logo-dark { display: none; }
-    :root[data-mode="light"] .maker-logo-light { display: block; width: 114.37px; height: 53.76px; }
+    :root[data-mode="light"] .maker-logo-light { display: block; }
     .mode-toggle { min-height: 42px; display: flex; align-items: center; gap: var(--space-sm); border: 1px solid var(--line); border-radius: 999px; background: var(--paper-high); color: var(--muted); padding: 4px 10px; cursor: pointer; font: 850 .68rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
     .mode-toggle .mode-label { transition: color 180ms var(--ease-out); }
     .mode-toggle[aria-checked="false"] .mode-label-light, .mode-toggle[aria-checked="true"] .mode-label-dark { color: var(--ink); }
@@ -262,7 +257,7 @@
     @media (max-width: 860px) {
       .app-shell { width: calc(100% - 24px); margin: 12px; grid-template-columns: 1fr; border-radius: 10px; }
       .rail { min-height: 58px; flex-direction: row; justify-content: space-between; padding: var(--space-sm) var(--space-lg); }
-      .brand-mark { width: 44px; height: 44px; } .brand-glyph-b { font-size: 1.75rem; } .brand-glyph-t { font-size: 1.35rem; } .rail-rule { width: 44px; height: 1px; }
+      .brand-mark { width: 44px; height: 44px; } .rail-rule { width: 44px; height: 1px; }
       .rail-label { margin: 0; writing-mode: horizontal-tb; transform: none; }
       .topbar, .toolbar, .dashboard { padding-left: var(--space-xl); padding-right: var(--space-xl); }
       .toolbar { grid-template-columns: minmax(0,1fr) repeat(3,minmax(124px,auto)); }
@@ -302,7 +297,7 @@
 <body>
   <a class="skip-link" href="#library">Skip to bookmarks</a>
   <div class="app-shell">
-    <aside class="rail" aria-label="Bookmark This"><div class="brand-mark" role="img" aria-label="Bookmark This monogram"><span class="brand-glyph brand-glyph-b">B</span><span class="brand-glyph brand-glyph-t">T</span></div><div class="rail-rule" aria-hidden="true"></div><div class="rail-dot" title="Library is local"></div><div class="rail-label">Local · private · yours</div></aside>
+    <aside class="rail" aria-label="Bookmark This"><img class="brand-mark" src="__BOOKMARK_THIS_MARK__" alt="Bookmark This monogram" aria-label="Bookmark This monogram"><div class="rail-rule" aria-hidden="true"></div><div class="rail-dot" title="Library is local"></div><div class="rail-label">Local · private · yours</div></aside>
     <section class="workspace">
       <header class="topbar">
         <div class="identity"><strong>Bookmark This</strong><span>All of your bookmarks in one place.</span></div>

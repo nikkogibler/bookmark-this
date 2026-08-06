@@ -607,12 +607,16 @@ def visualize(root: Path, config: dict[str, Any]) -> None:
         raise SystemError(f"Missing visualizer template: {template_path}")
     logo_dark_path = assets_dir / "interzekt-logo.png"
     logo_light_path = assets_dir / "interzekt-logo-light.png"
+    bookmark_mark_path = assets_dir / "bookmark-this-mark.svg"
     logo_dark_data = ""
     logo_light_data = ""
+    bookmark_mark_data = ""
     if logo_dark_path.is_file():
         logo_dark_data = "data:image/png;base64," + base64.b64encode(logo_dark_path.read_bytes()).decode("ascii")
     if logo_light_path.is_file():
         logo_light_data = "data:image/png;base64," + base64.b64encode(logo_light_path.read_bytes()).decode("ascii")
+    if bookmark_mark_path.is_file():
+        bookmark_mark_data = "data:image/svg+xml;base64," + base64.b64encode(bookmark_mark_path.read_bytes()).decode("ascii")
     background_path = assets_dir / "visualizer-background.jpg"
     background_data = ""
     if background_path.is_file():
@@ -622,6 +626,7 @@ def visualize(root: Path, config: dict[str, Any]) -> None:
         .replace("__BOOKMARK_PAYLOAD__", payload)
         .replace("__INTERZEKT_LOGO_DARK__", logo_dark_data)
         .replace("__INTERZEKT_LOGO_LIGHT__", logo_light_data)
+        .replace("__BOOKMARK_THIS_MARK__", bookmark_mark_data)
         .replace("__BACKGROUND_IMAGE__", background_data)
     )
     output.write_text(document, encoding="utf-8")

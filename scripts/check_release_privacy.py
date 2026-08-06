@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {
-    ".html", ".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml",
+    ".html", ".json", ".md", ".py", ".svg", ".toml", ".txt", ".yaml", ".yml",
 }
 ALLOWED_URL_HOSTS = {
     "127.0.0.1",
@@ -27,6 +27,7 @@ ALLOWED_URL_HOSTS = {
     "player.vimeo.com",
     "s.tradingview.com",
     "www.instagram.com",
+    "www.w3.org",
     "www.youtube-nocookie.com",
     "youtu.be",
 }
@@ -42,8 +43,10 @@ EXPECTED_PUBLIC_IMAGE_HASHES = {
     "images/bookmark-this-hero.jpg": "101a298f78875f239a7fefda0c7f8cc50820b4588e4d79a8a88ea95dcda832f8",
     "images/visualizer-preview.jpg": "2d1f413a642c20115032da9c53364bc0f5d3b8efda61e239519775c6f7d15530",
     "skills/bookmark-this/assets/visualizer-background.jpg": "75cbd4d7028dcd17fdcb64e643df61b750286a35c659c71a339b0d2d353f44f2",
-    "skills/bookmark-this/assets/interzekt-logo.png": "daae7f4d900f87a6b8e2cf3fd7ed32515ee51c9b206fb8421a026a753707ae68",
-    "skills/bookmark-this/assets/interzekt-logo-light.png": "8605b6abe0a6bde4cda9224b14e0299d224b486268e3b5d1fe28a4c1f92a6024",
+    "skills/bookmark-this/assets/bookmark-this-mark.svg": "edcd404f335f3267b5c201bd0b3a2123bf517594d5ef1341cc716daf27f911d2",
+    "skills/bookmark-this/assets/bookmark-this-mark.png": "2a568fa4fbe35d0d04e281fbf3ea125d3d101ea4ba31f0132e14acecc1c18995",
+    "skills/bookmark-this/assets/interzekt-logo.png": "1a5f6e7931969b82f085885e58974800de01158ece20b29dd842f94207d2656a",
+    "skills/bookmark-this/assets/interzekt-logo-light.png": "5753f50a8b5c49422f2016ed0fab97a060a042e560af90659f9b0221e986347a",
 }
 URL_RE = re.compile(r"https?://[^\s\"'<>\])]+")
 EMAIL_RE = re.compile(r"(?<![\w.+-])[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}(?![\w.-])")

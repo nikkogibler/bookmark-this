@@ -65,6 +65,7 @@ The visualizer is a single local HTML file. It provides:
 - visible context-source labels and a control to hide personal inference
 - a simple Light/Dark switch; new visualizers open in Dark, while Light uses a cool white and blue-gray workspace palette
 - locally remembered appearance preferences with no account or tracking
+- packaged BT mark in SVG and PNG, plus light- and dark-mode Interzekt logo assets
 - locally cached Open Graph artwork for visual bookmark cards
 - playable YouTube, Vimeo, supported Instagram, and direct-video previews when the provider permits embedding
 - opt-in TradingView charts for explicit ticker symbols; market data may be live or provider-delayed
@@ -229,6 +230,8 @@ bookmark-this/
         ├── agents/
         │   └── openai.yaml
         ├── assets/
+        │   ├── bookmark-this-mark.svg
+        │   ├── bookmark-this-mark.png
         │   ├── interzekt-logo.png
         │   ├── interzekt-logo-light.png
         │   ├── visualizer-background.jpg

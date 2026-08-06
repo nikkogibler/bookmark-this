@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Bookmark This monogram</title>
+  <desc id="desc">A geometric BT monogram in ink, coral, cyan, and warm white.</desc>
+  <path fill="#121720" d="M0 0h128v128H0z"/>
+  <path fill="#ff8c42" d="M78 0h50v128H62l16-25V0z"/>
+  <path fill="#ffab58" d="M98 0h30v128h-16V17L98 0z" opacity=".48"/>
+  <path fill="#f5f4ee" fill-rule="evenodd" d="M15 48h25c15 0 24 8 24 20 0 7-4 13-10 16 8 3 12 9 12 18 0 15-10 23-27 23H15V48zm15 13v17h9c7 0 11-3 11-9s-4-8-11-8h-9zm0 29v22h10c8 0 12-4 12-11s-4-11-12-11H30z"/>
+  <path fill="#f5f4ee" d="M82 12h36v14h-11v45H92V26H82z"/>
+  <path fill="#30d4d2" d="m103 94 14 14-14 14-14-14z"/>
+  <path fill="none" stroke="#f5f4ee" stroke-opacity=".28" d="M.5.5h127v127H.5z"/>
+</svg>

@@ -64,6 +64,7 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn("Why this survived", visualizer)
         self.assertIn("Current session", visualizer)
         self.assertIn("data:image/png;base64,", visualizer)
+        self.assertIn("data:image/svg+xml;base64,", visualizer)
         self.assertIn("data:image/jpeg;base64,", visualizer)
         self.assertNotIn('id="graph-canvas"', visualizer)
         self.assertNotIn('id="graph-view"', visualizer)
