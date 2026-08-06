@@ -82,12 +82,12 @@
     .mode-track { width: 34px; height: 18px; position: relative; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-low); }
     .mode-track i { width: 12px; height: 12px; position: absolute; top: 2px; left: 2px; border-radius: 50%; background: var(--cyan); transition: transform 220ms var(--ease-out), background 180ms var(--ease-out); }
     .mode-toggle[aria-checked="true"] .mode-track i { transform: translateX(16px); background: var(--coral); }
-    .toolbar { display: grid; grid-template-columns: minmax(240px,1fr) minmax(128px,auto) minmax(128px,auto) auto auto auto; align-items: end; gap: var(--space-md); padding: var(--space-xl) var(--space-2xl) var(--space-lg); }
+    .toolbar { display: grid; grid-template-columns: minmax(220px,1fr) minmax(116px,auto) minmax(116px,auto) 154px auto auto auto; align-items: end; gap: var(--space-md); padding: var(--space-xl) var(--space-2xl) var(--space-lg); }
     .search-wrap { display: grid; gap: var(--space-sm); }
-    .search-wrap label, .control-field label, .facet-controls label { font: 800 .7rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .search-wrap label, .control-field label, .view-control > span, .facet-controls label { font: 800 .7rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
     .search-wrap input { width: 100%; min-height: 48px; border: 0; border-bottom: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 0; padding: var(--space-sm) 0; font-size: 1.08rem; }
     .search-wrap input::placeholder { color: var(--placeholder); opacity: 1; }
-    .control-field, .facet-controls { display: grid; gap: var(--space-sm); }
+    .control-field, .view-control, .facet-controls { display: grid; gap: var(--space-sm); }
     .control-field select, .facet-controls select, .facet-controls input { width: 100%; min-height: 48px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper-high); color: var(--ink); padding: 0 var(--space-md); font: 750 .78rem/1 var(--body); }
     .facet-controls input { min-height: 40px; }
     .utility-button { min-height: 48px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper-high); color: var(--ink); padding: 0 var(--space-lg); cursor: pointer; font: 800 .74rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; transition: transform 180ms var(--ease-out), background 180ms var(--ease-out); }
@@ -95,6 +95,11 @@
     .context-toggle[aria-pressed="true"] { background: var(--frame-soft); color: var(--paper-high); border-color: var(--frame-soft); }
     :root[data-mode="light"] .context-toggle[aria-pressed="true"] { background: var(--blue); color: var(--on-signal); border-color: var(--blue); }
     .filtered-toggle[aria-pressed="true"] { background: var(--mauve); color: var(--on-signal); border-color: var(--mauve); }
+    .view-switch { min-height: 48px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); background: var(--paper-high); }
+    .view-switch button { min-width: 0; border: 0; background: transparent; color: var(--muted); padding: 0 var(--space-sm); cursor: pointer; font: 850 .68rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
+    .view-switch button + button { border-left: 1px solid var(--line); }
+    .view-switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper-high); }
+    .view-switch button:not([aria-pressed="true"]):hover { background: var(--paper-low); color: var(--ink); }
     .dashboard { display: grid; grid-template-columns: 230px minmax(0,1fr) 320px; gap: var(--space-xl); min-height: calc(100vh - 224px); padding: var(--space-lg) var(--space-2xl) var(--space-3xl); background: transparent; }
     .taxonomy { align-self: start; display: grid; gap: var(--space-2xl); position: sticky; top: var(--space-xl); }
     .section-kicker { margin: 0; font: 900 .7rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--mauve); }
@@ -130,6 +135,11 @@
     .filter-chip::after { content: " ×"; color: var(--mauve); }
     .bookmark-layout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); }
     .bookmark-layout.grouped { grid-template-columns: 1fr; gap: var(--space-2xl); }
+    .bookmark-layout.table-mode { grid-template-columns: 1fr; }
+    .dashboard.table-view { grid-template-columns: 210px minmax(0,1fr); }
+    .dashboard.table-view .inspector { grid-column: 2; position: static; grid-template-columns: minmax(0,1fr) minmax(280px,.72fr); }
+    .dashboard.table-view .inspector .why-panel, .dashboard.table-view .inspector .inspector-actions { grid-column: 2; }
+    .dashboard.table-view .inspector .inspector-signal, .dashboard.table-view .inspector h2, .dashboard.table-view .inspector .inspector-domain { grid-column: 1; }
     .bookmark-group { display: grid; gap: var(--space-md); }
     .bookmark-group[open] { padding-bottom: var(--space-lg); }
     .group-head { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: baseline; gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--line); cursor: pointer; list-style: none; }
@@ -140,6 +150,32 @@
     .bookmark-group[open] .group-head::after { content: "−"; }
     .group-head:hover h2, .group-head:focus-visible h2 { color: var(--mauve); }
     .group-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); }
+    .group-grid.table-group { grid-template-columns: 1fr; }
+    .table-shell { width: 100%; overflow-x: auto; border: 1px solid var(--line); background: var(--paper-high); box-shadow: var(--shadow-module); scrollbar-width: thin; }
+    .bookmark-table { width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; }
+    .bookmark-table col:nth-child(1) { width: 20%; }
+    .bookmark-table col:nth-child(2) { width: 11%; }
+    .bookmark-table col:nth-child(3) { width: 12%; }
+    .bookmark-table col:nth-child(4) { width: 13%; }
+    .bookmark-table col:nth-child(5) { width: 10%; }
+    .bookmark-table col:nth-child(6) { width: 9%; }
+    .bookmark-table col:nth-child(7) { width: 7%; }
+    .bookmark-table col:nth-child(8) { width: 9%; }
+    .bookmark-table col:nth-child(9) { width: 9%; }
+    .bookmark-table th { padding: var(--space-md); border-bottom: 2px solid var(--ink); color: var(--muted); font: 850 .62rem/1 var(--display); letter-spacing: .11em; text-align: left; text-transform: uppercase; }
+    .bookmark-table td { padding: var(--space-md); border-bottom: 1px solid var(--line); color: var(--muted); font-size: .75rem; line-height: 1.35; vertical-align: top; overflow-wrap: anywhere; }
+    .bookmark-table tbody tr { cursor: pointer; transition: background 150ms var(--ease-out); }
+    .bookmark-table tbody tr:last-child td { border-bottom: 0; }
+    .bookmark-table tbody tr:hover, .bookmark-table tbody tr:focus-visible, .bookmark-table tbody tr[aria-selected="true"] { background: var(--paper-low); outline: 0; }
+    .bookmark-table tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 4px 0 0 var(--mauve); }
+    .table-bookmark { display: grid; gap: 4px; }
+    .table-bookmark strong { color: var(--ink); font: 900 .92rem/1.1 var(--display); letter-spacing: -.015em; }
+    .table-bookmark span, .table-muted { color: var(--muted); font-size: .68rem; }
+    .table-list { color: var(--ink); }
+    .table-status { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-weight: 750; white-space: nowrap; }
+    .table-status::before { content: ""; width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%; background: var(--success); }
+    .table-actions { display: grid; align-content: start; gap: var(--space-sm); white-space: nowrap; }
+    .table-actions a, .table-actions button { border: 0; background: transparent; color: var(--ink); padding: 0; cursor: pointer; font: 850 .64rem/1 var(--display); letter-spacing: .06em; text-decoration: underline; text-underline-offset: 3px; text-transform: uppercase; }
     .bookmark-card { --signal: var(--mauve); min-width: 0; display: grid; grid-template-rows: auto 1fr auto; background: var(--paper-high); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-module); animation: reveal 500ms var(--ease-out) both; animation-delay: calc(var(--i,0) * 55ms); }
     .bookmark-card.featured { grid-column: 1 / -1; grid-template-columns: minmax(220px,.86fr) 1.14fr; grid-template-rows: auto; min-height: 320px; }
     .signal-art { min-height: 132px; position: relative; overflow: hidden; background: var(--signal); color: var(--on-signal); padding: var(--space-xl); isolation: isolate; }
@@ -229,7 +265,7 @@
       .brand-mark { width: 44px; height: 44px; } .brand-glyph-b { font-size: 1.75rem; } .brand-glyph-t { font-size: 1.35rem; } .rail-rule { width: 44px; height: 1px; }
       .rail-label { margin: 0; writing-mode: horizontal-tb; transform: none; }
       .topbar, .toolbar, .dashboard { padding-left: var(--space-xl); padding-right: var(--space-xl); }
-      .toolbar { grid-template-columns: minmax(0,1fr) repeat(2,minmax(130px,auto)); }
+      .toolbar { grid-template-columns: minmax(0,1fr) repeat(3,minmax(124px,auto)); }
       .toolbar .utility-button { grid-row: 2; }
       .dashboard { grid-template-columns: 1fr; } .taxonomy { position: static; }
       .context-ledger { display: none; }
@@ -239,6 +275,8 @@
       .category-list { grid-auto-flow: column; grid-auto-columns: minmax(145px,1fr); overflow-x: auto; }
       .category-button { padding: var(--space-sm); border: 1px solid var(--line); }
       .inspector { grid-column: 1; }
+      .dashboard.table-view { grid-template-columns: 1fr; }
+      .dashboard.table-view .inspector { grid-column: 1; }
     }
     @media (max-width: 640px) {
       .app-shell { width: 100%; min-height: 100vh; margin: 0; border: 0; border-radius: 0; }
@@ -246,7 +284,7 @@
       .header-actions { width: 100%; justify-content: space-between; } .maker span { display: none; }
       .maker { justify-self: start; } .toolbar { grid-template-columns: 1fr 1fr; }
       .search-wrap { grid-column: 1 / -1; } .bookmark-layout, .group-grid { grid-template-columns: 1fr; }
-      .control-field { min-width: 0; }
+      .control-field, .view-control { min-width: 0; }
       .toolbar .utility-button { grid-row: auto; }
       .taxonomy { grid-template-columns: 1fr; }
       .bookmark-card.featured { grid-column: 1; grid-template-columns: 1fr; }
@@ -254,6 +292,9 @@
       .library-head { align-items: start; flex-direction: column; }
       .inspector { grid-template-columns: 1fr; }
       .inspector .why-panel, .inspector .inspector-actions, .inspector .inspector-signal, .inspector h2, .inspector .inspector-domain { grid-column: 1; }
+      .dashboard.table-view { grid-template-columns: 1fr; }
+      .dashboard.table-view .inspector { grid-column: 1; grid-template-columns: 1fr; }
+      .dashboard.table-view .inspector .why-panel, .dashboard.table-view .inspector .inspector-actions, .dashboard.table-view .inspector .inspector-signal, .dashboard.table-view .inspector h2, .dashboard.table-view .inspector .inspector-domain { grid-column: 1; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
@@ -274,6 +315,7 @@
         <div class="search-wrap"><label for="search">Search the library</label><input id="search" type="search" autocomplete="off" placeholder="Ideas, tools, domains, or decisions"></div>
         <div class="control-field"><label for="sort-by">Sort</label><select id="sort-by"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option><option value="domain">Domain A–Z</option><option value="source">Browser A–Z</option></select></div>
         <div class="control-field"><label for="group-by">Group</label><select id="group-by"><option value="none">No grouping</option><option value="year">Year</option><option value="month">Month</option><option value="category">Category</option><option value="tag">Primary tag</option><option value="source">Browser</option><option value="keyword">Primary keyword</option><option value="domain">Domain</option><option value="media">Media type</option><option value="status">Enrichment</option><option value="folder">Original folder</option><option value="context">Context source</option></select></div>
+        <div class="view-control"><span id="view-label">View</span><div class="view-switch" id="view-switch" role="group" aria-labelledby="view-label"><button type="button" data-view-mode="cards" aria-pressed="true">Cards</button><button type="button" data-view-mode="table" aria-pressed="false">Table</button></div></div>
         <button class="utility-button context-toggle" id="context-toggle" type="button" aria-pressed="true">Context on</button>
         <button class="utility-button filtered-toggle" id="filtered-toggle" type="button" aria-pressed="false">Filtered out 0</button>
         <button class="utility-button" id="clear" type="button">Reset view</button>
@@ -304,8 +346,10 @@
     const EDIT_TOKEN = '__BOOKMARK_EDIT_TOKEN__';
     const editingAvailable = location.protocol.startsWith('http') && !EDIT_TOKEN.startsWith('__BOOKMARK_');
     const FACET_KEYS = ['category','year','month','tag','source','keyword','domain','media','status','folder','context'];
-    const state = { query: '', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', hiddenView: false, mode: document.documentElement.dataset.mode || 'dark', facetKind: 'category', facetQuery: '', sortBy: 'newest', groupBy: 'none', filters: Object.fromEntries(FACET_KEYS.map(key => [key,new Set()])) };
-    const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), hiddenToggle = document.getElementById('filtered-toggle'), filterSummary = document.getElementById('filter-summary'), facetKind = document.getElementById('facet-kind'), facetSearch = document.getElementById('facet-search'), sortBy = document.getElementById('sort-by'), groupBy = document.getElementById('group-by');
+    const VIEW_MODES = new Set(['cards','table']);
+    let savedViewMode = 'cards'; try { const storedView = localStorage.getItem('bookmark-this-view'); if (VIEW_MODES.has(storedView)) savedViewMode = storedView; } catch (_) {}
+    const state = { query: '', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', hiddenView: false, mode: document.documentElement.dataset.mode || 'dark', viewMode: savedViewMode, facetKind: 'category', facetQuery: '', sortBy: 'newest', groupBy: 'none', filters: Object.fromEntries(FACET_KEYS.map(key => [key,new Set()])) };
+    const grid = document.getElementById('grid'), dashboard = document.getElementById('library'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle'), hiddenToggle = document.getElementById('filtered-toggle'), filterSummary = document.getElementById('filter-summary'), facetKind = document.getElementById('facet-kind'), facetSearch = document.getElementById('facet-search'), sortBy = document.getElementById('sort-by'), groupBy = document.getElementById('group-by'), viewSwitch = document.getElementById('view-switch');
     const collator = new Intl.Collator(undefined,{numeric:true,sensitivity:'base'});
     const signalColors = ['var(--mauve)','var(--blue)','var(--coral)','var(--violet)','var(--cyan)'];
     function node(name, className, text) { const el = document.createElement(name); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
@@ -377,6 +421,26 @@
       const tags = node('div','tag-row'); item.tags.slice(0,4).forEach(tag => { const tagButton = node('button','tag',tag); tagButton.type = 'button'; tagButton.onclick = () => { state.facetKind = 'tag'; facetKind.value = 'tag'; state.filters.tag.add(tag); render(); }; tags.append(tagButton); }); body.append(tags);
       const footer = node('footer','card-footer'); footer.append(link('Open source',item.url),link('Read note',item.note)); const detail = node('button','detail-trigger',state.contextVisible ? 'Inspect why' : 'Inspect bookmark'); detail.type = 'button'; detail.onclick = () => { state.selected = item.note; renderInspector(item); }; footer.append(detail); card.append(art,body,footer); return card;
     }
+    function inspectItem(item) {
+      state.selected = item.note; renderInspector(item);
+      grid.querySelectorAll('.bookmark-table tbody tr').forEach(row => row.setAttribute('aria-selected',String(row.dataset.note === item.note)));
+    }
+    function tableCell(text, className = '') { return node('td',className,text || '—'); }
+    function renderTable(items) {
+      const shell = node('div','table-shell'), table = node('table','bookmark-table'), columns = node('colgroup'), head = node('thead'), headRow = node('tr'), body = node('tbody');
+      for (let index = 0; index < 9; index += 1) columns.append(node('col'));
+      ['Bookmark','Domain','Categories','Tags','Browser','Captured','Media','Status','Actions'].forEach(label => headRow.append(node('th','',label))); head.append(headRow);
+      items.forEach(item => {
+        const row = node('tr'); row.tabIndex = 0; row.dataset.note = item.note; row.setAttribute('aria-selected',String(item.note === state.selected)); row.setAttribute('aria-label',`Inspect ${item.title}`);
+        row.onclick = () => inspectItem(item); row.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); inspectItem(item); } };
+        const bookmark = node('td'), identity = node('div','table-bookmark'); identity.append(node('strong','',item.title),node('span','',item.summary || item.url)); bookmark.append(identity);
+        const categories = (item.categories || []).map(value => labelFor('category',value)).join(', '), tags = (item.tags || []).join(', '), browsers = (item.sourceProfiles || []).join(', '), media = labelFor('media',item.mediaType || 'none'), status = labelFor('status',item.enrichmentStatus || 'unspecified');
+        const statusCell = node('td'), statusLabel = node('span','table-status',status); statusCell.append(statusLabel);
+        const actions = node('td','table-actions'), source = link('Source',item.url), detail = node('button','','Inspect'); detail.type = 'button'; source.onclick = event => event.stopPropagation(); detail.onclick = event => { event.stopPropagation(); inspectItem(item); }; actions.append(source,detail);
+        row.append(bookmark,tableCell(item.domain),tableCell(categories,'table-list'),tableCell(tags,'table-list'),tableCell(browsers),tableCell(item.captured),tableCell(media),statusCell,actions); body.append(row);
+      });
+      table.append(columns,head,body); shell.append(table); return shell;
+    }
     function allowedEmbedUrl(raw) { try { const url = new URL(raw); const host = url.hostname.toLowerCase(); const allowed = ['youtube.com','www.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com','player.vimeo.com','instagram.com','www.instagram.com','s.tradingview.com']; return url.protocol === 'https:' && allowed.includes(host) ? url.href : ''; } catch (_) { return ''; } }
     function tradingViewUrl(ticker) { const symbol = ticker.trim().toUpperCase(); if (!/^[A-Z0-9._:-]{1,24}$/.test(symbol)) return ''; const params = new URLSearchParams({ symbol, interval:'D', theme:document.documentElement.dataset.mode === 'dark' ? 'dark' : 'light', style:'1', locale:'en', hide_top_toolbar:'0', saveimage:'0' }); return `https://s.tradingview.com/widgetembed/?${params}`; }
     function mountRemoteMedia(frame, item, source) {
@@ -434,12 +498,13 @@
       const groups = new Map(); items.forEach(item => { const value = valuesFor(item,state.groupBy)[0] || 'Unspecified'; if (!groups.has(value)) groups.set(value,[]); groups.get(value).push(item); });
       const entries = [...groups.entries()]; entries.sort((a,b) => { if (state.groupBy === 'year' || state.groupBy === 'month') { if (a[0] === 'Unknown date') return 1; if (b[0] === 'Unknown date') return -1; return b[0].localeCompare(a[0]); } return collator.compare(labelFor(state.groupBy,a[0]),labelFor(state.groupBy,b[0])); }); return entries;
     }
-    function renderCards(items) {
-      grid.replaceChildren(); grid.classList.toggle('grouped',state.groupBy !== 'none');
-      if (state.groupBy === 'none') { items.forEach((item,index) => grid.append(renderCard(item,index,index === 0))); return; }
-      let ordinal = 0; groupEntries(items).forEach(([value,members]) => { const section = node('details','bookmark-group'), head = node('summary','group-head'), groupGrid = node('div','group-grid'); head.append(node('h2','',labelFor(state.groupBy,value)),node('span','',`${members.length} bookmark${members.length === 1 ? '' : 's'}`)); members.forEach(item => { groupGrid.append(renderCard(item,ordinal,false)); ordinal += 1; }); section.append(head,groupGrid); grid.append(section); });
+    function renderItems(items) {
+      grid.replaceChildren(); grid.classList.toggle('grouped',state.groupBy !== 'none'); grid.classList.toggle('table-mode',state.viewMode === 'table'); dashboard.classList.toggle('table-view',state.viewMode === 'table');
+      viewSwitch.querySelectorAll('[data-view-mode]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.viewMode === state.viewMode)));
+      if (state.groupBy === 'none') { if (state.viewMode === 'table') grid.append(renderTable(items)); else items.forEach((item,index) => grid.append(renderCard(item,index,index === 0))); return; }
+      let ordinal = 0; groupEntries(items).forEach(([value,members]) => { const section = node('details','bookmark-group'), head = node('summary','group-head'), groupGrid = node('div','group-grid' + (state.viewMode === 'table' ? ' table-group' : '')); head.append(node('h2','',labelFor(state.groupBy,value)),node('span','',`${members.length} bookmark${members.length === 1 ? '' : 's'}`)); if (state.viewMode === 'table') groupGrid.append(renderTable(members)); else members.forEach(item => { groupGrid.append(renderCard(item,ordinal,false)); ordinal += 1; }); section.append(head,groupGrid); grid.append(section); });
     }
-    function render() { const items = sortedItems(filteredItems()), hiddenTotal = data.items.filter(item => item.hidden).length, visibleTotal = data.items.length - hiddenTotal; renderCards(items); count.textContent = state.hiddenView ? `${items.length} of ${hiddenTotal} filtered-out signal${hiddenTotal === 1 ? '' : 's'}` : `${items.length} of ${visibleTotal} saved signal${visibleTotal === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; hiddenToggle.textContent = state.hiddenView ? 'Back to saved' : `Filtered out ${hiddenTotal}`; hiddenToggle.setAttribute('aria-pressed',String(state.hiddenView)); document.getElementById('view-kicker').textContent = state.hiddenView ? 'Still recoverable' : 'What survived'; document.getElementById('view-title').textContent = state.hiddenView ? 'Filtered out' : 'Saved signals'; empty.hidden = items.length !== 0; empty.querySelector('h2').textContent = state.hiddenView ? 'Nothing is filtered out.' : 'Nothing matches yet.'; empty.querySelector('p').textContent = state.hiddenView ? 'Return to saved bookmarks or filter something out from its detail panel.' : 'Remove a filter, try another phrase, or reset the view.'; renderFilters(); renderFilterSummary(); renderContextLedger(); const selected = items.find(item => item.note === state.selected) || items[0]; state.selected = selected?.note || ''; renderInspector(selected); }
+    function render() { const items = sortedItems(filteredItems()), hiddenTotal = data.items.filter(item => item.hidden).length, visibleTotal = data.items.length - hiddenTotal; const selected = items.find(item => item.note === state.selected) || items[0]; state.selected = selected?.note || ''; renderItems(items); count.textContent = state.hiddenView ? `${items.length} of ${hiddenTotal} filtered-out signal${hiddenTotal === 1 ? '' : 's'}` : `${items.length} of ${visibleTotal} saved signal${visibleTotal === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; hiddenToggle.textContent = state.hiddenView ? 'Back to saved' : `Filtered out ${hiddenTotal}`; hiddenToggle.setAttribute('aria-pressed',String(state.hiddenView)); document.getElementById('view-kicker').textContent = state.hiddenView ? 'Still recoverable' : 'What survived'; document.getElementById('view-title').textContent = state.hiddenView ? 'Filtered out' : 'Saved signals'; empty.hidden = items.length !== 0; empty.querySelector('h2').textContent = state.hiddenView ? 'Nothing is filtered out.' : 'Nothing matches yet.'; empty.querySelector('p').textContent = state.hiddenView ? 'Return to saved bookmarks or filter something out from its detail panel.' : 'Remove a filter, try another phrase, or reset the view.'; renderFilters(); renderFilterSummary(); renderContextLedger(); renderInspector(selected); }
     document.getElementById('search').addEventListener('input', event => { state.query = event.target.value; render(); });
     document.getElementById('clear').onclick = () => { state.query = ''; state.facetQuery = ''; state.sortBy = 'newest'; state.groupBy = 'none'; FACET_KEYS.forEach(key => state.filters[key].clear()); document.getElementById('search').value = ''; facetSearch.value = ''; sortBy.value = 'newest'; groupBy.value = 'none'; render(); };
     hiddenToggle.onclick = () => { state.hiddenView = !state.hiddenView; state.selected = data.items.find(item => Boolean(item.hidden) === state.hiddenView)?.note || ''; render(); };
@@ -448,6 +513,7 @@
     facetSearch.addEventListener('input', event => { state.facetQuery = event.target.value; renderFilters(); });
     sortBy.onchange = () => { state.sortBy = sortBy.value; render(); };
     groupBy.onchange = () => { state.groupBy = groupBy.value; render(); };
+    viewSwitch.onclick = event => { const button = event.target.closest('[data-view-mode]'); if (!button || !VIEW_MODES.has(button.dataset.viewMode)) return; state.viewMode = button.dataset.viewMode; try { localStorage.setItem('bookmark-this-view',state.viewMode); } catch (_) {} render(); };
     document.getElementById('mode-toggle').onclick = () => applyMode(state.mode === 'dark' ? 'light' : 'dark');
     if (data.contextMode === 'none') { toggle.disabled = true; toggle.textContent = 'No context'; toggle.setAttribute('aria-pressed','false'); }
     renderModeToggle(); render();

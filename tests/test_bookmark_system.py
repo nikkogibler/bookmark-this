@@ -106,6 +106,10 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn("__BOOKMARK_EDIT_TOKEN__", visualizer)
         self.assertIn("Manage bookmark", visualizer)
         self.assertIn("Filtered out 0", visualizer)
+        self.assertIn('data-view-mode="cards"', visualizer)
+        self.assertIn('data-view-mode="table"', visualizer)
+        self.assertIn("bookmark-this-view", visualizer)
+        self.assertIn("bookmark-table", visualizer)
 
     def test_refuses_to_replace_unmarked_index(self):
         config = bookmark_system.load_config(self.root)

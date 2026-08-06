@@ -49,7 +49,7 @@ Bookmark files stay in a stable location. Categories, tags, collections, and gen
 ## Optional Visualizer
 
 <p align="center">
-  <img src="images/visualizer-preview.jpg" alt="Bookmark This visualizer showing searchable bookmark cards and its personal-relevance inspector" width="800" />
+  <img src="images/visualizer-preview.jpg" alt="Bookmark This visualizer showing searchable bookmark records and its personal-relevance inspector" width="800" />
 </p>
 
 The visualizer is a single local HTML file. It provides:
@@ -59,7 +59,7 @@ The visualizer is a single local HTML file. It provides:
 - sorting by date, title, domain, or source browser
 - collapsed-by-default drawer grouping by date, category, primary tag, browser, keyword, domain, media type, enrichment status, original folder, or approved context source
 - localhost-only tag editing, persistent `Filter out` controls, restoration, and recoverable removal when editable mode is enabled
-- readable bookmark cards
+- switchable card and dense table views, with one bookmark per row and useful metadata columns
 - links to the original source and the local Markdown note
 - an optional `Why this survived` view grounded in user-approved context
 - visible context-source labels and a control to hide personal inference
