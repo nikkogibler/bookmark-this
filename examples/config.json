@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "owner_label": "you",
+  "agentic_platform": "codex",
+  "source_bookmark_paths": [],
+  "timezone": "Europe/Rome",
+  "link_style": "markdown",
+  "paths": {
+    "bookmarks": "bookmarks",
+    "views": "views",
+    "collections": "collections",
+    "index": "index.md"
+  },
+  "categories": [
+    {
+      "slug": "research",
+      "label": "Research",
+      "description": "Sources and material to investigate"
+    },
+    {
+      "slug": "tools",
+      "label": "Tools",
+      "description": "Software and utilities worth revisiting"
+    }
+  ],
+  "capture": {
+    "depth": "standard",
+    "personal_relevance": "always",
+    "inference_label": "Inference, not confirmed:",
+    "retain_safe_original_url": false,
+    "strip_tracking_parameters": true
+  },
+  "navigation": {
+    "generate_category_views": true,
+    "generate_tag_views": true
+  },
+  "visualizer": {
+    "enabled": true,
+    "path": "visualizer/index.html"
+  }
+}

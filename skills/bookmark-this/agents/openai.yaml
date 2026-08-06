@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bookmark This"
+  short_description: "Build and use your personal bookmark system"
+  default_prompt: "Use $bookmark-this to set up my personal bookmark system."

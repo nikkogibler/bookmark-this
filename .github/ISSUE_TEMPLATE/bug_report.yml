@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible setup, capture, navigation, or visualizer problem
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Agentic platform
+      options:
+        - Codex
+        - Claude
+        - Hermes
+        - OpenClaw
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the failure and what you expected instead. Remove private paths, URLs, tokens, and bookmark contents.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Relevant environment details
+      description: Include platform version, operating system, and Python version when relevant.

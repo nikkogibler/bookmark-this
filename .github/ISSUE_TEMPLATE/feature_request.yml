@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest a focused improvement to Bookmark This
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: portability
+    attributes:
+      label: Platform or migration considerations
+      description: Explain whether this affects Codex, Claude, Hermes, OpenClaw, or the shared Markdown format.
