@@ -9,9 +9,9 @@
     (() => {
       const themes = new Set(['archive','grove','signal','monograph']);
       const modes = new Set(['auto','light','dark']);
-      let theme = 'archive', mode = 'auto';
+      let theme = 'monograph', mode = 'dark';
       try { theme = localStorage.getItem('bookmark-this-theme') || theme; mode = localStorage.getItem('bookmark-this-mode') || mode; } catch (_) {}
-      if (!themes.has(theme)) theme = 'archive'; if (!modes.has(mode)) mode = 'auto';
+      if (!themes.has(theme)) theme = 'monograph'; if (!modes.has(mode)) mode = 'dark';
       const resolved = mode === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : mode === 'auto' ? 'light' : mode;
       document.documentElement.dataset.theme = theme; document.documentElement.dataset.mode = resolved; document.documentElement.dataset.modePreference = mode;
     })();
@@ -278,7 +278,7 @@
   <script id="bookmark-data" type="application/json">__BOOKMARK_PAYLOAD__</script>
   <script>
     const data = JSON.parse(document.getElementById('bookmark-data').textContent);
-    const state = { query: '', category: 'all', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', theme: document.documentElement.dataset.theme || 'archive', mode: document.documentElement.dataset.modePreference || 'auto' };
+    const state = { query: '', category: 'all', selected: data.items[0]?.note || '', contextVisible: data.contextMode !== 'none', theme: document.documentElement.dataset.theme || 'monograph', mode: document.documentElement.dataset.modePreference || 'dark' };
     const grid = document.getElementById('grid'), count = document.getElementById('count'), empty = document.getElementById('empty'), filters = document.getElementById('filters'), inspector = document.getElementById('inspector'), toggle = document.getElementById('context-toggle');
     const signalColors = ['var(--mauve)','var(--blue)','var(--coral)','var(--violet)','var(--cyan)'];
     function node(name, className, text) { const el = document.createElement(name); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }

@@ -38,7 +38,7 @@ FORBIDDEN_MARKERS = {
 }
 EXPECTED_PUBLIC_IMAGE_HASHES = {
     "images/bookmark-this-hero.jpg": "101a298f78875f239a7fefda0c7f8cc50820b4588e4d79a8a88ea95dcda832f8",
-    "images/visualizer-preview.jpg": "62b2491232db03a3bea87c000b0f82c4ec99c361198f923faae35e5d82eb11c9",
+    "images/visualizer-preview.jpg": "6695b32b206075db022af9bda839906859772e48eb4bc7df721d534c6cbd06c6",
     "skills/bookmark-this/assets/visualizer-background.jpg": "75cbd4d7028dcd17fdcb64e643df61b750286a35c659c71a339b0d2d353f44f2",
     "skills/bookmark-this/assets/interzekt-logo.png": "8605b6abe0a6bde4cda9224b14e0299d224b486268e3b5d1fe28a4c1f92a6024",
 }

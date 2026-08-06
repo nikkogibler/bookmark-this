@@ -60,7 +60,7 @@ The visualizer is a single local HTML file. It provides:
 - links to the original source and the local Markdown note
 - an optional `Why this survived` view grounded in user-approved context
 - visible context-source labels and a control to hide personal inference
-- four visual themes—Archive, Grove, Signal, and Monograph—each with Auto, Light, and Dark modes
+- four visual themes—Archive, Grove, Signal, and Monograph—each with Auto, Light, and Dark modes; new visualizers open in Monograph Dark
 - locally remembered appearance preferences with no account or tracking
 - locally cached Open Graph artwork for visual bookmark cards
 - playable YouTube, Vimeo, supported Instagram, and direct-video previews when the provider permits embedding

@@ -67,7 +67,10 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn('data-theme-choice="monograph"', visualizer)
         self.assertIn('data-mode-choice="dark"', visualizer)
         self.assertIn("bookmark-this-theme", visualizer)
-        self.assertIn("__BACKGROUND_IMAGE__", (REPO_ROOT / "skills" / "bookmark-this" / "assets" / "visualizer-template.html").read_text(encoding="utf-8"))
+        template = (REPO_ROOT / "skills" / "bookmark-this" / "assets" / "visualizer-template.html").read_text(encoding="utf-8")
+        self.assertIn("__BACKGROUND_IMAGE__", template)
+        self.assertIn("let theme = 'monograph', mode = 'dark';", template)
+        self.assertIn("theme = 'monograph'; if (!modes.has(mode)) mode = 'dark';", template)
         self.assertIn('"richMedia"', visualizer)
         self.assertIn("Load playable media", visualizer)
 
