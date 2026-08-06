@@ -59,6 +59,8 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertIn('id="facet-search"', visualizer)
         self.assertIn('id="sort-by"', visualizer)
         self.assertIn('id="group-by"', visualizer)
+        self.assertIn("node('details','bookmark-group')", visualizer)
+        self.assertIn("node('summary','group-head')", visualizer)
         self.assertIn("Why this survived", visualizer)
         self.assertIn("Current session", visualizer)
         self.assertIn("data:image/png;base64,", visualizer)

@@ -57,7 +57,7 @@ The visualizer is a single local HTML file. It provides:
 - full-text search across titles, summaries, domains, categories, and tags
 - faceted filtering by category, year, month, tag, source browser, keyword, domain, media type, enrichment status, original folder, and approved context source
 - sorting by date, title, domain, or source browser
-- optional grouping by date, category, primary tag, browser, keyword, domain, media type, enrichment status, original folder, or approved context source
+- collapsed-by-default drawer grouping by date, category, primary tag, browser, keyword, domain, media type, enrichment status, original folder, or approved context source
 - localhost-only tag editing, persistent `Filter out` controls, restoration, and recoverable removal when editable mode is enabled
 - readable bookmark cards
 - links to the original source and the local Markdown note

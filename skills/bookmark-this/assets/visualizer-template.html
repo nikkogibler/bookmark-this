@@ -150,9 +150,14 @@
     .bookmark-layout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); }
     .bookmark-layout.grouped { grid-template-columns: 1fr; gap: var(--space-2xl); }
     .bookmark-group { display: grid; gap: var(--space-md); }
-    .group-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-lg); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--line); }
+    .bookmark-group[open] { padding-bottom: var(--space-lg); }
+    .group-head { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: baseline; gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--line); cursor: pointer; list-style: none; }
+    .group-head::-webkit-details-marker { display: none; }
     .group-head h2 { margin: 0; font: 900 1.45rem/1 var(--display); letter-spacing: -.025em; }
     .group-head span { color: var(--muted); font-size: .74rem; }
+    .group-head::after { content: "+"; width: 28px; color: var(--mauve); font: 900 1.25rem/1 var(--display); text-align: right; }
+    .bookmark-group[open] .group-head::after { content: "−"; }
+    .group-head:hover h2, .group-head:focus-visible h2 { color: var(--mauve); }
     .group-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); }
     .bookmark-card { --signal: var(--mauve); min-width: 0; display: grid; grid-template-rows: auto 1fr auto; background: var(--paper-high); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-module); animation: reveal 500ms var(--ease-out) both; animation-delay: calc(var(--i,0) * 55ms); }
     .bookmark-card.featured { grid-column: 1 / -1; grid-template-columns: minmax(220px,.86fr) 1.14fr; grid-template-rows: auto; min-height: 320px; }
@@ -467,7 +472,7 @@
     function renderCards(items) {
       grid.replaceChildren(); grid.classList.toggle('grouped',state.groupBy !== 'none');
       if (state.groupBy === 'none') { items.forEach((item,index) => grid.append(renderCard(item,index,index === 0))); return; }
-      let ordinal = 0; groupEntries(items).forEach(([value,members]) => { const section = node('section','bookmark-group'), head = node('header','group-head'), groupGrid = node('div','group-grid'); head.append(node('h2','',labelFor(state.groupBy,value)),node('span','',`${members.length} bookmark${members.length === 1 ? '' : 's'}`)); members.forEach(item => { groupGrid.append(renderCard(item,ordinal,false)); ordinal += 1; }); section.append(head,groupGrid); grid.append(section); });
+      let ordinal = 0; groupEntries(items).forEach(([value,members]) => { const section = node('details','bookmark-group'), head = node('summary','group-head'), groupGrid = node('div','group-grid'); head.append(node('h2','',labelFor(state.groupBy,value)),node('span','',`${members.length} bookmark${members.length === 1 ? '' : 's'}`)); members.forEach(item => { groupGrid.append(renderCard(item,ordinal,false)); ordinal += 1; }); section.append(head,groupGrid); grid.append(section); });
     }
     function render() { const items = sortedItems(filteredItems()), hiddenTotal = data.items.filter(item => item.hidden).length, visibleTotal = data.items.length - hiddenTotal; renderCards(items); count.textContent = state.hiddenView ? `${items.length} of ${hiddenTotal} filtered-out signal${hiddenTotal === 1 ? '' : 's'}` : `${items.length} of ${visibleTotal} saved signal${visibleTotal === 1 ? '' : 's'}${state.groupBy === 'none' ? '' : ` · ${groupEntries(items).length} groups`}`; hiddenToggle.textContent = state.hiddenView ? 'Back to saved' : `Filtered out ${hiddenTotal}`; hiddenToggle.setAttribute('aria-pressed',String(state.hiddenView)); document.getElementById('view-kicker').textContent = state.hiddenView ? 'Still recoverable' : 'What survived'; document.getElementById('view-title').textContent = state.hiddenView ? 'Filtered out' : 'Saved signals'; empty.hidden = items.length !== 0; empty.querySelector('h2').textContent = state.hiddenView ? 'Nothing is filtered out.' : 'Nothing matches yet.'; empty.querySelector('p').textContent = state.hiddenView ? 'Return to saved bookmarks or filter something out from its detail panel.' : 'Remove a filter, try another phrase, or reset the view.'; renderFilters(); renderFilterSummary(); renderContextLedger(); const selected = items.find(item => item.note === state.selected) || items[0]; state.selected = selected?.note || ''; renderInspector(selected); }
     document.getElementById('search').addEventListener('input', event => { state.query = event.target.value; render(); });
