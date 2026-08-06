@@ -85,6 +85,8 @@ class BookmarkSystemTest(unittest.TestCase):
         self.assertFalse(payload["items"][0]["hidden"])
         template = (REPO_ROOT / "skills" / "bookmark-this" / "assets" / "visualizer-template.html").read_text(encoding="utf-8")
         self.assertIn("__BACKGROUND_IMAGE__", template)
+        self.assertIn("var(--background-art)", template)
+        self.assertIn("var(--dashboard-wash)", template)
         self.assertIn("let theme = 'monograph', mode = 'dark';", template)
         self.assertIn("theme = 'monograph'; if (!modes.has(mode)) mode = 'dark';", template)
         self.assertIn('"richMedia"', visualizer)
